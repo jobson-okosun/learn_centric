@@ -1,0 +1,60 @@
+<div class="mb-5 flex items-center justify-between">
+     <div>
+          <h1 class="font-semibold text-2xl text-gray-800">Chapter 4 Quiz</h1>   
+          <p class="text-sm text-gray-500">Physics 102 - Fall Cohort</p>
+     </div>
+</div>
+
+<div class="flex items-start gap-1 w-full overflow-hidden mb-5">
+    <a routerLink="overview"
+       routerLinkActive
+       #rlaOverview="routerLinkActive"
+       [class.font-semibold]="rlaOverview.isActive"
+       [class.bg-white]="rlaOverview.isActive"
+       [class.border-gray-200!]="rlaOverview.isActive"
+       [class.text-gray-900]="rlaOverview.isActive"
+       [class.font-medium]="!rlaOverview.isActive"
+       [class.text-gray-500]="!rlaOverview.isActive"
+       [class.hover:text-gray-900]="!rlaOverview.isActive"
+       [class.hover:bg-gray-200]="!rlaOverview.isActive"
+       [class.hover:bg-opacity-50]="!rlaOverview.isActive"
+       class="px-4 py-1.5 text-[13px] rounded-2xl transition-all whitespace-nowrap cursor-pointer border border-transparent">
+        Overview
+    </a>
+
+    <a routerLink="settings"
+       routerLinkActive
+       #rlaSettings="routerLinkActive"
+       [class.font-semibold]="rlaSettings.isActive"
+       [class.bg-white]="rlaSettings.isActive"
+       [class.border-gray-200!]="rlaSettings.isActive"
+       [class.text-gray-900]="rlaSettings.isActive"
+       [class.font-medium]="!rlaSettings.isActive"
+       [class.text-gray-500]="!rlaSettings.isActive"
+       [class.hover:text-gray-900]="!rlaSettings.isActive"
+       [class.hover:bg-gray-200]="!rlaSettings.isActive"
+       [class.hover:bg-opacity-50]="!rlaSettings.isActive"
+       class="px-4 py-1.5 text-[13px] rounded-2xl transition-all whitespace-nowrap cursor-pointer border border-transparent">
+        Settings
+    </a>
+
+    <a routerLink="questions"
+       routerLinkActive
+       #rlaQuestions="routerLinkActive"
+       [class.font-semibold]="rlaQuestions.isActive"
+       [class.bg-white]="rlaQuestions.isActive"
+       [class.border-gray-200!]="rlaQuestions.isActive"
+       [class.text-gray-900]="rlaQuestions.isActive"
+       [class.font-medium]="!rlaQuestions.isActive"
+       [class.text-gray-500]="!rlaQuestions.isActive"
+       [class.hover:text-gray-900]="!rlaQuestions.isActive"
+       [class.hover:bg-gray-200]="!rlaQuestions.isActive"
+       [class.hover:bg-opacity-50]="!rlaQuestions.isActive"
+       class="px-4 py-1.5 text-[13px] rounded-2xl transition-all whitespace-nowrap cursor-pointer border border-transparent">
+        Questions
+    </a>
+</div>
+
+<div class="flex-1 mt-5">
+     <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,5 @@
+/* Examination Result & Rubric Review Styles */
+:host {
+  display: block;
+  height: 100%;
+}

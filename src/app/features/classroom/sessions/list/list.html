@@ -1,0 +1,261 @@
+<div class="flex items-start justify-between mb-5">
+     <div>
+          <h1 class="font-semibold text-2xl text-gray-800">Live Sessions</h1>
+          <p class="text-gray-500 text-sm mt-1">Manage your synchronous classes and session recordings.</p>
+     </div>
+     <div class="flex gap-3">
+          <button (click)="scheduleSessionVisible.set(true)" class="btn outline">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+               </svg>
+               Schedule
+          </button>
+          <button (click)="startSessionVisible.set(true)" class="btn primary">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/><path d="M12 5v14"/>
+               </svg>
+               Start session
+          </button>
+     </div>
+</div>
+
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4 border-b border-gray-100 pb-2">
+     <div class="flex items-center gap-1">
+          <a routerLink="/app/classroom/sessions/live" routerLinkActive="!bg-white !text-gray-900 !border-gray-200" #liveTab="routerLinkActive" class="px-4 py-1.5 text-[13px] font-semibold rounded-2xl transition-all border border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-200/50">Live Now</a>
+          <a routerLink="/app/classroom/sessions/upcoming" routerLinkActive="!bg-white !text-gray-900 !border-gray-200" #upcomingTab="routerLinkActive" class="px-4 py-1.5 text-[13px] font-semibold rounded-2xl transition-all border border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-200/50">Upcoming</a>
+          <a routerLink="/app/classroom/sessions/past" routerLinkActive="!bg-white !text-gray-900 !border-gray-200" #pastTab="routerLinkActive" class="px-4 py-1.5 text-[13px] font-semibold rounded-2xl transition-all border border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-200/50">Past Sessions</a>
+          <a routerLink="/app/classroom/sessions/recordings" routerLinkActive="!bg-white !text-gray-900 !border-gray-200" #recordingsTab="routerLinkActive" class="px-4 py-1.5 text-[13px] font-semibold rounded-2xl transition-all border border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-200/50">Recordings</a>
+     </div>
+     <div class="flex items-center gap-3">
+          <select class="form-control text-sm py-1.5 rounded-xl border-gray-200 text-gray-700 bg-gray-50 hover:bg-gray-100 cursor-pointer">
+               <option>All Courses</option>
+               <option>Intro to Biology</option>
+               <option>Advanced Physics</option>
+          </select>
+          <select class="form-control text-sm py-1.5 rounded-xl border-gray-200 text-gray-700 bg-gray-50 hover:bg-gray-100 cursor-pointer">
+               <option>All Classes</option>
+               <option>BIO201-A</option>
+               <option>PHY102-B</option>
+          </select>
+     </div>
+</div>
+
+@if (liveTab.isActive) {
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mb-5 gap-6">
+          <!-- Live Card 1 -->
+          <div class="bg-white p-5 rounded-2xl relative overflow-hidden group flex flex-col">
+               <div class="flex gap-4 items-start mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z"/><rect x="3" y="6" width="12" height="12" rx="2" ry="2"/></svg>
+                    </div>
+                    <div class="flex flex-col justify-center">
+                         <div class="flex items-center gap-1.5 mb-1">
+                              <span class="relative flex h-2.5 w-2.5">
+                                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                   <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                              </span>
+                              <span class="text-xs font-bold text-red-500 uppercase tracking-widest">Live Now</span>
+                         </div>
+                         <h3 class="text-gray-900 font-bold text-lg leading-tight line-clamp-2 pr-6">Advanced Physics Lab</h3>
+                         <p class="text-gray-500 text-xs mt-1 leading-relaxed">PHY102-B · Started 15m ago</p>
+                    </div>
+               </div>
+
+               <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <div class="flex gap-2 items-center">
+                         <span class="size-8 rounded-full bg-gray-200/50 flex items-center justify-center shrink-0">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                         </span>
+                         <div class="flex-1 min-w-0">
+                              <div class="text-[10px] text-gray-500 font-medium uppercase">Attendees</div>
+                              <div class="text-xs text-gray-800 font-semibold truncate"><span class="font-bold text-gray-900">12</span> / 40</div>
+                         </div>
+                    </div>
+                    <button class="btn primary btn-sm" (click)="openLiveSession()">Join Classroom</button>
+               </div>
+          </div>
+     </div>
+}
+
+@if (upcomingTab.isActive) {
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mb-5 gap-6">
+          <div class="bg-white p-5 rounded-2xl relative overflow-hidden group border border-gray-100 flex flex-col">
+               <div class="flex gap-4 items-start mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z"/><rect x="3" y="6" width="12" height="12" rx="2" ry="2"/></svg>
+                    </div>
+                    <div class="flex flex-col justify-center">
+                         <div class="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">Today, 10:00 AM</div>
+                         <h3 class="text-gray-900 font-bold text-lg leading-tight line-clamp-2">Biology 201 - Lecture</h3>
+                         <p class="text-gray-500 text-xs mt-1 leading-relaxed">BIO201-A · 60 mins</p>
+                    </div>
+               </div>
+
+               <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <div class="flex gap-2 items-center">
+                         <span class="size-8 rounded-full bg-gray-200/50 flex items-center justify-center shrink-0">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                         </span>
+                         <div class="flex-1 min-w-0">
+                              <div class="text-[10px] text-gray-500 font-medium uppercase">Expected</div>
+                              <div class="text-xs text-gray-900 font-bold truncate">42</div>
+                         </div>
+                    </div>
+                    <button class="btn primary btn-sm" disabled>Join Classroom</button>
+               </div>
+          </div>
+     </div>
+}
+
+@if (pastTab.isActive) {
+     <div class="flex flex-col items-center justify-center py-20 text-center bg-white rounded-2xl border border-gray-100">
+          <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4 text-gray-400">
+               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-gray-800">No past sessions</h3>
+          <p class="text-gray-500 text-sm mt-1 mb-6 max-w-sm">You haven't conducted any live sessions yet.</p>
+     </div>
+}
+
+@if (recordingsTab.isActive) {
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-5 gap-6">
+          <!-- Recording 1 -->
+          <div class="bg-white rounded-2xl relative overflow-hidden group border border-gray-100 cursor-pointer hover:border-gray-200 transition-all flex flex-col">
+               <div class="aspect-video bg-gray-100 relative flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <button class="w-12 h-12 bg-white/20 backdrop-blur border border-white/30 rounded-full flex items-center justify-center text-white z-10 hover:bg-white/30 transition-all">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                    <div class="absolute bottom-3 right-3 text-xs font-semibold text-white bg-black/60 px-2 py-1 rounded backdrop-blur">45:12</div>
+               </div>
+               <div class="p-4">
+                    <div class="text-xs font-medium text-gray-500 mb-1">Recorded Oct 12, 2026</div>
+                    <h3 class="text-gray-900 font-bold leading-tight">Cell Structure Deep Dive</h3>
+                    <p class="text-gray-500 text-xs mt-1">Biology 201</p>
+               </div>
+          </div>
+     </div>
+}
+
+<!-- Schedule Session Drawer -->
+<z-drawer [(zVisible)]="scheduleSessionVisible" [zPlacement]="'right'" [zDismissible]="true">
+  <z-drawer-header>
+    <div class="flex flex-col border-b border-gray-100 pb-4">
+       <div class="font-bold text-xl">Schedule Session</div>
+       <div class="text-sm text-gray-500">Plan an upcoming live classroom.</div>
+     </div>
+  </z-drawer-header>
+  <div class="p-4 flex-1 overflow-y-auto min-h-0">
+     <form class="flex flex-col gap-4">
+          <div class="form-group">
+            <label class="text-sm font-medium text-gray-700">Course</label>
+            <z-combobox class="w-full">
+               <z-combobox-input placeholder="Select Course" class="z-form-control"/>
+               <z-combobox-content>
+                    <z-combobox-empty>No courses found.</z-combobox-empty>
+                    <z-combobox-list>
+                         <z-combobox-item [zValue]="'intro-bio'">Intro to Biology</z-combobox-item>
+                         <z-combobox-item [zValue]="'adv-physics'">Advanced Physics</z-combobox-item>
+                    </z-combobox-list>
+               </z-combobox-content>
+            </z-combobox>
+          </div>
+          <div class="form-group">
+            <label class="text-sm font-medium text-gray-700">Class Cohort</label>
+            <z-combobox class="w-full">
+               <z-combobox-input placeholder="Select Class" class="z-form-control"/>
+               <z-combobox-content>
+                    <z-combobox-empty>No classes found.</z-combobox-empty>
+                    <z-combobox-list>
+                         <z-combobox-item [zValue]="'bio-a'">Biology 101 - Section A</z-combobox-item>
+                         <z-combobox-item [zValue]="'phy-b'">Physics 202 - Lab B</z-combobox-item>
+                    </z-combobox-list>
+               </z-combobox-content>
+            </z-combobox>
+          </div>
+          <div class="form-group">
+             <label class="text-sm font-medium text-gray-700">Session Title</label>
+             <input type="text" class="form-control" placeholder="e.g. Weekly Review Q&A">
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+               <div class="form-group">
+                    <label class="text-sm font-medium text-gray-700">Date</label>
+                    <input type="date" class="form-control">
+               </div>
+               <div class="form-group">
+                    <label class="text-sm font-medium text-gray-700">Time</label>
+                    <input type="time" class="form-control">
+               </div>
+          </div>
+          <div class="form-group">
+             <label class="text-sm font-medium text-gray-700">Duration (mins)</label>
+             <input type="number" class="form-control" value="60">
+          </div>
+          <div class="form-group">
+             <label class="text-sm font-medium text-gray-700">Description / Agenda</label>
+             <textarea rows="3" class="form-control resize-none" placeholder="What will be covered..."></textarea>
+          </div>
+          <div class="pt-4 mt-2 border-t border-gray-100 flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                  <div>
+                      <div class="font-medium text-gray-900">Auto-record session</div>
+                      <div class="text-xs text-gray-500">Automatically start recording when session begins</div>
+                  </div>
+                  <z-switch [zChecked]="true"></z-switch>
+              </div>
+          </div>
+     </form>
+  </div>
+  <z-drawer-footer>
+    <div class="flex items-center gap-3 border-t border-gray-100 pt-4">
+      <button type="button" (click)="scheduleSessionVisible.set(false)" class="btn outline flex-1">Cancel</button>
+      <button type="button" class="btn primary flex-1">Schedule</button>
+    </div>
+  </z-drawer-footer>
+</z-drawer>
+
+<!-- Start Session Drawer -->
+<z-drawer [(zVisible)]="startSessionVisible" [zPlacement]="'right'" [zDismissible]="true">
+  <z-drawer-header>
+    <div class="flex flex-col border-b border-gray-100 pb-4">
+       <div class="font-bold text-xl">Start Session</div>
+       <div class="text-sm text-gray-500">Quickly launch a live classroom right now.</div>
+     </div>
+  </z-drawer-header>
+  <div class="p-4 flex-1 overflow-y-auto min-h-0">
+     <form class="flex flex-col gap-4">
+          <div class="form-group">
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Course</label>
+              <z-combobox class="w-full">
+                 <z-combobox-input placeholder="Select Course" class="z-form-control"/>
+                 <z-combobox-content>
+                      <z-combobox-list>
+                           <z-combobox-item [zValue]="'intro-bio'">Intro to Biology</z-combobox-item>
+                      </z-combobox-list>
+                 </z-combobox-content>
+              </z-combobox>
+          </div>
+          <div class="form-group">
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Class Cohort</label>
+              <z-combobox class="w-full">
+                 <z-combobox-input placeholder="Select Class" class="z-form-control"/>
+                 <z-combobox-content>
+                      <z-combobox-list>
+                           <z-combobox-item [zValue]="'bio-a'">Biology 101 - Section A</z-combobox-item>
+                      </z-combobox-list>
+                 </z-combobox-content>
+              </z-combobox>
+          </div>
+          <div class="form-group">
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Session Title</label>
+              <input type="text" class="form-control" placeholder="e.g. Pop Quiz / Emergency Lesson">
+          </div>
+     </form>
+  </div>
+  <z-drawer-footer>
+    <div class="flex items-center gap-3 border-t border-gray-100 pt-4">
+      <button type="button" (click)="startSessionVisible.set(false)" class="btn outline flex-1">Cancel</button>
+      <button type="button" class="btn primary flex-1">Launch Classroom</button>
+    </div>
+  </z-drawer-footer>
+</z-drawer>

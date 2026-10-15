@@ -1,0 +1,115 @@
+<div class="flex flex-col overflow-hidden h-full">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <div>
+                <h1 class="text-lg font-bold text-gray-900">Midterm Exam - Biology</h1>
+                <div class="text-xs text-gray-500">Question 3 of 8</div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <div>
+                <div class="text-xs text-gray-500 mb-1">Student 42 of 214</div>
+                <div class="w-32 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="bg-primary h-full rounded-full" style="width: 20%"></div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button class="btn outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    Prev
+                </button>
+                <button class="btn primary">
+                    Save & Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex gap-5 flex-1 overflow-hidden py-5">
+        <div class="flex-1 overflow-auto no-scrollbar flex flex-col gap-6 rounded-2xl bg-white p-4">
+            
+            <div>
+                <h2 class="text-sm font-bold mb-3">Question 3</h2>
+                <p class="text-gray-600 mb-4">Explain the process of photosynthesis and its importance to the Earth's ecosystem.</p>
+                
+                <div class="border border-gray-200 rounded-2xl p-4 bg-primary/5">
+                    <h3 class="text-xs font-bold text-primary uppercase mb-2">Model Answer / Key</h3>
+                    <p class="text-sm text-gray-600">Photosynthesis is the process by which green plants and some other organisms use sunlight to synthesize foods from carbon dioxide and water. Photosynthesis in plants generally involves the green pigment chlorophyll and generates oxygen as a byproduct.</p>
+                </div>
+            </div>
+
+            <div class="flex-1 flex flex-col">
+                <div class="border border-gray-200 rounded-2xl p-4 bg-gray-50">
+                    <h2 class="text-xs font-bold text-gray-800 uppercase mb-2">Student Response</h2>
+                    <p class="text-gray-800 whitespace-pre-wrap">
+                        Photosynthesis is how plants make their food. They take in sunlight, water, and carbon dioxide from the air. The chlorophyll in their leaves helps them do this. When they make the food, they also release oxygen into the air, which is very important because humans and animals need oxygen to breathe. Without photosynthesis, the ecosystem would collapse because there would be no food base and no oxygen for other organisms.
+                    </p>
+                </div>
+
+                <div class="mt-4 bg-blue-50/50 border border-blue-100 rounded-xl p-4 flex gap-4">
+                    <div class="text-blue-500 mt-0.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-blue-900 mb-1">AI Suggested Score: 76 / 100</h4>
+                        <p class="text-sm text-blue-800/80">The student correctly identifies the inputs (sunlight, water, CO2) and outputs (food, oxygen). However, they missed explaining the chemical transformation aspect (synthesizing glucose) and the specific role of the chloroplasts beyond just "chlorophyll".</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-96 flex flex-col shrink-0 rounded-2xl bg-white p-4">
+            <div class="mb-4 flex justify-between items-start">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900">Grading Rubric</h2>
+                    <p class="text-sm text-gray-500 mt-0.5">Analytic Essay Rubric</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-2xl font-black">{{ totalScore() }}<span class="text-sm opacity-50 font-bold ml-0.5">/ 100</span></div>
+                    <div class="text-[10px] font-bold text-gray-500 uppercase mt-1">Total Score</div>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-auto no-scrollbar space-y-4">
+                @for (criterion of criteria(); track criterion.id) {
+                    <div class="bg-white border border-gray-200 rounded-xl p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="text-sm font-bold text-gray-900">{{ criterion.name }}</h3>
+                                <div class="text-xs text-gray-500 mt-0.5">{{ criterion.description }}</div>
+                            </div>
+                            <span class="text-xs font-bold px-2 py-1 bg-gray-100 text-gray-600 rounded-lg shrink-0">{{ selectedScores()[criterion.id] || 0 }} / 25 pts</span>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            @for (level of criterion.levels; track level.points) {
+                                <button 
+                                    type="button"
+                                    (click)="selectLevel(criterion.id, level.points)"
+                                    class="text-left w-full p-2.5 rounded-lg border text-sm transition-colors flex justify-between items-center"
+                                    [class]="selectedScores()[criterion.id] === level.points 
+                                        ? 'border-primary bg-primary/5' 
+                                        : 'border-gray-100 hover:border-gray-300'">
+                                    <div>
+                                        <div class="font-bold" [class]="selectedScores()[criterion.id] === level.points ? 'text-primary' : 'text-gray-700'">{{ level.name }}</div>
+                                        <div class="text-[11px] mt-0.5 leading-tight" [class]="selectedScores()[criterion.id] === level.points ? 'text-primary/70' : 'text-gray-500'">{{ level.description }}</div>
+                                    </div>
+                                    <div class="font-bold shrink-0 ml-3" [class]="selectedScores()[criterion.id] === level.points ? 'text-primary' : 'text-gray-900'">{{ level.points }} pts</div>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="pt-4 mt-2 border-t border-gray-100 shrink-0">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-bold text-gray-900">Comments</h3>
+                </div>
+                <textarea rows="2" class="form-control w-full resize-none text-sm bg-gray-50" placeholder="Constructive feedback..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>

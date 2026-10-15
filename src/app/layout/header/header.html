@@ -1,0 +1,138 @@
+<div class="mb-3 md:pr-3">
+     <div class="flex items-center justify-between gap-3 sm:gap-5">
+          <div class="flex items-center gap-2">
+               <button type="button" class="md:rounded-full size-10 flex shrink-0 items-center justify-center border border-neutral-300 cursor-pointer hover:bg-neutral-100 transition-colors" (click)="toggleSidebar()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" color="#3c3c3c" fill="none" stroke="#3c3c3c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 3H13C16.7712 3 18.6569 3 19.8284 4.17157C21 5.34315 21 7.22876 21 11V13C21 16.7712 21 18.6569 19.8284 19.8284C18.6569 21 16.7712 21 13 21H11C7.22876 21 5.34315 21 4.17157 19.8284C3 18.6569 3 16.7712 3 13V11C3 7.22876 3 5.34315 4.17157 4.17157C5.34315 3 7.22876 3 11 3Z"></path>
+                    <path d="M8.00488 16.0049L8.00488 8.00488"></path>
+                    </svg>
+               </button>
+
+               <img src="images/logo.png" alt="app-icon" class="max-w-36 ml-2 md:hidden">
+
+               <div class="hidden md:flex rounded-2xl border border-gray-300 items-center gap-2 overflow-hidden p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" color="#3c3c3c" fill="none" stroke="#3c3c3c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 17L21 21"></path>
+                    <path d="M19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11Z"></path>
+                    </svg>
+                    <input type="text" [placeholder]="searchPlaceholder()" class="border border-transparent outline-none text-xs bg-transparent w-44 lg:w-64">
+               </div>
+          </div>
+          <div class="flex items-center gap-2">
+               @if(isLearner()) {
+                    <!-- Primary Learner Action: + Join Class -->
+                    <button type="button" (click)="openJoinClassModal()" class="btn primary">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M12 5V19M5 12H19"/>
+                         </svg>
+                         <span class="whitespace-nowrap">Join Class</span>
+                    </button>
+
+                    <!-- Learner Quick Action: Ask AI Tutor -->
+                    <a routerLink="/learn/tutor" class="hidden sm:flex btn outline">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" color="currentColor" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4771 12 22C12 16.4771 16.4771 12 22 12C16.4771 12 12 7.52285 12 2Z"></path>
+                              <path d="M19 2C19 3.65685 17.6569 5 16 5C17.6569 5 19 6.34315 19 8C19 6.34315 20.3431 5 22 5C20.3431 5 19 3.65685 19 2Z"></path>
+                         </svg>
+                         <span class="whitespace-nowrap">Ask AI Tutor</span>
+                    </a>
+               }
+
+               <!-- Notification Icon -->
+               <span class="hidden md:flex rounded-full size-10 items-center justify-center border border-neutral-300 cursor-pointer hover:bg-neutral-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" color="#3c3c3c" fill="none" stroke="#3c3c3c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15.5 18C15.5 19.933 13.933 21.5 12 21.5C10.067 21.5 8.5 19.933 8.5 18"></path>
+                    <path d="M19.2311 18H4.76887C3.79195 18 3 17.208 3 16.2311C3 15.762 3.18636 15.3121 3.51809 14.9803L4.12132 14.3771C4.68393 13.8145 5 13.0514 5 12.2558V9.5C5 5.63401 8.13401 2.5 12 2.5C15.866 2.5 19 5.634 19 9.5V12.2558C19 13.0514 19.3161 13.8145 19.8787 14.3771L20.4819 14.9803C20.8136 15.3121 21 15.762 21 16.2311C21 17.208 20.208 18 19.2311 18Z"></path>
+                    </svg>
+               </span>
+
+               <button type="button" class="cursor-pointer hover:bg-neutral-100 transition-colors rounded-full md:rounded-2xl flex items-center justify-center md:border md:border-gray-300 gap-2 md:px-2 py-0.5">
+                    <span class="rounded-full size-10 md:size-8 bg-center bg-cover bg-[url(https://fastly.picsum.photos/id/1/5000/3333.jpg?hmac=Asv2DU3rA_5D1xSe22xZK47WEAN0wjWeFOhzd13ujW4)]"></span>
+                    <div class="hidden md:flex flex-col text-left">
+                         <div class="text-sm font-bold text-gray-700">John doe</div>
+                         <div class="text-xs text-gray-500">john.doe@gmail.com</div>
+                    </div>
+                    <svg class="hidden md:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" color="#3c3c3c" fill="none" stroke="#3c3c3c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9"></path>
+                    </svg>
+               </button>
+
+               <button type="button" class="md:hidden rounded-full size-10 flex shrink-0 items-center justify-center cursor-pointer hover:bg-neutral-100 transition-colors" (click)="toggleSidebar()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" color="#3c3c3c" fill="none" stroke="#3c3c3c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 5L20 5"></path>
+                    <path d="M4 12L20 12"></path>
+                    <path d="M4 19L20 19"></path>
+                    </svg>
+               </button>
+          </div>
+     </div> 
+</div>
+
+<!-- Join Class Modal Template -->
+<ng-template #joinClassTemplate>
+     <div class="flex flex-col gap-4 pt-1">
+          <p class="text-xs text-gray-500 leading-relaxed">
+               Enter the 6 to 8-character enrollment code provided by your instructor to join their class.
+          </p>
+
+          <div>
+               <label class="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wider">Class Code</label>
+               <input 
+                    type="text" 
+                    [ngModel]="joinCode()" 
+                    (ngModelChange)="onCodeChange($event)"
+                    placeholder="e.g. MTH-804" 
+                    maxlength="12"
+                    class="form-control">
+               <span class="text-[11px] text-gray-400 mt-1 block text-center">Codes are usually formatted like ABC-123 or XYZ789</span>
+          </div>
+
+          <!-- Dry-run / Instant Match Preview Card -->
+          @if(classMatch()) {
+               <div class="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200 flex flex-col gap-1 transition-all">
+                    <div class="flex items-center justify-between">
+                         <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                              Class Found
+                         </span>
+                         <span class="text-[11px] text-emerald-600 font-medium">{{ classMatch()?.code }}</span>
+                    </div>
+                    <div class="font-bold text-sm text-gray-900">{{ classMatch()?.title }}</div>
+                    <div class="text-xs text-gray-600 flex items-center gap-2">
+                         <span>{{ classMatch()?.instructor }}</span>
+                         <span>•</span>
+                         <span>{{ classMatch()?.cohort }}</span>
+                    </div>
+               </div>
+          } @else if(joinCode().trim().length >= 4) {
+               <div class="p-3 rounded-xl bg-neutral-50 border border-neutral-200 text-center text-xs text-gray-500">
+                    Checking class code...
+               </div>
+          }
+
+          @if(enrollSuccess()) {
+               <div class="p-3 rounded-xl bg-emerald-600 text-white text-xs font-semibold text-center flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Enrolled successfully! Redirecting to courses...
+               </div>
+          }
+
+          <div class="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
+               <button type="button" (click)="closeDialog()" class="btn outline btn-sm">
+                    Cancel
+               </button>
+               <button 
+                    type="button" 
+                    (click)="submitJoinClass()" 
+                    [disabled]="!classMatch() || isEnrolling() || enrollSuccess()" 
+                    class="btn primary btn-sm">
+                    @if(isEnrolling()) {
+                         <svg class="animate-spin size-3.5" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                         Enrolling...
+                    } @else {
+                         Join Class
+                    }
+               </button>
+          </div>
+     </div>
+</ng-template>

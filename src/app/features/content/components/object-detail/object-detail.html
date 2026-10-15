@@ -1,0 +1,136 @@
+<z-drawer [zVisible]="visible()" (zVisibleChange)="onDrawerClose($event)" [zPlacement]="'right'" [zDismissible]="true">
+  <z-drawer-header>
+    <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+      <h2 class="text-lg font-bold text-gray-900">Content Details</h2>
+      <button class="p-1.5 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors" (click)="close.emit()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+  </z-drawer-header>
+  
+  <div class="p-4 flex-1 overflow-y-auto flex flex-col gap-8">
+    <!-- Preview Area -->
+    <div class="h-28 w-full shrink-0 bg-gray-50 border border-gray-100 rounded-2xl flex items-center justify-center relative group cursor-pointer overflow-hidden">
+        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-gray-900/5 transition-opacity">
+            <button class="bg-white text-gray-900 shadow-sm font-bold text-sm px-4 py-2 rounded-lg flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                Open Preview
+            </button>
+        </div>
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0"
+            [class.bg-red-50]="object().type === 'video'"
+            [class.text-red-500]="object().type === 'video'"
+            [class.bg-gray-100]="object().type === 'pdf' || object().type === 'lesson'"
+            [class.text-gray-600]="object().type === 'pdf'"
+            [class.text-gray-700]="object().type === 'lesson'"
+            [class.bg-green-50]="object().type === 'quiz'"
+            [class.text-green-500]="object().type === 'quiz'">
+            
+            @if (object().type === 'video') {
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m22 8-6 4 6 4V8Z"></path><rect x="2" y="6" width="14" height="12" rx="2" ry="2"></rect>
+                </svg>
+            } @else if (object().type === 'pdf') {
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+                </svg>
+            } @else if (object().type === 'lesson') {
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+                    <path d="M2 19V7.54902C2 6.10516 2 5.38322 2.24332 4.81647C2.5467 4.10985 3.10985 3.5467 3.81647 3.24332C4.38322 3 5.09805 3 6.54902 3H7.04311C7.64819 3 8.22075 3.27394 8.60041 3.74509L10.4175 6M10.4175 6H16C17.4001 6 18.1002 6 18.635 6.27248C19.1054 6.51217 19.4878 6.89462 19.7275 7.36502C20 7.8998 20 8.59987 20 10V11M10.4175 6H7" stroke-linecap="round"></path>
+                    <path d="M3.15802 15.5144L3.45643 14.7717C4.19029 12.9449 4.55723 12.0316 5.3224 11.5158C6.08757 11 7.07557 11 9.05157 11H17.1119C19.8004 11 21.1446 11 21.7422 11.8787C22.3397 12.7575 21.8405 14.0002 20.842 16.4856L20.5436 17.2283C19.8097 19.0551 19.4428 19.9684 18.6776 20.4842C17.9124 21 16.9244 21 14.9484 21H6.88812C4.19961 21 2.85535 21 2.25782 20.1213C1.66029 19.2425 2.15953 17.9998 3.15802 15.5144Z"></path>
+                </svg>
+            } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="m9 15 2 2 4-4"></path>
+                </svg>
+            }
+        </div>
+    </div>
+
+    <!-- Meta -->
+    <div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">{{object().title}}</h3>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">A comprehensive module covering the foundational aspects of this subject. Perfect for introductory cohorts.</p>
+
+        <div class="space-y-2 mt-6">
+            <div class="flex items-center justify-between py-1 border-b border-gray-100">
+                <span class="text-xs font-semibold text-gray-500 uppercase">Type</span>
+                <span class="text-sm font-medium text-gray-900 capitalize">{{object().type === 'pdf' ? 'File' : object().type === 'quiz' ? 'Test/Quiz' : object().type}}</span>
+            </div>
+            <div class="flex items-center justify-between py-1 border-b border-gray-100">
+                <span class="text-xs font-semibold text-gray-500 uppercase">Author</span>
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-gray-200/50 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <span class="text-sm font-medium text-gray-900">{{object().owner}}</span>
+                </div>
+            </div>
+            <div class="flex items-center justify-between py-1 border-b border-gray-100">
+                <span class="text-xs font-semibold text-gray-500 uppercase">Last Used</span>
+                <span class="text-sm font-medium text-gray-900">{{object().lastUsed}}</span>
+            </div>
+            <div class="flex items-center justify-between py-1 border-b border-gray-100">
+                <span class="text-xs font-semibold text-gray-500 uppercase">Licence</span>
+                <span class="text-sm font-medium text-gray-900">Institution Internal</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outcomes / Skills -->
+    <div class="mb-2">
+        <h4 class="text-[11px] font-bold text-gray-400 uppercase mb-3 tracking-wider">Outcomes & Skills</h4>
+        <div class="flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 text-gray-700 rounded-lg text-[11px] font-bold tracking-wide border border-gray-100">Cell Theory</span>
+            <span class="px-2.5 py-1 text-gray-700 rounded-lg text-[11px] font-bold tracking-wide border border-gray-100">Scientific Method</span>
+        </div>
+    </div>
+
+    <!-- Permissions -->
+    <div class="mb-2">
+        <h4 class="text-[11px] font-bold text-gray-400 uppercase mb-3 tracking-wider">Permissions</h4>
+        <div class="flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100">
+            <div class="flex-1 min-w-0">
+                <div class="text-sm font-bold text-gray-900">Institution Content</div>
+                <div class="text-xs text-gray-500 font-medium mt-0.5">Anyone in the institution can use this resource</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Where Used -->
+    <div class="mb-2">
+        <h4 class="text-[11px] font-bold text-gray-400 uppercase mb-3 tracking-wider">Currently Used In</h4>
+        <ul class="space-y-2">
+            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-100">
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-gray-900">Biology 101</span>
+                    <span class="text-xs text-gray-500 mt-0.5">Module 2: The Cell</span>
+                </div>
+            </li>
+            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-100">
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-gray-900">AP Biology</span>
+                    <span class="text-xs text-gray-500 mt-0.5">Review Week</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Version History -->
+    <div class="mb-4">
+        <h4 class="text-[11px] font-bold text-gray-400 uppercase mb-3 tracking-wider">Version History</h4>
+        <div class="relative border-l-2 border-gray-100 ml-3 space-y-4 pb-2 mt-2">
+            <div class="relative pl-5">
+                <div class="absolute left-[-5px] top-1.5 w-2 h-2 rounded-full bg-primary ring-4 ring-white"></div>
+                <div class="text-sm font-bold text-gray-900">Version 3 (Current)</div>
+                <div class="text-xs text-gray-500 font-medium mt-0.5">Updated by Sarah Johnson · 2 days ago</div>
+            </div>
+            <div class="relative pl-5 opacity-70">
+                <div class="absolute left-[-5px] top-1.5 w-2 h-2 rounded-full bg-gray-300 ring-4 ring-white"></div>
+                <div class="text-sm font-bold text-gray-900">Version 2</div>
+                <div class="text-xs text-gray-500 font-medium mt-0.5">Updated by David Smith · 1 month ago</div>
+            </div>
+        </div>
+    </div>
+  </div>
+</z-drawer>

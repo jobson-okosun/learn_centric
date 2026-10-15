@@ -56,3 +56,27 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use the `providedIn: 'root'` option for singleton services
 - Prefer the `@Service` decorator over `@Injectable({providedIn: 'root'})` for new singleton services (Angular v22+)
 - Use the `inject()` function instead of constructor injection
+
+## Project Architecture & Directory Rules
+
+- **`src/app/shared/`**: STRICTLY reserved for the UI component library (e.g., Zard UI, shadcn-like components). **Do not** place custom application services, state, or business logic here.
+- **`src/app/core/`**: Use this directory for core application logic, custom singleton services (like Layout state), guards, and interceptors.
+
+## Custom Project Conventions
+
+- **Exposing Service Signals**: When exposing a writable signal from an injected service to a component template as readonly, wrap it in `computed()` (e.g., `readonly myState = computed(() => this.myService.myState());`). Do not assign the service signal directly.
+- **Scrollable Areas**: For main content areas wrapping a `router-outlet` or similar scrollable panels, prefer using `overflow-auto no-scrollbar` to maintain a clean UI without default scrollbars.
+
+- **No Shadows or Rings**: When designing UI elements, absolutely DO NOT use drop shadows (`shadow-sm`, `shadow-md`, etc.) or ring borders (`ring-*`). Rely strictly on background colors, flat borders, or padding/rounding for depth and separation in line with the established minimalist and flat design flow.
+
+## Learner Portal Architecture & Implementation Directives
+
+- **Master Plan**: The living source of truth for the Learner Portal is located at [PLAN.md](file:///c:/Users/DELL/Desktop/MULTILENT/JOB-OKOSUN-MULTILENT/APPS/learncentric/PLAN.md) (and [src/app/learner/PLAN.md](file:///c:/Users/DELL/Desktop/MULTILENT/JOB-OKOSUN-MULTILENT/APPS/learncentric/src/app/learner/PLAN.md)). Review this file before every implementation step.
+- **UI Design First**: Do NOT create backend services or separate model files until UI design is completed. Keep mock data and state in local component signals.
+- **Folder Structure Standard**: Strictly mirror the author module pattern in `src/app/features/courses/`:
+  - Each feature has `<feature>.route.ts`, `components/`, and `pages/`.
+  - Pages live in `pages/<name>/` and must use `export default class <Name>`.
+  - Never introduce arbitrary intermediate directories like `feature/` or `tabs/`.
+- **Route-Linked State**: All tab menus must be linked to real routes using `routerLink`, `routerLinkActive`, and `<router-outlet>` so state is preserved on page refresh.
+- **Hierarchy & Thumbnails**: Modules and lessons can be one level deep (sub-modules, sub-lessons) and must support thumbnail images.
+

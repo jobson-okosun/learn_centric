@@ -1,0 +1,30 @@
+<section>
+     <div class="h-dvh overflow-hidden">
+          <div class="h-full flex overflow-hidden p-3 md:pr-0 relative transition-all duration-300 ease-in-out"
+               [class.gap-5]="isSidebarOpen()">
+               
+               @if (isSidebarOpen()) {
+                    <div class="fixed inset-0 bg-black/20 z-40 md:hidden" (click)="toggleSidebar()"></div>
+               }
+
+               <div class="h-full flex flex-col justify-between bg-white z-50 fixed md:static top-0 left-0 bottom-0 w-64 p-3 md:p-0 overflow-hidden transition-all duration-300 ease-in-out"
+                    [class.-translate-x-full]="!isSidebarOpen()"
+                    [class.translate-x-0]="isSidebarOpen()"
+                    [class.md:w-0]="!isSidebarOpen()"
+                    [class.md:w-50]="isSidebarOpen()">
+                    <app-navigation class="w-full md:w-50 block h-full"></app-navigation>
+               </div>
+               
+               <div class="flex-1 overflow-hidden h-full flex flex-col">
+                    <app-header class="w-full shrink-0"></app-header>
+                    <main class="flex-1 overflow-hidden pb-3">
+                         <div class="rounded-2xl rounded-r-none bg-neutral-100 p-5 h-full flex flex-col overflow-hidden">
+                              <div class="flex-1 overflow-auto no-scrollbar">
+                                   <router-outlet></router-outlet>
+                              </div>
+                         </div>
+                    </main>
+               </div>
+          </div>
+     </div>
+</section>

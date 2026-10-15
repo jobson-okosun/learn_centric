@@ -1,0 +1,41 @@
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Messages Thread -->
+    <div class="bg-white rounded-2xl border border-gray-100 flex flex-col h-[600px]">
+        <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+            <div>
+                <h3 class="text-sm font-bold text-gray-900">Direct Messages</h3>
+                <p class="text-xs text-gray-500 font-medium mt-1">Chat history with Sarah</p>
+            </div>
+            <button class="btn primary !py-1.5 !px-4 !text-xs">New Message</button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+            @for (msg of messages(); track msg.date) {
+                <div class="flex flex-col" [class.items-end]="msg.sender === 'You'">
+                    <div class="flex items-center gap-2 mb-1" [class.flex-row-reverse]="msg.sender === 'You'">
+                        <span class="text-[11px] font-bold text-gray-900">{{msg.sender}}</span>
+                        <span class="text-[10px] font-semibold text-gray-400">{{msg.date}}</span>
+                    </div>
+                    <div class="p-3 rounded-2xl max-w-[85%] text-sm"
+                         [class.bg-primary]="msg.sender === 'You'"
+                         [class.text-white]="msg.sender === 'You'"
+                         [class.rounded-tr-sm]="msg.sender === 'You'"
+                         [class.bg-gray-100]="msg.sender !== 'You'"
+                         [class.text-gray-800]="msg.sender !== 'You'"
+                         [class.rounded-tl-sm]="msg.sender !== 'You'">
+                        {{msg.content}}
+                    </div>
+                </div>
+            }
+        </div>
+        
+        <div class="p-4 border-t border-gray-100 bg-gray-50/50">
+            <div class="relative">
+                <input type="text" placeholder="Type a message..." class="w-full bg-white border border-gray-200 rounded-xl pl-4 pr-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                <button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg text-primary hover:bg-primary/5 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,140 @@
+<div class="h-dvh overflow-hidden">
+    <!-- Main Card Container -->
+    <div class="h-full w-full bg-linear-to-br from-sky-100/20 via-white to-white border border-neutral-200/50 flex p-3 relative">
+        
+        <!-- Left Side: Auth Form -->
+        <div class="flex-1 flex flex-col justify-between py-8 px-6 lg:px-16 xl:px-24 h-full overflow-y-auto no-scrollbar relative z-10">
+            <!-- Top Logo -->
+            <div class="flex justify-center items-center gap-2 mb-8">
+                <img src="images/logo.png" alt="logo" class="w-44">
+            </div>
+
+            <!-- Form Router Outlet -->
+            <div class="w-full max-w-[380px] mx-auto flex-1 flex flex-col justify-center">
+                <router-outlet></router-outlet>
+            </div>
+
+            <!-- Bottom Links -->
+            <div class="flex justify-between items-center text-[12px] text-gray-400 font-medium mt-8 w-full max-w-[380px] mx-auto">
+                <div class="flex items-center gap-1">
+                    @if (isLogin()) {
+                        Don't have an account? <a routerLink="/auth/register" class="text-gray-800 font-bold underline decoration-gray-300 underline-offset-2 hover:decoration-gray-800 transition-colors cursor-pointer">Sign up</a>
+                    } @else {
+                        Have an account? <a routerLink="/auth/login" class="text-gray-800 font-bold underline decoration-gray-300 underline-offset-2 hover:decoration-gray-800 transition-colors cursor-pointer">Sign in</a>
+                    }
+                </div>
+                <a href="#" class="text-gray-400 hover:text-gray-800 transition-colors underline decoration-gray-300 underline-offset-2">Terms & Conditions</a>
+            </div>
+        </div>
+
+        <!-- Right Side: Image Showcase -->
+        <div class="hidden lg:block w-[50%] relative h-full rounded-[2rem] overflow-hidden">
+            <!-- Smooth Corner Cutout Overlay (Top Right) -->
+            <div class="absolute top-0 right-0 z-20 pointer-events-none">
+                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 0,0 L 80,0 L 80,80 C 80,69 71,60 60,60 C 37.9,60 20,42.1 20,20 C 20,9 11,0 0,0 Z" fill="currentColor" class="text-white" />
+                </svg>
+            </div>
+
+            <!-- Smooth Corner Cutout Overlay (Bottom Left) -->
+            <!-- <div class="absolute bottom-0 left-0 z-20 pointer-events-none rotate-180">
+                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 0,0 L 80,0 L 80,80 C 80,69 71,60 60,60 C 37.9,60 20,42.1 20,20 C 20,9 11,0 0,0 Z" fill="currentColor" class="text-white" />
+                </svg>
+            </div> -->
+            
+            <!-- Background Images for Smooth Transition -->
+            @for (slide of slides; track slide.image; let i = $index) {
+                <img [src]="slide.image" 
+                     alt="Background slide" 
+                     class="absolute inset-0 w-full h-full object-cover object-center z-0 transition-opacity duration-1000 ease-in-out"
+                     [class.opacity-100]="activeSlideIndex() === i"
+                     [class.opacity-0]="activeSlideIndex() !== i" />
+            }
+            
+            <!-- Theme Tint Overlay -->
+            <div class="absolute inset-0 bg-sky-500/20 mix-blend-multiply z-0 pointer-events-none transition-colors"></div>
+            <div class="absolute inset-0 bg-gradient-to-tr from-primary/30 to-transparent z-0 pointer-events-none"></div>
+            
+            <!-- Floating Widget 1: Top Left -->
+            <!-- <div class="absolute top-[8%] left-[8%] z-20 bg-primary text-white p-4 rounded-2xl w-56 shadow-sm border border-primary/50">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-bold text-[13px] leading-tight">Module Review<br/>With Cohort</span>
+                    <div class="w-2 h-2 rounded-full bg-white shrink-0"></div>
+                </div>
+                <div class="text-[11px] font-medium text-white/80">09:30am - 10:00am</div>
+            </div>
+            
+            <div class="absolute top-[20%] left-[20%] z-10 bg-gray-900 text-white p-3 rounded-xl w-48 shadow-sm blur-[1px] opacity-90">
+                <div class="text-[10px] font-medium opacity-60">09:30am - 10:00am</div>
+            </div> -->
+
+            <!-- Floating Widget 2: Bottom Center -->
+            <!-- <div class="absolute bottom-[20%] left-[10%] z-20 bg-white/95 backdrop-blur-sm p-4 rounded-3xl w-64 shadow-sm border border-white/50">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-bold text-gray-900 text-[13px]">Live Assessment</span>
+                    <div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                </div>
+                <div class="text-[11px] text-gray-500 font-bold mb-4">12:00pm - 01:00pm</div>
+                <div class="flex -space-x-1.5">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" />
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" />
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" />
+                    <div class="w-7 h-7 rounded-full bg-gray-900 text-white text-[10px] font-bold border-2 border-white flex items-center justify-center">+2</div>
+                </div>
+            </div> -->
+
+            <!-- Floating Widget 3: Glass Calendar -->
+            <!-- <div class="absolute bottom-[35%] right-[10%] z-20 bg-white/10 backdrop-blur-md p-5 rounded-3xl border border-white/30 text-white w-[260px] shadow-sm">
+                <div class="flex justify-between items-center text-[11px] font-semibold mb-3 opacity-90 tracking-wide">
+                    <span>Sun</span><span>Mon</span><span>Tue</span><span class="text-primary relative after:content-[''] after:absolute after:-top-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full">Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                </div>
+                <div class="flex justify-between items-center text-[15px] font-bold">
+                    <span class="opacity-80">22</span><span class="opacity-80">23</span><span class="opacity-80">24</span><span class="text-white text-xl">25</span><span class="opacity-80">26</span><span class="opacity-80">27</span><span class="opacity-80">28</span>
+                </div>
+                <div class="w-full h-8 mt-4 border-t border-white/20 flex gap-1 overflow-hidden relative opacity-30">
+                    <div class="w-1 h-12 bg-white rotate-45 transform origin-top-left -ml-2"></div>
+                    <div class="w-1 h-12 bg-white rotate-45 transform origin-top-left"></div>
+                    <div class="w-1 h-12 bg-white rotate-45 transform origin-top-left"></div>
+                    <div class="w-1 h-12 bg-white rotate-45 transform origin-top-left"></div>
+                    <div class="w-1 h-12 bg-white rotate-45 transform origin-top-left"></div>
+                    <div class="w-1 h-12 bg-white rotate-45 transform origin-top-left"></div>
+                    <div class="w-1 h-12 bg-white rotate-45 transform origin-top-left"></div>
+                    <div class="w-1 h-12 bg-white rotate-45 transform origin-top-left"></div>
+                    <div class="w-1 h-12 bg-white rotate-45 transform origin-top-left"></div>
+                    <div class="w-1 h-12 bg-white rotate-45 transform origin-top-left"></div>
+                    <div class="w-1 h-12 bg-white rotate-45 transform origin-top-left"></div>
+                </div>
+            </div> -->
+
+            <!-- Bottom Gradient for Text Legibility -->
+            <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none"></div>
+
+            <!-- Slider Text & Controls -->
+            <div class="absolute bottom-16 left-0 right-0 z-20 flex flex-col items-center justify-end px-8">
+                
+                <!-- Wrapper for text crossfade -->
+                <div class="relative w-full h-[75px] mb-6 flex justify-center items-end">
+                    @for (slide of slides; track slide.title; let i = $index) {
+                        <h3 class="absolute text-white text-[26px] font-semibold tracking-tight leading-[1.2] text-center drop-shadow-sm transition-all duration-700 ease-in-out"
+                            [class]="activeSlideIndex() === i ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-2 scale-95 pointer-events-none'"
+                            [innerHTML]="slide.title">
+                        </h3>
+                    }
+                </div>
+
+                <!-- Pagination Dots -->
+                <div class="flex items-center gap-2">
+                    @for (slide of slides; track slide.image; let i = $index) {
+                        <button (click)="setSlide(i)"
+                                class="h-1 rounded-full transition-all duration-300 cursor-pointer"
+                                [class]="activeSlideIndex() === i ? 'w-8 bg-white shadow-sm' : 'w-6 bg-white/30 hover:bg-white/50'">
+                        </button>
+                    }
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

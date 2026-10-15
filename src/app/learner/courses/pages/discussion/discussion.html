@@ -1,0 +1,250 @@
+<div class="flex flex-col gap-6 h-full mx-auto w-full">
+  <!-- Header Bar -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">Course Discussions & Q&A</h1>
+      <p class="text-sm text-gray-500 mt-1">Engage with your instructor and peers on assignments, lectures, and problem sets.</p>
+    </div>
+    <button 
+      (click)="openNewQuestionModal(newQuestionTemplate)" 
+      class="btn primary flex items-center gap-2 cursor-pointer self-start sm:self-auto">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      <span>Ask a Question</span>
+    </button>
+  </div>
+
+  <!-- Toolbar: Search & Filter (matches tutor style) -->
+  <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+    <div class="relative w-full sm:w-96">
+      <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input 
+        type="text" 
+        [ngModel]="searchQuery()" 
+        (ngModelChange)="searchQuery.set($event)"
+        placeholder="Search discussions or questions..." 
+        class="form-control !pl-10 h-10 w-full rounded-full">
+    </div>
+    
+    <div class="flex items-center gap-4 w-full sm:w-auto">
+      <select 
+        [ngModel]="filterStatus()"
+        (ngModelChange)="filterStatus.set($event)"
+        class="form-control h-10 w-full sm:w-48 text-sm rounded-full">
+        <option value="all">All Discussions</option>
+        <option value="answered">Instructor Answered</option>
+        <option value="open">Needs Answers / Open</option>
+      </select>
+
+      <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer shrink-0">
+        <input 
+          type="checkbox" 
+          [ngModel]="unreadOnly()" 
+          (ngModelChange)="unreadOnly.set($event)"
+          class="rounded text-primary focus:ring-0 h-4 w-4">
+        <span>Unread only</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Feed sections -->
+  <div class="flex flex-col gap-8 pb-8">
+    <!-- Pinned Discussions -->
+    @if (pinnedThreads().length > 0) {
+      <div>
+        <h2 class="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <svg class="text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="17" x2="12" y2="22"></line>
+            <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.6V6a3 3 0 0 0-3-3h-0a3 3 0 0 0-3 3v4.6a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path>
+          </svg>
+          Pinned Discussions
+        </h2>
+        <div class="flex flex-col gap-3">
+          @for (thread of pinnedThreads(); track thread.id) {
+            <div class="block bg-white p-5 rounded-2xl border border-gray-100 hover:border-primary/50 transition-colors group">
+              <div class="flex justify-between gap-4">
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                    @if (thread.module) {
+                      <span class="text-[11px] font-semibold text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full">{{ thread.module }}</span>
+                    }
+                    @if (thread.hasInstructorReply) {
+                      <span class="text-[11px] font-semibold bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200/60 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Instructor Answered
+                      </span>
+                    }
+                  </div>
+                  <h3 class="font-bold text-gray-900 text-base group-hover:text-primary transition-colors cursor-pointer">
+                    {{ thread.title }}
+                  </h3>
+                  <p class="text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
+                    {{ thread.snippet }}
+                  </p>
+                  <div class="flex items-center gap-4 mt-3">
+                    <div class="flex items-center gap-2 text-xs text-gray-600">
+                      <img [src]="thread.avatar" [alt]="thread.author" class="size-5 rounded-full object-cover border border-gray-200">
+                      <span class="font-medium">{{ thread.author }}</span>
+                    </div>
+                    <div class="text-xs text-gray-400">{{ thread.time }}</div>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end justify-between shrink-0">
+                  <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1 text-sm font-semibold text-gray-700">
+                      <svg class="text-gray-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                      <span>{{ thread.replies }}</span>
+                    </div>
+                    @if (thread.unreadCount && thread.unreadCount > 0) {
+                      <span class="px-2 py-0.5 bg-primary/10 text-primary rounded-full text-xs font-bold">{{ thread.unreadCount }} Unread</span>
+                    }
+                  </div>
+                  <button class="text-xs font-semibold text-primary hover:underline flex items-center gap-1 cursor-pointer mt-4">
+                    <span>View discussion</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Recent Discussions -->
+    <div>
+      <h2 class="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+        <svg class="text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        Recent Discussions
+      </h2>
+
+      @if (recentThreads().length === 0) {
+        <div class="bg-white rounded-2xl border border-gray-100 p-8 text-center">
+          <p class="text-sm text-gray-500">No discussions match your current search or filter criteria.</p>
+        </div>
+      } @else {
+        <div class="flex flex-col gap-3">
+          @for (thread of recentThreads(); track thread.id) {
+            <div class="block bg-white p-5 rounded-2xl border border-gray-100 hover:border-primary/50 transition-colors group">
+              <div class="flex justify-between gap-4">
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                    @if (thread.module) {
+                      <span class="text-[11px] font-semibold text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full">{{ thread.module }}</span>
+                    }
+                    @if (thread.hasInstructorReply) {
+                      <span class="text-[11px] font-semibold bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200/60 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Instructor Answered
+                      </span>
+                    }
+                  </div>
+                  <h3 class="font-bold text-gray-900 text-base group-hover:text-primary transition-colors cursor-pointer">
+                    {{ thread.title }}
+                  </h3>
+                  <p class="text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
+                    {{ thread.snippet }}
+                  </p>
+                  <div class="flex items-center gap-4 mt-3">
+                    <div class="flex items-center gap-2 text-xs text-gray-600">
+                      <img [src]="thread.avatar" [alt]="thread.author" class="size-5 rounded-full object-cover border border-gray-200">
+                      <span class="font-medium">{{ thread.author }}</span>
+                    </div>
+                    <div class="text-xs text-gray-400">{{ thread.time }}</div>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end justify-between shrink-0">
+                  <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1 text-sm font-semibold text-gray-700">
+                      <svg class="text-gray-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                      <span>{{ thread.replies }}</span>
+                    </div>
+                    @if (thread.unreadCount && thread.unreadCount > 0) {
+                      <span class="px-2 py-0.5 bg-primary/10 text-primary rounded-full text-xs font-bold">{{ thread.unreadCount }} Unread</span>
+                    }
+                  </div>
+                  <button class="text-xs font-semibold text-primary hover:underline flex items-center gap-1 cursor-pointer mt-4">
+                    <span>View discussion</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Modal Template: Ask a Question -->
+<ng-template #newQuestionTemplate>
+  <div class="flex flex-col gap-4 p-1">
+    <div>
+      <label class="block text-sm font-semibold text-gray-700 mb-1.5">Topic / Question Title</label>
+      <input 
+        type="text" 
+        class="form-control w-full" 
+        placeholder="What is your question about?"
+        [ngModel]="newPostTitle()"
+        (ngModelChange)="newPostTitle.set($event)">
+    </div>
+
+    <div>
+      <label class="block text-sm font-semibold text-gray-700 mb-1.5">Related Course Module</label>
+      <select 
+        class="form-control w-full"
+        [ngModel]="newPostModule()"
+        (ngModelChange)="newPostModule.set($event)">
+        @for (mod of modules; track mod) {
+          <option [value]="mod">{{ mod }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-sm font-semibold text-gray-700 mb-1.5">Question Details</label>
+      <textarea 
+        class="form-control w-full min-h-[140px] resize-none" 
+        placeholder="Provide context, problem references, formulas, or specific areas you need help with..."
+        [ngModel]="newPostContent()"
+        (ngModelChange)="newPostContent.set($event)"></textarea>
+    </div>
+
+    <div class="flex items-center gap-2 mt-1">
+      <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+        <input 
+          type="checkbox" 
+          [ngModel]="notifyReplies()"
+          (ngModelChange)="notifyReplies.set($event)"
+          class="rounded text-primary focus:ring-0 h-4 w-4">
+        <span>Notify me when the instructor or classmates reply</span>
+      </label>
+    </div>
+
+    <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
+      <button class="btn outline" (click)="closeNewQuestionModal()">Cancel</button>
+      <button class="btn primary" (click)="createDiscussion()" [disabled]="!newPostTitle().trim()">Post Question</button>
+    </div>
+  </div>
+</ng-template>

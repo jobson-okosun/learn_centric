@@ -1,0 +1,113 @@
+<div class="flex flex-col gap-6 h-full mx-auto w-full p-3">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+         <div>
+              <h1 class="text-2xl font-bold text-gray-900">Course Badges</h1>
+              <p class="text-sm text-gray-500 mt-1">Gamification and achievements for your course</p>
+         </div>
+         <div class="flex items-center gap-2">
+              <button (click)="leaderboardDrawerVisible.set(true)" class="btn outline flex items-center gap-2 cursor-pointer">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
+                  Leaderboard
+              </button>
+         </div>
+    </div>
+
+    <!-- Active Badges Section (Exact 4-column card grid from tutor view) -->
+    <div class="pb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @for (badge of badges(); track badge.id) {
+                <div class="bg-white rounded-2xl border border-gray-100 hover:border-gray-200 p-6 flex flex-col items-center text-center transition-colors group relative overflow-hidden">
+                    <div class="absolute top-3 right-3 text-gray-400 hover:text-gray-900 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                    </div>
+
+                    <div class="size-24 rounded-full flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300" [class]="badge.iconBg">
+                        @if (badge.iconType === 'trophy') {
+                            <svg class="size-12" [class]="badge.iconColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                        } @else if (badge.iconType === 'target') {
+                            <svg class="size-12" [class]="badge.iconColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="6" r="2"></circle><circle cx="12" cy="2" r="0"></circle><path d="m12 14 4-4"></path><path d="M3.34 19a10 10 0 1 1 17.32 0"></path></svg>
+                        } @else if (badge.iconType === 'zap') {
+                            <svg class="size-12" [class]="badge.iconColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        } @else {
+                            <svg class="size-12" [class]="badge.iconColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                        }
+                    </div>
+
+                    <h3 class="font-bold text-gray-900 text-lg">{{ badge.title }}</h3>
+                    <p class="text-sm text-gray-500 mt-2 line-clamp-2">{{ badge.description }}</p>
+
+                    <div class="mt-4 pt-4 border-t border-gray-100 w-full flex items-center justify-between">
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Awarded To</div>
+                        <div class="flex -space-x-2">
+                            @for (recipient of badge.awardedTo; track recipient.name) {
+                                <img [src]="recipient.avatar" [alt]="recipient.name" class="size-6 rounded-full border-2 border-white object-cover">
+                            }
+                            @if (badge.awardedCountExtra) {
+                                <div class="size-6 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600">+{{ badge.awardedCountExtra }}</div>
+                            }
+                        </div>
+                    </div>
+
+                    @if (badge.earned) {
+                        <button class="btn primary w-full mt-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-600 text-white flex items-center justify-center gap-1.5 cursor-default">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Badge Earned</span>
+                        </button>
+                    } @else {
+                        <button class="btn outline w-full mt-4 py-2 text-sm text-gray-400 cursor-not-allowed" disabled>
+                            <span>Not Earned</span>
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Leaderboard Drawer -->
+<z-drawer [(zVisible)]="leaderboardDrawerVisible" [zPlacement]="'right'" [zDismissible]="true" class="w-full sm:w-[400px]">
+  <z-drawer-header>
+    <div class="flex items-center justify-between border-b border-gray-100 pb-4 w-full">
+      <div>
+        <div class="font-bold text-lg text-gray-900">Leaderboard</div>
+        <div class="text-xs text-gray-500">Course badge standings</div>
+      </div>
+    </div>
+  </z-drawer-header>
+
+  <div class="p-6 overflow-y-auto space-y-3">
+    @for (student of leaderboard(); track student.rank) {
+      <div 
+        class="flex items-center justify-between p-3 rounded-xl border transition-colors"
+        [class.bg-white]="!student.isCurrentUser"
+        [class.border-gray-100]="!student.isCurrentUser"
+        [class.bg-primary/5]="student.isCurrentUser"
+        [class.border-primary/30]="student.isCurrentUser">
+        <div class="flex items-center gap-3">
+          <span 
+            class="w-6 text-center font-bold text-sm"
+            [class.text-amber-500]="student.rank === 1"
+            [class.text-gray-400]="student.rank === 2"
+            [class.text-amber-700]="student.rank === 3"
+            [class.text-gray-500]="student.rank > 3">
+            #{{ student.rank }}
+          </span>
+          <img [src]="student.avatar" [alt]="student.name" class="size-8 rounded-full object-cover border border-gray-200">
+          <div>
+            <div class="text-sm font-semibold text-gray-900 flex items-center gap-1.5">
+              <span>{{ student.name }}</span>
+              @if (student.isCurrentUser) {
+                <span class="text-[10px] font-bold text-primary bg-primary/10 px-1.5 py-0.2 rounded-md">You</span>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="text-sm font-bold text-gray-700">{{ student.badgesCount }} badges</div>
+      </div>
+    }
+
+    <div class="pt-4 border-t border-gray-100 flex justify-end">
+      <button (click)="closeLeaderboard()" class="btn outline text-xs">Close</button>
+    </div>
+  </div>
+</z-drawer>

@@ -1,0 +1,93 @@
+/* Rich Text Page Content Styling */
+:host {
+  display: block;
+}
+
+.page-rich-content h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.015em;
+}
+
+.page-rich-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-rich-content p {
+  line-height: 1.75;
+  margin-bottom: 1rem;
+  color: #374151;
+}
+
+.page-rich-content .lead-text {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: #1f2937;
+  font-weight: 450;
+  background-color: #f9fafb;
+  border-left: 3px solid #6366f1;
+  padding: 1rem 1.25rem;
+  border-radius: 0 0.75rem 0.75rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.page-rich-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875em;
+  background-color: #f3f4f6;
+  color: #111827;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.375rem;
+  border: 1px solid #e5e7eb;
+}
+
+.page-rich-content .formula-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.page-rich-content .formula-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.page-rich-content .formula-math {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0f172a;
+  background-color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  overflow-x: auto;
+}
+
+.page-rich-content .styled-list {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+  space-y: 0.5rem;
+}
+
+.page-rich-content .styled-list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.65;
+  color: #4b5563;
+}

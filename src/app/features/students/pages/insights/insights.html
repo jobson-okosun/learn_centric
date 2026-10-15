@@ -1,0 +1,80 @@
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Left Column: Risk & Recommendations -->
+    <div class="lg:col-span-2 flex flex-col gap-6">
+        <!-- AI Recommendations -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-100 flex flex-col gap-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-primary">
+                    <span class="bg-primary/5 rounded-full size-8 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                            <path d="M5 3v4"/>
+                            <path d="M19 17v4"/>
+                            <path d="M3 5h4"/>
+                            <path d="M17 19h4"/>
+                        </svg>
+                    </span>
+                    <h3 class="text-sm font-bold text-gray-900">AI Recommendations</h3>
+                </div>
+                <span class="text-[10px] font-bold text-primary uppercase tracking-wider bg-primary/10 px-2 py-0.5 rounded">Auto-Generated</span>
+            </div>
+            
+            <div class="flex flex-col gap-4">
+                @for (rec of recommendations(); track rec) {
+                    <div class="flex items-start gap-3 bg-gray-50/50 p-4 rounded-xl border border-gray-100">
+                        <div class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <p class="text-sm text-gray-700 font-medium leading-relaxed">{{rec}}</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Learning Patterns -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-100">
+            <h3 class="text-sm font-bold text-gray-900 mb-5">Learning Patterns</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                @for (pattern of patterns(); track pattern.title) {
+                    <div class="p-4 rounded-xl border border-gray-100 bg-gray-50/50 hover:bg-gray-100/50 transition-colors">
+                        <h4 class="text-sm font-bold text-gray-900 mb-2">{{pattern.title}}</h4>
+                        <p class="text-[13px] text-gray-600 leading-relaxed">{{pattern.description}}</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Risk Assessment -->
+    <div class="flex flex-col gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-gray-100">
+            <h3 class="text-sm font-bold text-gray-900 mb-6">Risk Assessment</h3>
+            
+            <div class="flex flex-col items-center justify-center text-center mb-8">
+                <div class="w-32 h-32 relative flex items-center justify-center mb-4">
+                    <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="10" class="text-gray-100"></circle>
+                        <!-- Primary color for risk level to prevent color riot -->
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="10" class="text-primary transition-all" stroke-dasharray="283" stroke-dashoffset="141.5"></circle>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span class="text-2xl font-black text-gray-900 leading-none">{{riskAssessment().level}}</span>
+                    </div>
+                </div>
+                <p class="text-[13px] font-semibold text-gray-500">Predicted At-Risk Level</p>
+            </div>
+
+            <div>
+                <h4 class="text-xs font-bold text-gray-900 uppercase tracking-wider mb-3">Contributing Factors</h4>
+                <div class="flex flex-col gap-3">
+                    @for (factor of riskAssessment().factors; track factor) {
+                        <div class="flex items-start gap-2 text-sm text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 shrink-0 mt-0.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                            <span class="font-medium">{{factor}}</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

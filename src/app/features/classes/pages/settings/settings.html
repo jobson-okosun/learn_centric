@@ -1,0 +1,324 @@
+<div class="flex flex-col gap-6 h-full mx-auto w-full">
+    <!-- Header -->
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">Class Settings</h1>
+        <p class="text-sm text-gray-500 mt-1">Manage class details, enrollments, features, and preferences</p>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-8 pb-8">
+        
+        <div class="w-full md:w-64 shrink-0">
+            <nav class="flex flex-col gap-1 sticky top-6">
+                <button (click)="activeTab.set('details')" 
+                        [class.bg-gray-100]="activeTab() === 'details'"
+                        [class.text-gray-900]="activeTab() === 'details'"
+                        [class.font-semibold]="activeTab() === 'details'"
+                        class="text-left px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    Class Details
+                </button>
+                <button (click)="activeTab.set('access')" 
+                        [class.bg-gray-100]="activeTab() === 'access'"
+                        [class.text-gray-900]="activeTab() === 'access'"
+                        [class.font-semibold]="activeTab() === 'access'"
+                        class="text-left px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    Enrollment & Access
+                </button>
+                <button (click)="activeTab.set('grading')" 
+                        [class.bg-gray-100]="activeTab() === 'grading'"
+                        [class.text-gray-900]="activeTab() === 'grading'"
+                        [class.font-semibold]="activeTab() === 'grading'"
+                        class="text-left px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    Grading & Assessment
+                </button>
+                <button (click)="activeTab.set('features')" 
+                        [class.bg-gray-100]="activeTab() === 'features'"
+                        [class.text-gray-900]="activeTab() === 'features'"
+                        [class.font-semibold]="activeTab() === 'features'"
+                        class="text-left px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    Feature Options
+                </button>
+                <button (click)="activeTab.set('danger')" 
+                        [class.bg-red-50]="activeTab() === 'danger'"
+                        [class.text-red-700]="activeTab() === 'danger'"
+                        [class.font-semibold]="activeTab() === 'danger'"
+                        class="text-left px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors">
+                    Danger Zone
+                </button>
+            </nav>
+        </div>
+
+        <div class="flex-1 bg-white p-6 md:p-8 rounded-2xl border border-gray-100 min-h-[500px]">
+            
+            <!-- CLASS DETAILS VIEW -->
+            @if (activeTab() === 'details') {
+                <div class="flex flex-col gap-6">
+                    <h2 class="text-lg font-bold text-gray-900">Class Details</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Course</label>
+                            <input type="text" class="form-control w-full bg-gray-50 text-gray-500 cursor-not-allowed" value="Introduction to Biology" disabled>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Class Name</label>
+                            <input type="text" class="form-control w-full" value="Biology 101 - Section A">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Term / Cohort</label>
+                            <input type="text" class="form-control w-full" value="Fall 2026">
+                        </div>
+                        <div>
+                            <!-- Empty spacer to align dates properly -->
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Start Date</label>
+                            <input type="date" class="form-control w-full" value="2026-09-01">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">End Date</label>
+                            <input type="date" class="form-control w-full" value="2026-12-15">
+                        </div>
+                        
+                        <div class="md:col-span-2 mt-2">
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Primary Instructor(s)</label>
+                            <z-combobox class="w-full">
+                               <z-combobox-input placeholder="Search and add instructors" class="z-form-control"/>
+                               <z-combobox-content>
+                                    <z-combobox-empty>No instructors found.</z-combobox-empty>
+                                    <z-combobox-list>
+                                         <z-combobox-item [zValue]="'dr-johnson'">Dr. Sarah Johnson</z-combobox-item>
+                                         <z-combobox-item [zValue]="'prof-smith'">Prof. Alan Smith</z-combobox-item>
+                                    </z-combobox-list>
+                               </z-combobox-content>
+                            </z-combobox>
+                        </div>
+                        
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Teaching Assistant(s)</label>
+                            <z-combobox class="w-full">
+                               <z-combobox-input placeholder="Search and add TAs" class="z-form-control"/>
+                               <z-combobox-content>
+                                    <z-combobox-empty>No TAs found.</z-combobox-empty>
+                                    <z-combobox-list>
+                                         <z-combobox-item [zValue]="'ta-alex'">Alex Johnson</z-combobox-item>
+                                         <z-combobox-item [zValue]="'ta-sam'">Sam Smith</z-combobox-item>
+                                    </z-combobox-list>
+                               </z-combobox-content>
+                            </z-combobox>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-4">
+                        <button class="btn primary px-6">Save Details</button>
+                    </div>
+                </div>
+            }
+
+            <!-- ENROLLMENT & ACCESS VIEW -->
+            @if (activeTab() === 'access') {
+                <div class="flex flex-col gap-6">
+                    <h2 class="text-lg font-bold text-gray-900">Enrollment & Access</h2>
+                    
+                    <div class="flex flex-col gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Enrollment Limit</label>
+                            <p class="text-xs text-gray-500 mb-2">Maximum number of students allowed in this class.</p>
+                            <input type="number" class="form-control w-full sm:w-48" value="50">
+                        </div>
+
+                        <hr class="border-gray-100">
+
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <div class="font-semibold text-gray-900 text-sm">Enable Waitlist</div>
+                                <div class="text-sm text-gray-500 mt-1">Allow students to join a waitlist if the enrollment limit is reached.</div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+                                <input type="checkbox" value="" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+
+                        <hr class="border-gray-100">
+                        
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <div class="font-semibold text-gray-900 text-sm">Enable Self-Enrollment</div>
+                                <div class="text-sm text-gray-500 mt-1">Allow students to join the class themselves using a join code or link.</div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+                                <input type="checkbox" value="" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Class Join Code</label>
+                            <div class="flex gap-2">
+                                <input type="text" class="form-control w-48 font-mono text-center tracking-widest bg-white" value="BIO-101-FALL" readonly>
+                                <button class="p-2 border border-gray-200 rounded-lg hover:bg-gray-100 text-gray-500 bg-white" title="Copy Code">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                </button>
+                                <button class="p-2 border border-gray-200 rounded-lg hover:bg-gray-100 text-gray-500 bg-white" title="Generate New Code">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">Students can enter this code in the Catalog to join.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end mt-4">
+                        <button class="btn primary px-6">Save Access Settings</button>
+                    </div>
+                </div>
+            }
+
+            <!-- GRADING & ASSESSMENT VIEW -->
+            @if (activeTab() === 'grading') {
+                <div class="flex flex-col gap-6">
+                    <h2 class="text-lg font-bold text-gray-900">Grading & Assessment</h2>
+                    
+                    <div class="flex flex-col gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Grading Scheme</label>
+                            <p class="text-xs text-gray-500 mb-2">Determine how final grades are calculated and displayed to students.</p>
+                            <select class="form-control w-full sm:w-64">
+                                <option>Standard Letter Grade (A-F)</option>
+                                <option>Pass / Fail</option>
+                                <option>Points Based</option>
+                                <option>Percentage Only</option>
+                            </select>
+                        </div>
+
+                        <hr class="border-gray-100">
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Late Submission Policy</label>
+                            <p class="text-xs text-gray-500 mb-2">Rule for assignments submitted after the due date.</p>
+                            <select class="form-control w-full sm:w-64 mb-3">
+                                <option>Accept with automatic deduction</option>
+                                <option>Reject all late submissions</option>
+                                <option>Accept without penalty</option>
+                            </select>
+                            
+                            <!-- Deductions visible only if deduct is selected -->
+                            <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-200 w-full sm:w-96">
+                                <span class="text-sm font-medium text-gray-700">Deduct</span>
+                                <input type="number" class="form-control w-20 text-center" value="5">
+                                <span class="text-sm font-medium text-gray-700">% for each day the submission is late</span>
+                            </div>
+                        </div>
+
+                        <hr class="border-gray-100">
+
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <div class="font-semibold text-gray-900 text-sm">Allow Extra Credit</div>
+                                <div class="text-sm text-gray-500 mt-1">Allow assignments to exceed 100% of their total point value.</div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+                                <input type="checkbox" value="" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end mt-4">
+                        <button class="btn primary px-6">Save Grading Policy</button>
+                    </div>
+                </div>
+            }
+
+            <!-- FEATURES VIEW -->
+            @if (activeTab() === 'features') {
+                <div class="flex flex-col gap-6">
+                    <h2 class="text-lg font-bold text-gray-900 mb-2">Feature Options</h2>
+                    
+                    <div class="flex flex-col gap-5">
+                        <div>
+                            <h3 class="font-bold text-gray-900 text-sm mb-3">Navigation Visibility</h3>
+                            <p class="text-xs text-gray-500 mb-4">Toggle which modules are visible to students in the class dashboard.</p>
+                            
+                            <div class="flex flex-col gap-4 pl-2">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" class="rounded text-primary focus:ring-primary h-4 w-4 accent-primary">
+                                    <span class="text-sm text-gray-700 font-medium">Show Discussions Tab</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" class="rounded text-primary focus:ring-primary h-4 w-4 accent-primary" checked>
+                                    <span class="text-sm text-gray-700 font-medium">Show Live Sessions Tab</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" class="rounded text-primary focus:ring-primary h-4 w-4 accent-primary" checked>
+                                    <span class="text-sm text-gray-700 font-medium">Show Calendar Tab</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <hr class="border-gray-100 mt-2">
+                        
+                        <div class="flex items-start justify-between gap-4 mt-2">
+                            <div>
+                                <div class="font-semibold text-gray-900 text-sm">Disable Student Replies in Discussions</div>
+                                <div class="text-sm text-gray-500 mt-1">If enabled, students can read discussions but cannot reply to them. Useful for pure announcement boards.</div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+                                <input type="checkbox" value="" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+                        
+                        <hr class="border-gray-100">
+
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <div class="font-semibold text-gray-900 text-sm">Hide Grade Totals</div>
+                                <div class="text-sm text-gray-500 mt-1">Hide the overall class percentage/grade from students in their performance view.</div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+                                <input type="checkbox" value="" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- DANGER ZONE VIEW -->
+            @if (activeTab() === 'danger') {
+                <div class="flex flex-col gap-6">
+                    <div>
+                        <h2 class="text-lg font-bold text-red-600">Danger Zone</h2>
+                        <p class="text-sm text-gray-500 mt-1">Destructive actions that cannot easily be undone.</p>
+                    </div>
+
+                    <div class="border border-red-200 rounded-xl overflow-hidden">
+                        <div class="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-red-100">
+                            <div>
+                                <h3 class="font-bold text-gray-900 text-sm">Conclude Class</h3>
+                                <p class="text-sm text-gray-500 mt-1">Archived classes are removed from the active dashboard and become read-only.</p>
+                            </div>
+                            <button class="btn outline border-gray-300 hover:border-gray-400 hover:bg-gray-50 shrink-0">Conclude Class</button>
+                        </div>
+                        
+                        <div class="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-red-100">
+                            <div>
+                                <h3 class="font-bold text-gray-900 text-sm">Reset Class Content</h3>
+                                <p class="text-sm text-gray-500 mt-1">Permanently deletes all student submissions, grades, and discussions. The roster is kept.</p>
+                            </div>
+                            <button class="btn outline border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 shrink-0">Reset Content</button>
+                        </div>
+                        
+                        <div class="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-red-50/50">
+                            <div>
+                                <h3 class="font-bold text-gray-900 text-sm">Delete Class</h3>
+                                <p class="text-sm text-gray-500 mt-1">Permanently delete this class cohort and all associated data. This action is irreversible.</p>
+                            </div>
+                            <button class="px-4 py-2 rounded-lg font-medium text-sm text-white bg-red-600 hover:bg-red-700 transition-colors shrink-0">Delete Class</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

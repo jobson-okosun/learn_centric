@@ -1,0 +1,203 @@
+<div class="flex items-start justify-between mb-5">
+     <div>
+          <h1 class="font-semibold text-2xl text-gray-800">Classes</h1>
+          <p class="text-gray-500 text-sm mt-1">Manage your active classes and cohorts here.</p>
+     </div>
+     <button (click)="createClassVisible.set(true)" class="btn primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M5 12h14"/><path d="M12 5v14"/>
+          </svg>
+          Create class
+     </button>
+</div>
+
+<div class="flex items-center justify-between mb-6">
+     <div class="font-semibold text-xl text-gray-800">
+          My classes
+     </div>
+     <div class="flex items-center gap-1">
+          <button class="px-4 py-1.5 text-[13px] font-semibold rounded-2xl bg-white text-gray-900 transition-all">Current</button>
+          <button class="px-4 py-1.5 text-[13px] font-medium rounded-2xl text-gray-500 hover:text-gray-900 hover:bg-gray-200/50 transition-all">Upcoming</button>
+          <button class="px-4 py-1.5 text-[13px] font-medium rounded-2xl text-gray-500 hover:text-gray-900 hover:bg-gray-200/50 transition-all">Archived</button>
+     </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mb-5 gap-6">
+     <!-- Card 1 -->
+     <div class="bg-white p-5 rounded-2xl relative overflow-hidden group">
+          <div class="flex gap-4 items-start">
+               <!-- Icon / Thumbnail -->
+               <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+               </div>
+               
+               <div class="flex flex-col justify-center">
+                    <div class="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">Fall 2026</div>
+                    <h3 class="text-gray-900 font-bold text-lg leading-tight line-clamp-2">Biology 101 - Section A</h3>
+                    <p class="text-gray-500 text-xs mt-1 leading-relaxed">Course: Intro to Biology</p>
+               </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-gray-100">
+              <div class="flex items-center justify-between mb-3">
+                  <div class="text-sm font-medium text-gray-700">
+                      <span class="text-gray-400 font-normal">Students:</span> 42
+                  </div>
+              </div>
+              <div class="w-full">
+                  <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-xs text-gray-500 font-medium">Cohort Progress</span>
+                      <span class="text-xs font-bold text-primary">45%</span>
+                  </div>
+                  <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                      <div class="bg-primary rounded-full h-1.5" style="width: 45%"></div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="flex items-center justify-between mt-6">
+               <div class="flex gap-2 items-center">
+                    <span class="size-8 rounded-full bg-gray-200/50 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </span>
+                    <div class="flex-1 min-w-0">
+                         <div class="text-[10px] text-gray-500 font-medium uppercase">Instructor</div>
+                         <div class="text-xs text-gray-800 font-semibold truncate">Dr. Sarah Johnson</div>
+                    </div>
+               </div>
+               <a routerLink="c1" class="btn dark btn-sm">
+                    Open Class
+               </a>
+          </div>
+     </div>
+
+     <!-- Card 2 -->
+     <div class="bg-white p-5 rounded-2xl relative overflow-hidden group">
+          <div class="flex gap-4 items-start">
+               <!-- Icon / Thumbnail -->
+               <div class="w-12 h-12 rounded-xl bg-blue-50 text-primary flex items-center justify-center shrink-0">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+               </div>
+               
+               <div class="flex flex-col justify-center">
+                    <div class="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">Fall 2026</div>
+                    <h3 class="text-gray-900 font-bold text-lg leading-tight line-clamp-2">Biology 101 - Section B</h3>
+                    <p class="text-gray-500 text-xs mt-1 leading-relaxed">Course: Intro to Biology</p>
+               </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-gray-100">
+              <div class="flex items-center justify-between mb-3">
+                  <div class="text-sm font-medium text-gray-700">
+                      <span class="text-gray-400 font-normal">Students:</span> 38
+                  </div>
+              </div>
+              <div class="w-full">
+                  <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-xs text-gray-500 font-medium">Cohort Progress</span>
+                      <span class="text-xs font-bold text-primary">41%</span>
+                  </div>
+                  <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                      <div class="bg-primary rounded-full h-1.5" style="width: 41%"></div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="flex items-center justify-between mt-6">
+               <div class="flex gap-2 items-center">
+                    <span class="size-8 rounded-full bg-gray-200/50 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </span>
+                    <div class="flex-1 min-w-0">
+                         <div class="text-[10px] text-gray-500 font-medium uppercase">Instructor</div>
+                         <div class="text-xs text-gray-800 font-semibold truncate">Prof. Alan Smith</div>
+                    </div>
+               </div>
+               <a routerLink="c2" class="btn dark">
+                    Open Class
+               </a>
+          </div>
+     </div>
+</div>
+
+<!-- Drawer for creating class -->
+<z-drawer [(zVisible)]="createClassVisible" [zPlacement]="'right'" [zDismissible]="true">
+  <z-drawer-header>
+    <div class="flex flex-col border-b border-gray-100 pb-4">
+       <div class="font-bold text-xl">Create class</div>
+       <div class="text-sm text-gray-500">Implement a new class cohort from an existing course.</div>
+     </div>
+  </z-drawer-header>
+  <div class="p-4 flex-1 overflow-y-auto min-h-0">
+     <form class="flex flex-col gap-4">
+          <div class="form-group">
+            <label class="text-sm font-medium text-gray-700">Course</label>
+            <z-combobox class="w-full">
+               <z-combobox-input placeholder="Select Course" class="z-form-control"/>
+               <z-combobox-content>
+                    <z-combobox-empty>No courses found.</z-combobox-empty>
+                    <z-combobox-list>
+                         <z-combobox-item [zValue]="'intro-bio'">Intro to Biology</z-combobox-item>
+                         <z-combobox-item [zValue]="'adv-physics'">Advanced Physics</z-combobox-item>
+                         <z-combobox-item [zValue]="'ui-ux'">Master UI/UX Design</z-combobox-item>
+                    </z-combobox-list>
+               </z-combobox-content>
+            </z-combobox>
+          </div>
+          <div class="form-group">
+             <label class="text-sm font-medium text-gray-700">Class Name</label>
+             <input type="text" class="form-control" placeholder="e.g. Biology 101 - Section A">
+          </div>
+          <div class="form-group">
+             <label class="text-sm font-medium text-gray-700">Term / Cohort</label>
+             <input type="text" class="form-control" placeholder="e.g. Fall 2026">
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+               <div class="form-group">
+                    <label class="text-sm font-medium text-gray-700">Start Date</label>
+                    <input type="date" class="form-control">
+               </div>
+               <div class="form-group">
+                    <label class="text-sm font-medium text-gray-700">End Date</label>
+                    <input type="date" class="form-control">
+               </div>
+          </div>
+          <div class="form-group">
+             <label class="text-sm font-medium text-gray-700">Enrollment Limit (Optional)</label>
+             <input type="number" class="form-control" placeholder="e.g. 50">
+          </div>
+          <div class="form-group">
+            <label class="text-sm font-medium text-gray-700">Primary Instructor(s)</label>
+            <z-combobox class="w-full">
+               <z-combobox-input placeholder="Search and add instructors" class="z-form-control"/>
+               <z-combobox-content>
+                    <z-combobox-empty>No instructors found.</z-combobox-empty>
+                    <z-combobox-list>
+                         <z-combobox-item [zValue]="'dr-johnson'">Dr. Sarah Johnson</z-combobox-item>
+                         <z-combobox-item [zValue]="'prof-smith'">Prof. Alan Smith</z-combobox-item>
+                    </z-combobox-list>
+               </z-combobox-content>
+            </z-combobox>
+          </div>
+          <div class="form-group">
+            <label class="text-sm font-medium text-gray-700">Teaching Assistant(s)</label>
+            <z-combobox class="w-full">
+               <z-combobox-input placeholder="Search and add TAs" class="z-form-control"/>
+               <z-combobox-content>
+                    <z-combobox-empty>No TAs found.</z-combobox-empty>
+                    <z-combobox-list>
+                         <z-combobox-item [zValue]="'ta-alex'">Alex Johnson</z-combobox-item>
+                         <z-combobox-item [zValue]="'ta-sam'">Sam Smith</z-combobox-item>
+                    </z-combobox-list>
+               </z-combobox-content>
+            </z-combobox>
+          </div>
+     </form>
+  </div>
+  <z-drawer-footer>
+    <div class="flex items-center gap-3 border-t border-gray-100 pt-4">
+      <button type="button" z-button z-drawer-close class="btn outline flex-1">Cancel</button>
+      <button type="button" z-button class="btn primary flex-1">Create class</button>
+    </div>
+  </z-drawer-footer>
+</z-drawer>

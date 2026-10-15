@@ -1,0 +1,67 @@
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-6 p-6">
+    <!-- Options Column -->
+    <div class="lg:col-span-3 flex flex-col">
+        <div class="flex items-center justify-between mb-4 shrink-0">
+            <div>
+                <h3 class="text-sm font-bold text-gray-900">Options (Yes / No)</h3>
+                <p class="text-[13px] text-gray-500 font-medium">Select the correct statement.</p>
+            </div>
+        </div>
+        
+        <div class="flex flex-col gap-4">
+            <div class="flex flex-col border rounded-xl overflow-hidden bg-white transition-colors p-4 cursor-pointer" 
+                 [class]="correctAnswer() === 'yes' ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-gray-300'"
+                 (click)="setCorrect('yes')">
+                <div class="flex items-center justify-between">
+                    <span class="text-[14px] font-bold" [class]="correctAnswer() === 'yes' ? 'text-primary' : 'text-gray-700'">Yes</span>
+                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors"
+                         [class]="correctAnswer() === 'yes' ? 'border-primary' : 'border-gray-300'">
+                        @if(correctAnswer() === 'yes') {
+                            <div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col border rounded-xl overflow-hidden bg-white transition-colors p-4 cursor-pointer" 
+                 [class]="correctAnswer() === 'no' ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-gray-300'"
+                 (click)="setCorrect('no')">
+                <div class="flex items-center justify-between">
+                    <span class="text-[14px] font-bold" [class]="correctAnswer() === 'no' ? 'text-primary' : 'text-gray-700'">No</span>
+                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors"
+                         [class]="correctAnswer() === 'no' ? 'border-primary' : 'border-gray-300'">
+                        @if(correctAnswer() === 'no') {
+                            <div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Settings Column -->
+    <div class="lg:col-span-2 bg-gray-100 border border-gray-200 rounded-2xl p-5 flex flex-col gap-4 h-fit">
+        <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+            <label class="text-[14px] text-gray-900 font-bold">Settings</label>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Score</label>
+                <input [(ngModel)]="score" type="number" min="0" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white outline-none focus:border-primary transition-all" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Penalty</label>
+                <input [(ngModel)]="penalty" type="number" min="0" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white outline-none focus:border-primary transition-all" />
+            </div>
+            <div class="flex flex-col gap-1.5 col-span-full">
+                <label class="text-[12px] text-gray-500 font-medium">Difficulty level</label>
+                <select [(ngModel)]="difficultyLevel" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white text-gray-700 outline-none focus:border-primary transition-all cursor-pointer capitalize">
+                    @for(item of difficultyLevels; track $index) {
+                        <option [value]="item">{{ item }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

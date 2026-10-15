@@ -1,0 +1,254 @@
+<div class="flex flex-col gap-6 h-full pb-8">
+  <!-- Breadcrumb & Navigation -->
+  <div class="flex flex-col gap-1">
+    <div class="flex items-center justify-between text-xs text-gray-500">
+      <div class="flex items-center gap-2">
+        <a routerLink="/learn/assessments" class="hover:text-primary transition-colors">Assessments</a>
+        <span class="text-gray-300">/</span>
+        <span class="text-gray-600">{{ courseCode() }} Midterm</span>
+        <span class="text-gray-300">/</span>
+        <span class="text-gray-800 font-semibold">Results & Rubric</span>
+      </div>
+
+      <a routerLink="/learn/assessments" class="text-xs text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-1.5 cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Back to Assessments Catalog
+      </a>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Examination Results & Rubric Review</h1>
+        <p class="text-sm text-gray-500 mt-0.5">{{ examTitle() }} · Completed on {{ submittedDate() }}</p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a [routerLink]="['/learn/courses/math301/gradebook']" class="btn outline text-xs">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+          Course Gradebook
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score & Instructor Rubric Summary Banner (Strictly Flat, No Shadows, No Rings) -->
+  <div class="bg-white border border-gray-200 rounded-2xl p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    <!-- Left: Score Card & Comparative Metrics (lg:col-span-7) -->
+    <div class="lg:col-span-7 flex flex-col justify-between h-full gap-5">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 rounded-md bg-purple-50 text-primary border border-purple-200 text-xs font-bold uppercase tracking-wider">
+            {{ courseCode() }}
+          </span>
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Final Grade Published
+          </span>
+        </div>
+
+        <!-- Big Score Number -->
+        <div class="flex items-baseline gap-3 mt-4">
+          <span class="text-4xl font-extrabold text-gray-900 tracking-tight">{{ score() }}</span>
+          <span class="text-xl font-bold text-gray-400">/ {{ maxScore() }} Points</span>
+          <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-sm font-bold ml-2">
+            {{ percentage() }}% (Grade {{ letterGrade() }})
+          </span>
+        </div>
+      </div>
+
+      <!-- Comparative Stat Chips -->
+      <div class="grid grid-cols-3 gap-3 border-t border-gray-100 pt-4">
+        <div class="p-3 rounded-xl bg-gray-50 border border-gray-200">
+          <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider block">Class Average</span>
+          <span class="text-base font-bold text-gray-900 mt-0.5 block">{{ classAverage() }}%</span>
+          <span class="text-[10px] text-emerald-600 font-medium">+14.6% above average</span>
+        </div>
+        <div class="p-3 rounded-xl bg-gray-50 border border-gray-200">
+          <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider block">Percentile</span>
+          <span class="text-base font-bold text-gray-900 mt-0.5 block">{{ percentile() }}th</span>
+          <span class="text-[10px] text-gray-400">Top 6% of cohort</span>
+        </div>
+        <div class="p-3 rounded-xl bg-gray-50 border border-gray-200">
+          <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider block">Time Spent</span>
+          <span class="text-base font-bold text-gray-900 mt-0.5 block">{{ timeSpent() }}</span>
+          <span class="text-[10px] text-gray-400">Allowed: {{ maxDuration() }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Instructor Rubric Evaluation (lg:col-span-5) -->
+    <div class="lg:col-span-5 p-5 rounded-2xl bg-neutral-50 border border-gray-200 flex flex-col justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2.5 mb-3">
+          <div class="size-8 rounded-full bg-primary/10 border border-primary/20 text-primary font-bold text-xs flex items-center justify-center">
+            JH
+          </div>
+          <div>
+            <div class="text-xs font-bold text-gray-900">{{ instructorName() }}</div>
+            <div class="text-[11px] text-gray-500">Course Lead & Evaluator</div>
+          </div>
+        </div>
+
+        <p class="text-xs text-gray-700 leading-relaxed italic">
+          &ldquo;{{ instructorFeedback() }}&rdquo;
+        </p>
+      </div>
+
+      <div class="flex items-center justify-between text-[11px] text-gray-500 border-t border-gray-200 pt-3">
+        <span>Curved & Verified by Department</span>
+        <span class="text-primary font-semibold">Weight: 25% Final Grade</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Itemized Review Toolbar -->
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div class="flex items-center gap-1.5 p-1 bg-gray-100 rounded-2xl w-fit">
+      <button 
+        type="button" 
+        (click)="activeFilter.set('all')"
+        [class]="activeFilter() === 'all' ? 'bg-white text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-900'"
+        class="px-4 py-1.5 text-xs rounded-xl transition-all cursor-pointer">
+        All Questions ({{ totalQuestionsCount() }})
+      </button>
+      <button 
+        type="button" 
+        (click)="activeFilter.set('correct')"
+        [class]="activeFilter() === 'correct' ? 'bg-white text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-900'"
+        class="px-4 py-1.5 text-xs rounded-xl transition-all cursor-pointer">
+        Correct ({{ correctQuestionsCount() }})
+      </button>
+      <button 
+        type="button" 
+        (click)="activeFilter.set('incorrect')"
+        [class]="activeFilter() === 'incorrect' ? 'bg-white text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-900'"
+        class="px-4 py-1.5 text-xs rounded-xl transition-all cursor-pointer">
+        Partial / Needs Review ({{ incorrectQuestionsCount() }})
+      </button>
+    </div>
+
+    <div class="text-xs text-gray-500">
+      Showing {{ filteredQuestions().length }} of {{ totalQuestionsCount() }} questions
+    </div>
+  </div>
+
+  <!-- Itemized Questions List -->
+  <div class="flex flex-col gap-5">
+    @for (q of filteredQuestions(); track q.id) {
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col gap-5">
+        <!-- Question Header & Rubric Tag -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-4">
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-bold text-gray-900">Question {{ q.number }}</span>
+            <span class="text-xs text-gray-400">·</span>
+            <span class="px-2 py-0.5 rounded-md bg-gray-100 border border-gray-200 text-gray-700 text-xs font-medium">
+              {{ q.rubricCriterion }}
+            </span>
+          </div>
+
+          <!-- Points Awarded Badge -->
+          <div class="flex items-center gap-2">
+            @if (q.isCorrect) {
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                {{ q.pointsEarned }} / {{ q.maxPoints }} Pts (Full Credit)
+              </span>
+            } @else {
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                {{ q.pointsEarned }} / {{ q.maxPoints }} Pts (Partial Credit)
+              </span>
+            }
+          </div>
+        </div>
+
+        <!-- Question Stem -->
+        <div class="text-[15px] text-gray-800 leading-relaxed font-normal" [innerHTML]="q.stem">
+        </div>
+
+        <!-- Options Review -->
+        <div class="flex flex-col gap-2.5">
+          @for (opt of q.options; track opt.id) {
+            <div class="flex items-center justify-between p-3.5 rounded-xl border text-sm transition-colors"
+                 [class.border-emerald-300]="opt.id === q.correctOptionId"
+                 [class.bg-emerald-50/50]="opt.id === q.correctOptionId"
+                 [class.border-red-300]="opt.id === q.selectedOptionId && !q.isCorrect"
+                 [class.bg-red-50/40]="opt.id === q.selectedOptionId && !q.isCorrect"
+                 [class.border-gray-200]="opt.id !== q.correctOptionId && opt.id !== q.selectedOptionId"
+                 [class.bg-white]="opt.id !== q.correctOptionId && opt.id !== q.selectedOptionId">
+              <div class="flex items-center gap-3">
+                <span class="size-6 rounded-md text-xs font-bold flex items-center justify-center shrink-0 border"
+                      [class.bg-emerald-600]="opt.id === q.correctOptionId"
+                      [class.border-emerald-600]="opt.id === q.correctOptionId"
+                      [class.text-white]="opt.id === q.correctOptionId"
+                      [class.bg-red-600]="opt.id === q.selectedOptionId && !q.isCorrect"
+                      [class.border-red-600]="opt.id === q.selectedOptionId && !q.isCorrect"
+                      [class.text-white]="opt.id === q.selectedOptionId && !q.isCorrect"
+                      [class.bg-gray-100]="opt.id !== q.correctOptionId && opt.id !== q.selectedOptionId"
+                      [class.border-gray-200]="opt.id !== q.correctOptionId && opt.id !== q.selectedOptionId"
+                      [class.text-gray-700]="opt.id !== q.correctOptionId && opt.id !== q.selectedOptionId">
+                  {{ opt.label }}
+                </span>
+                <span class="text-sm font-medium"
+                      [class.text-emerald-900]="opt.id === q.correctOptionId"
+                      [class.text-red-900]="opt.id === q.selectedOptionId && !q.isCorrect"
+                      [class.text-gray-700]="opt.id !== q.correctOptionId && opt.id !== q.selectedOptionId">
+                  {{ opt.text }}
+                </span>
+              </div>
+
+              <!-- Badges for Selection & Correctness -->
+              <div class="flex items-center gap-2">
+                @if (opt.id === q.selectedOptionId && q.isCorrect) {
+                  <span class="text-xs font-bold text-emerald-700 flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Your Correct Answer
+                  </span>
+                } @else if (opt.id === q.selectedOptionId && !q.isCorrect) {
+                  <span class="text-xs font-bold text-red-600 flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    Your Answer
+                  </span>
+                } @else if (opt.id === q.correctOptionId) {
+                  <span class="text-xs font-bold text-emerald-700">
+                    Correct Answer
+                  </span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Step-by-Step Mathematical Explanation -->
+        <div class="p-4 rounded-xl bg-gray-50 border border-gray-200 text-xs leading-relaxed text-gray-700 flex flex-col gap-1.5">
+          <span class="font-bold text-gray-900 uppercase text-[10px] tracking-wider">Solution & Analytical Step Breakdown</span>
+          <p class="m-0 text-gray-600">{{ q.explanation }}</p>
+        </div>
+
+        <!-- Instructor Rubric Note (if present) -->
+        @if (q.teacherNote) {
+          <div class="p-3.5 rounded-xl bg-purple-50/50 border border-purple-200 text-xs text-purple-900 flex items-start gap-2">
+            <svg class="size-4 text-primary shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            <div>
+              <span class="font-bold block text-primary">Instructor Rubric Feedback:</span>
+              <span class="mt-0.5 block text-gray-700">{{ q.teacherNote }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Bottom Navigation Buttons -->
+  <div class="flex items-center justify-between pt-4 border-t border-gray-200 mt-2">
+    <a routerLink="/learn/assessments" class="btn outline text-xs">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      Return to Assessments
+    </a>
+
+    <a [routerLink]="['/learn/courses/math301/gradebook']" class="btn primary text-xs">
+      View Gradebook Summary
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </a>
+  </div>
+</div>

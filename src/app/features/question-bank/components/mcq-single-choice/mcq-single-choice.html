@@ -1,0 +1,101 @@
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-6 p-6">
+    <!-- Options Column -->
+    <div class="lg:col-span-3 flex flex-col">
+        <div class="flex items-center justify-between mb-4 shrink-0">
+            <div>
+                <h3 class="text-sm font-bold text-gray-900">Options</h3>
+                <p class="text-[13px] text-gray-500 font-medium">Add options and select the correct answer.</p>
+            </div>
+            <button type="button" (click)="addOption()" class="text-primary text-[13px] font-semibold flex items-center gap-1.5 hover:underline outline-none cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add Option
+            </button>
+        </div>
+        
+        <div class="flex flex-col gap-4">
+            @for(opt of options(); track opt.id; let i = $index) {
+                <div class="flex flex-col border rounded-xl overflow-hidden bg-white transition-colors" [class]="opt.isChecked ? 'border-primary' : 'border-gray-200'">
+                    <div class="flex items-center justify-between p-2.5 bg-gray-50/50 border-b border-gray-100">
+                        <span class="text-[13px] font-bold text-gray-700">Option {{ i + 1 }}</span>
+                        <div class="flex items-center gap-3">
+                            <button type="button" (click)="toggleCorrectOption(i)" 
+                                    class="flex items-center gap-1.5 cursor-pointer outline-none group/toggle">
+                                <div class="relative w-8 h-4.5 rounded-full transition-colors"
+                                    [class]="opt.isChecked ? 'bg-primary' : 'bg-gray-300 group-hover/toggle:bg-gray-400'">
+                                    <div class="absolute top-[2px] bg-white w-3.5 h-3.5 rounded-full transition-all"
+                                        [class]="opt.isChecked ? 'left-[14px]' : 'left-[2px]'"></div>
+                                </div>
+                                <span class="text-[11px] font-semibold transition-colors" 
+                                      [class]="opt.isChecked ? 'text-primary' : 'text-gray-500 group-hover/toggle:text-gray-700'">
+                                    {{ opt.isChecked ? 'Correct Answer' : 'Mark as correct' }}
+                                </span>
+                            </button>
+                            
+                            @if (options().length > 2) {
+                                <div class="w-px h-3 bg-gray-300"></div>
+                                <button type="button" (click)="removeOption(i)" class="w-6 h-6 rounded-md flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                    <div class="p-1">
+                        <app-tiptap-editor 
+                            minHeight="60px" 
+                            placeholder="Enter option content..." 
+                            [floatingToolbar]="true" 
+                            [showFooter]="false"
+                            [(content)]="opt.label"
+                        >
+                        </app-tiptap-editor>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    
+    <!-- Settings Column -->
+    <div class="lg:col-span-2 bg-gray-100 border border-gray-200 rounded-2xl p-5 flex flex-col gap-4 h-fit">
+        <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+            <label class="text-[14px] text-gray-900 font-bold">Settings</label>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Score</label>
+                <input [(ngModel)]="score" type="number" min="0" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white outline-none focus:border-primary transition-all" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Scoring Type</label>
+                <select [(ngModel)]="scoringType" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white text-gray-700 outline-none focus:border-primary transition-all cursor-pointer">
+                    @for(item of scoringTypes; track $index) {
+                        <option [value]="item">{{ item.replaceAll('_', ' ') }}</option>
+                    }
+                </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Matching Rule</label>
+                <select [(ngModel)]="matchingRule" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white text-gray-700 outline-none focus:border-primary transition-all cursor-pointer">
+                    @for(item of matchingRules; track $index) {
+                        <option [value]="item">{{ item.replaceAll('_', ' ') }}</option>
+                    }
+                </select>
+            </div>
+            <div class="flex flex-col gap-1.5 col-span-full">
+                <label class="text-[12px] text-gray-500 font-medium">Difficulty level</label>
+                <select [(ngModel)]="difficultyLevel" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white text-gray-700 outline-none focus:border-primary transition-all cursor-pointer capitalize">
+                    @for(item of difficultyLevels; track $index) {
+                        <option [value]="item">{{ item }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+        
+        <div class="flex flex-col gap-4 mt-2 pt-4 border-t border-gray-200">
+            <div class="flex items-center justify-between">
+                <span class="text-[12px] text-gray-700 font-medium">Shuffle options</span>
+                <z-switch [(zChecked)]="shuffleOptions"></z-switch>
+            </div>
+        </div>
+    </div>
+</div>

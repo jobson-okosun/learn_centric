@@ -1,0 +1,95 @@
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Left Column: Learning Path -->
+    <div class="lg:col-span-2 flex flex-col gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-gray-100">
+            <h3 class="text-sm font-bold text-gray-900 mb-6">Learning Path Progress</h3>
+            
+            <div class="flex flex-col gap-6">
+                @for (module of learningPath(); track module.title; let i = $index) {
+                    <div class="flex items-start gap-4 group">
+                        <div class="flex flex-col items-center mt-1 shrink-0 relative">
+                            <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center bg-white z-10 transition-colors"
+                                 [class.border-primary]="module.status === 'completed'"
+                                 [class.text-primary]="module.status === 'completed'"
+                                 [class.border-primary]="module.status === 'in-progress'"
+                                 [class.border-gray-200]="module.status === 'not-started'"
+                                 [class.text-gray-300]="module.status === 'not-started'">
+                                @if (module.status === 'completed') {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                } @else if (module.status === 'in-progress') {
+                                    <div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                                } @else {
+                                    <span class="text-[10px] font-bold">{{i + 1}}</span>
+                                }
+                            </div>
+                            <!-- Connector line -->
+                            @if (i < learningPath().length - 1) {
+                                <div class="absolute top-8 bottom-[-24px] w-0.5" 
+                                     [class.bg-primary]="module.status === 'completed'"
+                                     [class.bg-gray-100]="module.status !== 'completed'"></div>
+                            }
+                        </div>
+                        
+                        <div class="flex-1 pb-2">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="text-sm font-bold"
+                                    [class.text-gray-900]="module.status !== 'not-started'"
+                                    [class.text-gray-500]="module.status === 'not-started'">{{module.title}}</h4>
+                                <span class="text-xs font-semibold text-gray-500">{{module.progress}}%</span>
+                            </div>
+                            <div class="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary rounded-full transition-all duration-500" [style.width.%]="module.progress"></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Time Spent & Recent Activity -->
+    <div class="flex flex-col gap-6">
+        <!-- Time Spent -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-100">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-bold text-gray-900">Engagement Time</h3>
+                <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">{{timeSpent().trend}}</span>
+            </div>
+            <div class="mt-4 flex flex-col gap-1">
+                <div class="text-3xl font-black text-gray-900 tracking-tight">{{timeSpent().total}}</div>
+                <div class="text-sm text-gray-500 font-medium">Total time spent</div>
+            </div>
+            <div class="mt-5 pt-5 border-t border-gray-100 flex items-center justify-between">
+                <span class="text-sm font-semibold text-gray-900">{{timeSpent().thisWeek}}</span>
+                <span class="text-xs font-medium text-gray-500">This week</span>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-100 flex-1">
+            <h3 class="text-sm font-bold text-gray-900 mb-5">Recent Activity</h3>
+            <div class="flex flex-col gap-5">
+                @for (activity of recentActivity(); track activity.target) {
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 {{activity.bg}} {{activity.color}}">
+                            @if (activity.icon === 'check-circle') {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            } @else if (activity.icon === 'play-circle') {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                            } @else if (activity.icon === 'file-text') {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            } @else {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            }
+                        </div>
+                        <div>
+                            <p class="text-[13px] text-gray-900 font-medium"><span class="font-bold">{{activity.action}}</span> {{activity.target}}</p>
+                            <p class="text-[11px] text-gray-400 font-semibold mt-0.5">{{activity.time}}</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button class="w-full mt-6 py-2 text-xs font-bold text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors">View All Activity</button>
+        </div>
+    </div>
+</div>

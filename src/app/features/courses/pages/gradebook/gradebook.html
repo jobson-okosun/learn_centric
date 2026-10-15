@@ -1,0 +1,330 @@
+<div class="flex flex-col gap-6 h-full p-3">
+    <div class="flex items-center justify-between">
+         <div>
+             <h1 class="text-2xl font-bold text-gray-900">Gradebook</h1>
+             <p class="text-sm text-gray-500 mt-1">View and manage student grades</p>
+         </div>
+         <div class="flex items-center gap-2">
+             <button class="btn outline">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                 Export
+             </button>
+             <button class="btn outline">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                 Import
+             </button>
+             <button class="btn outline p-2 px-3" title="Gradebook Settings">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+             </button>
+         </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="bg-white p-4 rounded-2xl border border-gray-100 flex flex-col sm:flex-row gap-4 items-center justify-between">
+         <div class="relative w-full sm:w-80">
+             <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+             <input type="text" placeholder="Search students..." class="form-control !pl-10 h-10 w-full">
+         </div>
+         <div class="flex items-center gap-3 w-full sm:w-auto">
+             <select class="form-control h-10 w-full sm:w-48 text-sm">
+                 <option value="">All Assignment Groups</option>
+                 <option value="hw">Homework</option>
+                 <option value="quizzes">Quizzes</option>
+             </select>
+         </div>
+    </div>
+
+    <!-- Gradebook Grid -->
+    <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden flex-1 flex flex-col">
+         <div class="overflow-x-auto flex-1 pb-4">
+              <table class="w-full text-left border-collapse border-spacing-0 min-w-max">
+                   <thead>
+                        <tr class="bg-gray-100">
+                             <!-- Sticky Student Column -->
+                             <th class="p-4 border-b border-r border-gray-100 sticky left-0 bg-gray-100 backdrop-blur z-10 min-w-[280px]">
+                                  <div class="text-xs font-bold text-gray-600 uppercase tracking-wider">Student</div>
+                             </th>
+                             <th class="p-4 border-b border-r border-gray-100 min-w-[160px]">
+                                  <div class="text-sm font-semibold text-gray-900 truncate">Intro Essay</div>
+                                  <div class="text-xs text-gray-500 mt-1">Out of 100</div>
+                             </th>
+                             <th class="p-4 border-b border-r border-gray-100 min-w-[160px]">
+                                  <div class="text-sm font-semibold text-gray-900 truncate">Chapter 1 Quiz</div>
+                                  <div class="text-xs text-gray-500 mt-1">Out of 50</div>
+                             </th>
+                             <th class="p-4 border-b border-r border-gray-100 min-w-[160px]">
+                                  <div class="text-sm font-semibold text-gray-900 truncate">Discussion Post</div>
+                                  <div class="text-xs text-gray-500 mt-1">Out of 20</div>
+                             </th>
+                             <th class="p-4 border-b border-r border-gray-100 min-w-[160px]">
+                                  <div class="text-sm font-semibold text-gray-900 truncate">Midterm Exam</div>
+                                  <div class="text-xs text-gray-500 mt-1">Out of 200</div>
+                             </th>
+                             <th class="p-4 border-b border-gray-100 min-w-[120px] bg-gray-50/50 text-right">
+                                  <div class="text-xs font-bold text-gray-600 uppercase tracking-wider">Total Grade</div>
+                             </th>
+                        </tr>
+                   </thead>
+                   <tbody class="divide-y divide-gray-100">
+                        <!-- Row 1 -->
+                        <tr class="hover:bg-gray-50/30 transition-colors">
+                             <!-- Sticky Student -->
+                             <td class="p-3 border-r border-gray-100 sticky left-0 bg-white z-10 group-hover:bg-gray-50">
+                                  <div class="flex items-center gap-3">
+                                       <img src="https://ui-avatars.com/api/?name=Jane+Doe&background=0D8ABC&color=fff" class="size-8 rounded-full object-cover shrink-0">
+                                       <div class="font-medium text-sm text-gray-900 truncate">Jane Doe</div>
+                                  </div>
+                             </td>
+                             <td class="p-3 border-r border-gray-100 text-center group/cell cursor-pointer hover:bg-gray-50 transition-colors" (click)="openGradingDrawer()">
+                                  <div class="relative inline-block w-20">
+                                       <input type="text" value="95" class="form-control text-center py-1.5 text-sm h-8 hover:border-primary focus:border-primary" class="form-control text-center py-1.5 text-sm h-8 hover:border-primary focus:border-primary" (click)="$event.stopPropagation()">
+                                  </div>
+                                   <div class="mt-1">
+                                       <span class="text-[10px] font-semibold text-primary uppercase">Rubric</span>
+                                  </div>
+                             </td>
+                             <td class="p-3 border-r border-gray-100 text-center relative">
+                                  <div class="relative inline-block w-20">
+                                       <input type="text" value="48" class="form-control text-center py-1.5 text-sm h-8 hover:border-primary focus:border-primary">
+                                  </div>
+                             </td>
+                             <td class="p-3 border-r border-gray-100 text-center">
+                                  <div class="relative inline-block w-20">
+                                       <input type="text" value="20" class="form-control text-center py-1.5 text-sm h-8 hover:border-primary focus:border-primary">
+                                  </div>
+                             </td>
+                             <td class="p-3 border-r border-gray-100 text-center">
+                                  <div class="relative inline-block w-20">
+                                       <input type="text" placeholder="-" class="form-control text-center py-1.5 text-sm h-8 hover:border-primary focus:border-primary bg-gray-50">
+                                  </div>
+                             </td>
+                             <td class="p-4 text-right font-bold text-gray-900 bg-gray-50/30">
+                                  95.8%
+                             </td>
+                        </tr>
+                        <!-- Row 2 -->
+                        <tr class="hover:bg-gray-50/30 transition-colors">
+                             <!-- Sticky Student -->
+                             <td class="p-3 border-r border-gray-100 sticky left-0 bg-white z-10 group-hover:bg-gray-50">
+                                  <div class="flex items-center gap-3">
+                                       <img src="https://ui-avatars.com/api/?name=Alex+Johnson&background=0D8ABC&color=fff" class="size-8 rounded-full object-cover shrink-0">
+                                       <div class="font-medium text-sm text-gray-900 truncate">Alex Johnson</div>
+                                  </div>
+                             </td>
+                              <td class="p-3 border-r border-gray-100 text-center group/cell cursor-pointer hover:bg-gray-50 transition-colors" (click)="openGradingDrawer()">
+                                  <div class="relative inline-block w-20">
+                                       <input type="text" value="48" class="form-control text-center py-1.5 text-sm h-8 hover:border-primary focus:border-primary" (click)="$event.stopPropagation()">
+                                  </div>
+                                  <div class="mt-1 opacity-0 group-hover/cell:opacity-100 transition-opacity">
+                                       <span class="text-[10px] font-semibold text-primary uppercase">Rubric</span>
+                                  </div>
+                              </td>
+                             <td class="p-3 border-r border-gray-100 text-center">
+                                  <div class="relative inline-block w-20">
+                                       <input type="text" value="45" class="form-control text-center py-1.5 text-sm h-8 hover:border-primary focus:border-primary">
+                                        <div class="text-[10px] text-amber-500 font-semibold mt-0.5">Late submission</div>
+                                   </div>
+                             </td>
+                             <td class="p-3 border-r border-gray-100 text-center">
+                                  <div class="relative inline-block w-20">
+                                       <input type="text" placeholder="0" class="form-control text-center py-1.5 text-sm h-8 border-red-200 bg-red-50 text-red-700 hover:border-red-400 focus:border-red-500 focus:ring-red-500">
+                                  </div>
+                                  <div class="text-[10px] text-red-500 font-semibold mt-0.5">Missing</div>
+                             </td>
+                             <td class="p-3 border-r border-gray-100 text-center">
+                                  <div class="relative inline-block w-20">
+                                       <input type="text" placeholder="-" class="form-control text-center py-1.5 text-sm h-8 hover:border-primary focus:border-primary bg-gray-50">
+                                  </div>
+                             </td>
+                             <td class="p-4 text-right font-bold text-gray-900 bg-gray-50/30">
+                                  78.2%
+                             </td>
+                        </tr>
+                        <!-- Row 3 -->
+                        <tr class="hover:bg-gray-50/30 transition-colors">
+                             <!-- Sticky Student -->
+                             <td class="p-3 border-r border-gray-100 sticky left-0 bg-white z-10 group-hover:bg-gray-50">
+                                  <div class="flex items-center gap-3">
+                                       <img src="https://ui-avatars.com/api/?name=Sam+Smith&background=0D8ABC&color=fff" class="size-8 rounded-full object-cover shrink-0">
+                                       <div class="font-medium text-sm text-gray-900 truncate">Sam Smith</div>
+                                  </div>
+                             </td>
+                             <td class="p-3 border-r border-gray-100 text-center">
+                                  <div class="flex flex-col items-center gap-1 justify-center">
+                                      <div class="p-1 bg-amber-50 rounded border border-amber-200">
+                                          <svg class="text-amber-500" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                      </div>
+                                      <span class="text-[10px] text-amber-600 font-medium">Needs Grading</span>
+                                  </div>
+                             </td>
+                             <td class="p-3 border-r border-gray-100 text-center">
+                                  <div class="relative inline-block w-20">
+                                       <input type="text" value="49" class="form-control text-center py-1.5 text-sm h-8 hover:border-primary focus:border-primary">
+                                  </div>
+                             </td>
+                             <td class="p-3 border-r border-gray-100 text-center">
+                                  <div class="relative inline-block w-20">
+                                       <input type="text" value="18" class="form-control text-center py-1.5 text-sm h-8 hover:border-primary focus:border-primary">
+                                  </div>
+                             </td>
+                             <td class="p-3 border-r border-gray-100 text-center">
+                                  <div class="relative inline-block w-20">
+                                       <input type="text" placeholder="-" class="form-control text-center py-1.5 text-sm h-8 hover:border-primary focus:border-primary bg-gray-50">
+                                  </div>
+                             </td>
+                             <td class="p-4 text-right font-bold text-gray-900 bg-gray-50/30">
+                                  95.7%
+                             </td>
+                        </tr>
+                   </tbody>
+              </table>
+         </div>
+    </div>
+</div>
+
+<!-- Grading Drawer Template -->
+<ng-template #gradingDrawer>
+     <div class="flex flex-col h-full bg-white">
+          <!-- Student Info Header -->
+          <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+               <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Jane+Doe&background=E11D48&color=fff" class="size-10 rounded-full object-cover">
+                    <div>
+                         <div class="font-bold text-gray-900">Jane Doe</div>
+                         <div class="text-xs text-gray-500">Submitted: Oct 20 at 1:45 PM</div>
+                    </div>
+               </div>
+               <div class="text-right">
+                    <div class="text-sm font-semibold text-gray-700">Intro Essay</div>
+                    <div class="text-xs text-gray-500">Out of 50 pts</div>
+               </div>
+          </div>
+
+          <!-- Content / Rubric -->
+          <div class="flex-1 overflow-y-auto p-5 pb-24">
+               <div class="mb-6">
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">Grading Rubric</h3>
+                    <p class="text-sm text-gray-500 mb-4">Select the appropriate rating for each criteria.</p>
+                    
+                    <div class="flex flex-col gap-4">
+                         <!-- Criteria 1 -->
+                         <div class="border border-gray-200 rounded-xl overflow-hidden">
+                              <div class="bg-gray-50 p-3 border-b border-gray-200 flex justify-between items-center">
+                                   <div class="font-semibold text-gray-800 text-sm">Knowledge</div>
+                                   <div class="text-xs font-bold text-primary">15 / 15 pts</div>
+                              </div>
+                              <div class="p-2 grid grid-cols-3 gap-2">
+                                   <div class="bg-primary/5 border-2 border-primary rounded-lg p-3 cursor-pointer">
+                                        <div class="font-bold text-gray-900 text-sm mb-1">Excellent</div>
+                                        <div class="text-xs text-gray-500">Demonstrates deep understanding.</div>
+                                        <div class="text-xs font-bold text-primary mt-2">15 pts</div>
+                                   </div>
+                                   <div class="border border-gray-100 rounded-lg p-3 cursor-pointer hover:border-primary/30 transition-colors">
+                                        <div class="font-bold text-gray-700 text-sm mb-1">Proficient</div>
+                                        <div class="text-xs text-gray-500">Shows basic understanding.</div>
+                                        <div class="text-xs font-bold text-gray-500 mt-2">10 pts</div>
+                                   </div>
+                                   <div class="border border-gray-100 rounded-lg p-3 cursor-pointer hover:border-primary/30 transition-colors">
+                                        <div class="font-bold text-gray-700 text-sm mb-1">Needs Work</div>
+                                        <div class="text-xs text-gray-500">Lacks clear understanding.</div>
+                                        <div class="text-xs font-bold text-gray-500 mt-2">5 pts</div>
+                                   </div>
+                              </div>
+                         </div>
+                         
+                         <!-- Criteria 2 -->
+                         <div class="border border-gray-200 rounded-xl overflow-hidden">
+                              <div class="bg-gray-50 p-3 border-b border-gray-200 flex justify-between items-center">
+                                   <div class="font-semibold text-gray-800 text-sm">Reasoning</div>
+                                   <div class="text-xs font-bold text-gray-500">-- / 15 pts</div>
+                              </div>
+                              <div class="p-2 grid grid-cols-3 gap-2">
+                                   <div class="border border-gray-100 rounded-lg p-3 cursor-pointer hover:border-primary/30 transition-colors">
+                                        <div class="font-bold text-gray-700 text-sm mb-1">Excellent</div>
+                                        <div class="text-xs text-gray-500">Logical and clear arguments.</div>
+                                        <div class="text-xs font-bold text-gray-500 mt-2">15 pts</div>
+                                   </div>
+                                   <div class="border border-gray-100 rounded-lg p-3 cursor-pointer hover:border-primary/30 transition-colors">
+                                        <div class="font-bold text-gray-700 text-sm mb-1">Proficient</div>
+                                        <div class="text-xs text-gray-500">Somewhat logical arguments.</div>
+                                        <div class="text-xs font-bold text-gray-500 mt-2">10 pts</div>
+                                   </div>
+                                   <div class="border border-gray-100 rounded-lg p-3 cursor-pointer hover:border-primary/30 transition-colors">
+                                        <div class="font-bold text-gray-700 text-sm mb-1">Needs Work</div>
+                                        <div class="text-xs text-gray-500">Poor reasoning.</div>
+                                        <div class="text-xs font-bold text-gray-500 mt-2">5 pts</div>
+                                   </div>
+                              </div>
+                         </div>
+                         
+                         <!-- Criteria 3 -->
+                         <div class="border border-gray-200 rounded-xl overflow-hidden">
+                              <div class="bg-gray-50 p-3 border-b border-gray-200 flex justify-between items-center">
+                                   <div class="font-semibold text-gray-800 text-sm">Accuracy</div>
+                                   <div class="text-xs font-bold text-gray-500">-- / 10 pts</div>
+                              </div>
+                              <div class="p-2 grid grid-cols-3 gap-2">
+                                   <div class="border border-gray-100 rounded-lg p-3 cursor-pointer hover:border-primary/30 transition-colors">
+                                        <div class="font-bold text-gray-700 text-sm mb-1">Excellent</div>
+                                        <div class="text-xs text-gray-500">Highly accurate.</div>
+                                        <div class="text-xs font-bold text-gray-500 mt-2">10 pts</div>
+                                   </div>
+                                   <div class="border border-gray-100 rounded-lg p-3 cursor-pointer hover:border-primary/30 transition-colors">
+                                        <div class="font-bold text-gray-700 text-sm mb-1">Proficient</div>
+                                        <div class="text-xs text-gray-500">Mostly accurate.</div>
+                                        <div class="text-xs font-bold text-gray-500 mt-2">6 pts</div>
+                                   </div>
+                                   <div class="border border-gray-100 rounded-lg p-3 cursor-pointer hover:border-primary/30 transition-colors">
+                                        <div class="font-bold text-gray-700 text-sm mb-1">Needs Work</div>
+                                        <div class="text-xs text-gray-500">Contains inaccuracies.</div>
+                                        <div class="text-xs font-bold text-gray-500 mt-2">3 pts</div>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <!-- Criteria 4 -->
+                         <div class="border border-gray-200 rounded-xl overflow-hidden">
+                              <div class="bg-gray-50 p-3 border-b border-gray-200 flex justify-between items-center">
+                                   <div class="font-semibold text-gray-800 text-sm">Presentation</div>
+                                   <div class="text-xs font-bold text-gray-500">-- / 10 pts</div>
+                              </div>
+                              <div class="p-2 grid grid-cols-3 gap-2">
+                                   <div class="border border-gray-100 rounded-lg p-3 cursor-pointer hover:border-primary/30 transition-colors">
+                                        <div class="font-bold text-gray-700 text-sm mb-1">Excellent</div>
+                                        <div class="text-xs text-gray-500">Professional format.</div>
+                                        <div class="text-xs font-bold text-gray-500 mt-2">10 pts</div>
+                                   </div>
+                                   <div class="border border-gray-100 rounded-lg p-3 cursor-pointer hover:border-primary/30 transition-colors">
+                                        <div class="font-bold text-gray-700 text-sm mb-1">Proficient</div>
+                                        <div class="text-xs text-gray-500">Acceptable format.</div>
+                                        <div class="text-xs font-bold text-gray-500 mt-2">6 pts</div>
+                                   </div>
+                                   <div class="border border-gray-100 rounded-lg p-3 cursor-pointer hover:border-primary/30 transition-colors">
+                                        <div class="font-bold text-gray-700 text-sm mb-1">Needs Work</div>
+                                        <div class="text-xs text-gray-500">Poor presentation.</div>
+                                        <div class="text-xs font-bold text-gray-500 mt-2">3 pts</div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+
+               <div>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">Feedback</h3>
+                    <textarea rows="4" class="form-control w-full resize-none" placeholder="Leave a comment for the student..."></textarea>
+               </div>
+          </div>
+
+          <!-- Footer Actions -->
+          <div class="absolute bottom-0 left-0 right-0 p-5 bg-white border-t border-gray-100 flex items-center justify-between">
+               <div class="flex flex-col items-center gap-2">
+                    <span class="text-sm text-gray-500">Total Score:</span>
+                    <span class="font-bold text-xl text-gray-900">15<span class="text-sm text-gray-400 font-normal">/50</span></span>
+               </div>
+               <div class="flex gap-2">
+                    <button class="btn outline px-4" (click)="closeGradingDrawer()">Cancel</button>
+                    <button class="btn primary px-6">Submit Grade</button>
+               </div>
+          </div>
+     </div>
+</ng-template>

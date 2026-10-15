@@ -1,0 +1,108 @@
+<div class="flex flex-col gap-2">
+  <!-- Header -->
+  <div class="flex items-center justify-between shrink-0">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 tracking-tight flex items-center gap-2">
+        AI Action Center
+      </h1>
+      <p class="text-sm text-gray-500 mt-1">Smart, prioritized recommendations based on your class data.</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors focus:ring-0 outline-none cursor-pointer">
+        Mark All as Read
+      </button>
+    </div>
+  </div>
+
+  <!-- Feed -->
+  <div class="w-full max-w-4xl flex flex-col gap-2">
+    @for (insight of insights(); track insight.id) {
+      <div class="bg-white border border-gray-100 rounded-2xl p-5 relative overflow-hidden group hover:border-gray-200 transition-colors shrink-0">
+        
+        <!-- Unread dot indicator -->
+        @if (insight.isNew) {
+          <div class="absolute top-5 right-5 size-2.5 rounded-full bg-primary"></div>
+        }
+
+        <div class="flex gap-5">
+          <!-- Icon -->
+          <div class="shrink-0 mt-0.5">
+            @if (insight.type === 'alert') {
+              <div class="size-12 rounded-2xl bg-violet-50 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3c3c3c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+            } @else if (insight.type === 'praise') {
+              <div class="size-12 rounded-2xl bg-violet-50 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3c3c3c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+              </div>
+            } @else if (insight.type === 'curriculum') {
+              <div class="size-12 rounded-2xl bg-violet-50 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3c3c3c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 18h1"/><path d="M12 18h2"/><path d="M8 14h6"/></svg>
+              </div>
+            } @else {
+              <div class="size-12 rounded-2xl bg-violet-50 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3c3c3c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </div>
+            }
+          </div>
+
+          <!-- Content -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-1">
+              <h2 class="text-base font-bold text-gray-900">{{ insight.title }}</h2>
+              <span class="text-xs text-gray-400 font-medium ml-2">{{ insight.timestamp }}</span>
+            </div>
+            <p class="text-gray-600 text-sm leading-relaxed mb-5 max-w-2xl">{{ insight.description }}</p>
+            
+            <!-- Context Avatars -->
+            @if (insight.students && insight.students.length > 0) {
+              <div class="flex items-center mb-5">
+                <div class="flex -space-x-2">
+                  @for (student of insight.students | slice:0:3; track student) {
+                    <div class="size-7 rounded-full bg-violet-100 border-2 border-white flex items-center justify-center text-xs font-bold text-gray-800">
+                      {{ student }}
+                    </div>
+                  }
+                  @if (insight.students.length > 3) {
+                    <div class="size-7 rounded-full bg-gray-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-gray-600">
+                      +{{ insight.students.length - 3 }}
+                    </div>
+                  }
+                </div>
+                <span class="text-xs text-gray-500 font-medium ml-3 border-l border-gray-200 pl-3">Related Students</span>
+              </div>
+            }
+
+            <!-- Actions -->
+            <div class="flex items-center gap-3">
+              <button class="px-4 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center gap-2 {{ getButtonClass(insight.type) }}">
+                {{ insight.primaryActionLabel }}
+              </button>
+              
+              @if (insight.secondaryActionLabel) {
+                <button class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 bg-white border border-gray-200 hover:bg-gray-50 transition-colors">
+                  {{ insight.secondaryActionLabel }}
+                </button>
+              }
+
+              <!-- Dismiss (x) button -> push it to the right -->
+              <button (click)="dismissInsight(insight.id)" class="ml-auto text-gray-400 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 p-2 rounded-xl transition-colors" title="Dismiss Insight">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (insights().length === 0) {
+      <div class="bg-white border border-gray-100 rounded-2xl p-12 flex flex-col items-center justify-center text-center mt-4">
+        <div class="size-16 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h2 class="text-lg font-bold text-gray-900 mb-1">All Caught Up!</h2>
+        <p class="text-gray-500 text-sm max-w-md mx-auto">You've addressed all the AI insights for your classes. We'll let you know when there's something new to review.</p>
+      </div>
+    }
+  </div>
+</div>

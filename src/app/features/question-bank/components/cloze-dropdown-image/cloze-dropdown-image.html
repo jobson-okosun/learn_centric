@@ -1,0 +1,168 @@
+<div class="flex flex-col gap-6 p-6">
+    <!-- Configuration Column -->
+    <div class="flex flex-col gap-6">
+        <div>
+            <h3 class="text-sm font-bold text-gray-900">Fill in the Blanks (Image + Dropdown)</h3>
+            <p class="text-[13px] text-gray-500 font-medium mt-1">Upload an image and position dropdown blanks over it.</p>
+        </div>
+        
+        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 flex flex-col gap-5">
+            <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+                <h3 class="text-[14px] font-bold text-gray-800">Image & Label Positions</h3>
+                <button type="button" class="px-4 py-2 bg-primary text-white text-[12px] font-semibold rounded-full hover:bg-primary/90 flex items-center gap-2 transition-colors cursor-pointer outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    {{ imageUploaded() ? 'Change Image' : 'Upload Image' }}
+                </button>
+            </div>
+
+            @if (imageUploaded()) {
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[12px] text-gray-700 font-semibold">Image Alt Text</label>
+                    <input 
+                        type="text" 
+                        [ngModel]="imageAltText()"
+                        placeholder="Enter image description" 
+                        class="w-full border border-gray-300 rounded-lg p-2.5 text-[13px] bg-white outline-none focus:border-primary transition-all" 
+                    />
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-2">
+                    <!-- Labels List -->
+                    <div class="lg:col-span-4 flex flex-col gap-3 bg-gray-100/80 border border-gray-200 rounded-xl p-3 h-[450px] overflow-y-auto">
+                        <div class="flex items-center justify-between bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-sm sticky top-0 z-10">
+                            <span class="font-bold text-[12px] text-gray-700">Dropdowns List</span>
+                            <button type="button" (click)="addLabel()" class="bg-primary hover:bg-primary/90 text-white px-2.5 py-1 rounded text-[11px] font-semibold flex items-center gap-1 transition-colors cursor-pointer outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                Add
+                            </button>
+                        </div>
+
+                        <div class="flex flex-col gap-2">
+                            @for (label of labels(); track label.id; let i = $index) {
+                                <div class="bg-white border border-gray-200 rounded-xl p-2.5 flex flex-col gap-2.5">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-6 h-6 flex items-center justify-center bg-gray-100 text-gray-600 font-bold text-[11px] rounded-md shrink-0">
+                                                {{ i + 1 }}
+                                            </span>
+                                            
+                                            <div class="flex items-center bg-gray-100 rounded-md p-1 border border-gray-200">
+                                                <button 
+                                                    type="button" 
+                                                    (click)="updateLabelDirection(i, 'LEFT')" 
+                                                    [class.bg-white]="label.direction === 'LEFT'" 
+                                                    [class.shadow-sm]="label.direction === 'LEFT'" 
+                                                    [class.text-gray-900]="label.direction === 'LEFT'" 
+                                                    [class.text-gray-500]="label.direction !== 'LEFT'"
+                                                    class="px-2 py-1 text-[10px] font-bold rounded transition-all cursor-pointer outline-none"
+                                                >
+                                                    Left
+                                                </button>
+                                                <button 
+                                                    type="button" 
+                                                    (click)="updateLabelDirection(i, 'RIGHT')" 
+                                                    [class.bg-white]="label.direction === 'RIGHT'" 
+                                                    [class.shadow-sm]="label.direction === 'RIGHT'" 
+                                                    [class.text-gray-900]="label.direction === 'RIGHT'" 
+                                                    [class.text-gray-500]="label.direction !== 'RIGHT'"
+                                                    class="px-2 py-1 text-[10px] font-bold rounded transition-all cursor-pointer outline-none"
+                                                >
+                                                    Right
+                                                </button>
+                                            </div>
+                                            
+                                            <button type="button" (click)="addOption(i)" class="ml-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 text-[10px] font-bold rounded transition-all cursor-pointer outline-none">
+                                                + Opt
+                                            </button>
+                                        </div>
+                                        
+                                        @if (labels().length > 1) {
+                                            <button type="button" (click)="deleteLabel(i)" class="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-md shrink-0 transition-colors cursor-pointer outline-none">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                            </button>
+                                        }
+                                    </div>
+                                    <div class="flex flex-col gap-2 mt-1">
+                                        @for (opt of label.options; track opt.id; let optIdx = $index) {
+                                            <div class="flex items-center gap-2">
+                                                <!-- Custom Radio button -->
+                                                <button type="button" (click)="setCorrectOption(i, optIdx)" class="flex-shrink-0 flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 transition-colors cursor-pointer outline-none"
+                                                    [class]="opt.isCorrect ? 'border-primary bg-white' : 'border-gray-300 hover:border-gray-400'">
+                                                    <div class="w-2.5 h-2.5 rounded-full bg-primary" [class.hidden]="!opt.isCorrect"></div>
+                                                </button>
+                                                
+                                                <input type="text" [(ngModel)]="opt.text" placeholder="Option text" class="w-full border border-gray-200 rounded-full py-1.5 px-3 text-[12px] bg-gray-50 focus:bg-white outline-none focus:border-primary transition-all" />
+                                                
+                                                <button type="button" (click)="removeOption(i, optIdx)" class="text-gray-400 hover:text-red-500 w-5 h-5 flex items-center justify-center shrink-0 cursor-pointer transition-colors" title="Remove Option">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Image Preview Area -->
+                    <div class="lg:col-span-8 border border-gray-200 bg-white rounded-xl overflow-hidden p-4 flex justify-center items-center h-[450px]">
+                        <div class="relative w-full h-full border border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50/50">
+                            <!-- In a real implementation this would map the image and draggables. Mock UI: -->
+                            <div class="text-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mx-auto text-gray-400 mb-2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                <span class="text-[13px] font-medium text-gray-500">Image Canvas Placeholder</span>
+                                <p class="text-[11px] text-gray-400 mt-1">Image and draggable dropdown labels will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    
+    <!-- Settings Section (Full Width) -->
+    <div class="bg-gray-100 border border-gray-200 rounded-2xl p-5 flex flex-col gap-4">
+        <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+            <label class="text-[14px] text-gray-900 font-bold">Settings</label>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Score</label>
+                <input [(ngModel)]="score" type="number" min="0" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white outline-none focus:border-primary transition-all" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Penalty</label>
+                <input [(ngModel)]="penalty" type="number" min="0" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white outline-none focus:border-primary transition-all" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Scoring Type</label>
+                <select [(ngModel)]="scoringType" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white text-gray-700 outline-none focus:border-primary transition-all cursor-pointer">
+                    @for(item of scoringTypes; track $index) {
+                        <option [value]="item">{{ item.replaceAll('_', ' ') }}</option>
+                    }
+                </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Matching Rule</label>
+                <select [(ngModel)]="matchingRule" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white text-gray-700 outline-none focus:border-primary transition-all cursor-pointer">
+                    @for(item of matchingRules; track $index) {
+                        <option [value]="item">{{ item.replaceAll('_', ' ') }}</option>
+                    }
+                </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Difficulty level</label>
+                <select [(ngModel)]="difficultyLevel" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white text-gray-700 outline-none focus:border-primary transition-all cursor-pointer capitalize">
+                    @for(item of difficultyLevels; track $index) {
+                        <option [value]="item">{{ item }}</option>
+                    }
+                </select>
+            </div>
+            <div class="flex items-center gap-3 mt-auto pb-1">
+                <span class="text-[12px] text-gray-700 font-medium">Auto Score</span>
+                <z-switch [(zChecked)]="autoScore"></z-switch>
+            </div>
+        </div>
+    </div>
+</div>

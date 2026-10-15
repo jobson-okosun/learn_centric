@@ -1,0 +1,103 @@
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-6 p-6">
+    <!-- Configuration Column -->
+    <div class="lg:col-span-3 flex flex-col gap-6">
+        <div>
+            <h3 class="text-sm font-bold text-gray-900">Association (Match)</h3>
+            <p class="text-[13px] text-gray-500 font-medium">Define matching pairs. Students will be asked to match the correct option to each stimulus.</p>
+        </div>
+        
+        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+                <h3 class="text-[14px] font-bold text-gray-800">Match Pairs</h3>
+                <button type="button" (click)="addPair()" class="px-4 py-2 bg-primary text-white text-[12px] font-semibold rounded-full hover:bg-primary/90 flex items-center gap-2 transition-colors cursor-pointer outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add Pair
+                </button>
+            </div>
+
+            <div class="flex flex-col gap-3 max-h-[500px] overflow-y-auto pr-1">
+                @for (pair of pairs(); track pair.id; let i = $index) {
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-3 py-2 border-b border-gray-100 bg-gray-50/80">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-bold bg-primary/10 text-primary">
+                                    {{ i + 1 }}
+                                </div>
+                                <span class="text-[12px] font-bold text-gray-700">Pair {{ i + 1 }}</span>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <button type="button" (click)="removePair(i)" [disabled]="pairs().length <= 1" class="w-7 h-7 rounded-md flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-gray-400 cursor-pointer outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-3 grid grid-cols-2 gap-4">
+                            <div class="flex flex-col gap-1.5">
+                                <label class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Stimulus</label>
+                                <textarea [(ngModel)]="pair.stimulus" rows="2" placeholder="Enter stimulus text..." class="w-full border border-gray-200 rounded-lg p-2.5 text-[13px] bg-gray-50 focus:bg-white outline-none focus:border-primary transition-all resize-none"></textarea>
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <label class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Option</label>
+                                <textarea [(ngModel)]="pair.option" rows="2" placeholder="Enter matching option text..." class="w-full border border-gray-200 rounded-lg p-2.5 text-[13px] bg-gray-50 focus:bg-white outline-none focus:border-primary transition-all resize-none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <div class="mt-2 text-center text-[12px] text-gray-500 font-medium">
+                The options will be shuffled automatically when presented to students.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Settings Column -->
+    <div class="lg:col-span-2 bg-gray-100 border border-gray-200 rounded-2xl p-5 flex flex-col gap-4 h-fit">
+        <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+            <label class="text-[14px] text-gray-900 font-bold">Settings</label>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Score</label>
+                <input [(ngModel)]="score" type="number" min="0" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white outline-none focus:border-primary transition-all" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Penalty</label>
+                <input [(ngModel)]="penalty" type="number" min="0" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white outline-none focus:border-primary transition-all" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Scoring Type</label>
+                <select [(ngModel)]="scoringType" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white text-gray-700 outline-none focus:border-primary transition-all cursor-pointer">
+                    @for(item of scoringTypes; track $index) {
+                        <option [value]="item">{{ item.replaceAll('_', ' ') }}</option>
+                    }
+                </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[12px] text-gray-500 font-medium">Matching Rule</label>
+                <select [(ngModel)]="matchingRule" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white text-gray-700 outline-none focus:border-primary transition-all cursor-pointer">
+                    @for(item of matchingRules; track $index) {
+                        <option [value]="item">{{ item.replaceAll('_', ' ') }}</option>
+                    }
+                </select>
+            </div>
+            <div class="flex flex-col gap-1.5 col-span-full">
+                <label class="text-[12px] text-gray-500 font-medium">Difficulty level</label>
+                <select [(ngModel)]="difficultyLevel" class="w-full border border-gray-300 rounded-lg p-2 text-[13px] bg-white text-gray-700 outline-none focus:border-primary transition-all cursor-pointer capitalize">
+                    @for(item of difficultyLevels; track $index) {
+                        <option [value]="item">{{ item }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+        
+        <div class="flex flex-col gap-4 mt-2 pt-4 border-t border-gray-200">
+            <div class="flex items-center justify-between">
+                <span class="text-[12px] text-gray-700 font-medium">Auto Score</span>
+                <z-switch [(zChecked)]="autoScore"></z-switch>
+            </div>
+        </div>
+    </div>
+</div>

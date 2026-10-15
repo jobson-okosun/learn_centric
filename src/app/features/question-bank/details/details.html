@@ -1,0 +1,59 @@
+<div class="mb-3">
+     <h1 class="font-semibold text-2xl text-gray-800">Question Bank</h1>   
+     <p class="text-sm text-gray-500 mt-1">Create, view and manage topics, questions and passages.</p>
+</div>
+
+<div class="bg-white p-2 pb-1 rounded-2xl">
+     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+          <!-- Hidden tracker for default route -->
+          <a routerLink="topic" routerLinkActive #rlaTopic="routerLinkActive" class="hidden"></a>
+
+          <a routerLink="./" 
+             [routerLinkActiveOptions]="{exact: true}"
+             routerLinkActive
+             #rlaHome="routerLinkActive"
+             [class]="(rlaHome.isActive || rlaTopic.isActive) ? 'bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'"
+             class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 6h16M4 12h16M4 18h7" />
+               </svg>
+               Topic
+          </a>
+          
+          <a routerLink="questions" 
+             routerLinkActive="bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20"
+             #rlaQuestions="routerLinkActive"
+             [class.text-gray-600]="!rlaQuestions.isActive"
+             [class.hover:text-gray-900]="!rlaQuestions.isActive"
+             [class.hover:bg-gray-100]="!rlaQuestions.isActive"
+             class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+               </svg>
+               Questions
+          </a>
+
+          <a routerLink="passages" 
+             routerLinkActive="bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20"
+             #rlaPassages="routerLinkActive"
+             [class.text-gray-600]="!rlaPassages.isActive"
+             [class.hover:text-gray-900]="!rlaPassages.isActive"
+             [class.hover:bg-gray-100]="!rlaPassages.isActive"
+             class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+               </svg>
+               Passages
+          </a>
+     </div>
+</div>
+
+<div class="flex-1 mt-5 bg-white p-2 pb-1 rounded-2xl">
+     <router-outlet></router-outlet>
+</div>

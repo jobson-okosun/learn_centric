@@ -1,0 +1,61 @@
+<div class="max-w-4xl flex flex-col gap-6">
+    <div class="bg-white border border-gray-100 rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-6 pb-6 border-b border-gray-100">
+            <div>
+                <h1 class="text-lg font-bold text-gray-900">Assessment Setup</h1>
+                <p class="text-sm text-gray-500 mt-1">Configure your assessment details and assign it</p>
+            </div>
+            <button class="btn primary">Save Changes</button>
+        </div>
+        
+        <div class="space-y-3">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Title</label>
+                <input type="text" placeholder="e.g., Midterm Examination" class="form-control w-full">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Course Context</label>
+                <z-combobox [options]="courseOptions()" [(ngModel)]="selectedCourseId" placeholder="Search for a course..." searchPlaceholder="Search..." emptyText="No courses found" class="w-full block"></z-combobox>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Description (Optional)</label>
+                <textarea rows="4"  placeholder="Provide description for the assessment..." class="form-control w-full resize-none"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Instructions (Optional)</label>
+                <textarea rows="4" placeholder="Provide instructions for students..." class="form-control w-full resize-none"></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Type</label>
+                    <select class="form-control w-full">
+                        <option>Quiz</option>
+                        <option>Exam</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Grading Category</label>
+                    <select class="form-control w-full">
+                        <option>Continuous Assessment (30%)</option>
+                        <option>Terminal Exam (70%)</option>
+                    </select>
+                    <p class="text-xs text-gray-500 mt-1">Drives gradebook weighting</p>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Assign To</label>
+                <z-combobox [options]="assigneeOptions()" [(ngModel)]="selectedAssignees" [zMultiple]="true" placeholder="Select students or groups..." searchPlaceholder="Search..." emptyText="No groups found" class="w-full block"></z-combobox>
+                <p class="text-xs text-gray-500 mt-1">Leave blank to use 'All Students'</p>
+            </div>
+            
+            <div class="p-3 bg-blue-50 text-blue-800 text-sm rounded-xl flex items-start gap-3 mt-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <p>Assigned to <strong>45 students</strong> in Biology 201 Section A.</p>
+            </div>
+        </div>
+
+    </div>
+</div>

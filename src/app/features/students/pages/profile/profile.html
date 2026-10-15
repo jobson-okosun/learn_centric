@@ -1,0 +1,45 @@
+<div class="flex flex-col gap-3">
+    <div>
+        <div class="flex items-start gap-4 mb-6">
+            <div class="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-extrabold text-2xl shrink-0">
+                {{student().initial}}
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">{{student().name}}</h1>
+                <div class="flex items-center gap-4 text-sm text-gray-500">
+                    <span class="flex items-center gap-1.5">
+                        sarah.johnson@email.com &bull; Enrolled Aug 15, 2026
+                    </span>
+                </div>
+                <div class="flex items-center mt-2">
+                    <div class="text-gray-900 font-semibold">Biology 101</div>
+                    <span class="text-gray-400 mx-2">&bull;</span>
+                    <div class="text-gray-600 text-sm">Intro to Biology</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-start gap-1 w-full overflow-hidden mb-5">
+            @for (tab of tabs; track tab.route) {
+                <a [routerLink]="tab.route"
+                   routerLinkActive
+                   #rla="routerLinkActive"
+                   [class.font-semibold]="rla.isActive"
+                   [class.bg-white]="rla.isActive"
+                   [class.text-gray-900]="rla.isActive"
+                   [class.font-medium]="!rla.isActive"
+                   [class.text-gray-500]="!rla.isActive"
+                   [class.hover:text-gray-900]="!rla.isActive"
+                   [class.hover:bg-gray-200]="!rla.isActive"
+                   [class.hover:bg-opacity-50]="!rla.isActive"
+                   class="px-4 py-1.5 text-[13px] rounded-2xl transition-all whitespace-nowrap cursor-pointer">
+                    {{tab.label}}
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="flex-1">
+        <router-outlet></router-outlet>
+    </div>
+</div>

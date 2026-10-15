@@ -1,0 +1,302 @@
+<div class="flex flex-col gap-6 h-full p-1 sm:p-2">
+  <!-- Top Header Bar -->
+  <div class="flex items-start justify-between">
+    <div>
+      <h1 class="font-semibold text-2xl text-gray-800">Live Sessions & Classrooms</h1>
+      <p class="text-gray-500 text-sm mt-1">Access live virtual lecture stages, upcoming schedules, and past recordings across all your classes.</p>
+    </div>
+  </div>
+
+  <!-- Sub-Tabs & Filters Toolbar (Strictly mirrors features/classroom/sessions/list/list.html) -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-3">
+    <!-- Tab Pills -->
+    <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+      <button 
+        (click)="setTab('live')"
+        [class]="activeTab() === 'live' ? '!bg-white !text-gray-900 !border-gray-200' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'"
+        class="px-4 py-1.5 text-[13px] font-semibold rounded-2xl transition-all border border-transparent cursor-pointer flex items-center gap-1.5 shrink-0">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+        </span>
+        <span>Live Now</span>
+      </button>
+
+      <button 
+        (click)="setTab('upcoming')"
+        [class]="activeTab() === 'upcoming' ? '!bg-white !text-gray-900 !border-gray-200' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'"
+        class="px-4 py-1.5 text-[13px] font-semibold rounded-2xl transition-all border border-transparent cursor-pointer shrink-0">
+        Upcoming
+      </button>
+
+      <button 
+        (click)="setTab('past')"
+        [class]="activeTab() === 'past' ? '!bg-white !text-gray-900 !border-gray-200' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'"
+        class="px-4 py-1.5 text-[13px] font-semibold rounded-2xl transition-all border border-transparent cursor-pointer shrink-0">
+        Past Sessions
+      </button>
+
+      <button 
+        (click)="setTab('recordings')"
+        [class]="activeTab() === 'recordings' ? '!bg-white !text-gray-900 !border-gray-200' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'"
+        class="px-4 py-1.5 text-[13px] font-semibold rounded-2xl transition-all border border-transparent cursor-pointer shrink-0">
+        Recordings Archive
+      </button>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <select 
+        [ngModel]="selectedCourse()"
+        (ngModelChange)="selectedCourse.set($event)"
+        class="form-control text-sm py-1.5 rounded-xl border-gray-200 text-gray-700 bg-gray-50 hover:bg-gray-100 cursor-pointer">
+        <option value="all">All Courses</option>
+        <option value="MATH-204">Multivariable Calculus</option>
+        <option value="BIO-101">Introduction to Biology</option>
+        <option value="CS-106">Data Structures & Algorithms</option>
+      </select>
+
+      <select 
+        [ngModel]="selectedClass()"
+        (ngModelChange)="selectedClass.set($event)"
+        class="form-control text-sm py-1.5 rounded-xl border-gray-200 text-gray-700 bg-gray-50 hover:bg-gray-100 cursor-pointer">
+        <option value="all">All Classes</option>
+        <option value="Section A">Section A</option>
+        <option value="Section B">Section B</option>
+        <option value="Lab 1">Lab 1</option>
+      </select>
+    </div>
+  </div>
+
+
+  @if (activeTab() === 'live') {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      @for (s of filteredSessions(); track s.id) {
+        <div class="bg-white p-5 rounded-2xl relative overflow-hidden group flex flex-col justify-between border border-gray-100">
+          <div>
+            <div class="flex gap-4 items-start mb-4">
+              <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z"/><rect x="3" y="6" width="12" height="12" rx="2" ry="2"/>
+                </svg>
+              </div>
+
+              <div class="flex flex-col justify-center min-w-0">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                  </span>
+                  <span class="text-xs font-bold text-red-500 uppercase tracking-widest">Live Now</span>
+                </div>
+                <h3 class="text-gray-900 font-bold text-lg leading-tight line-clamp-2">{{ s.title }}</h3>
+                <p class="text-gray-500 text-xs mt-1 leading-relaxed">{{ s.courseCode }} &middot; {{ s.classCohort }} &middot; {{ s.timeLabel }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <div class="flex gap-2 items-center">
+              <span class="size-8 rounded-full bg-gray-200/50 flex items-center justify-center shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </span>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10px] text-gray-500 font-medium uppercase">Attendees</div>
+                <div class="text-xs text-gray-800 font-semibold truncate">
+                  <span class="font-bold text-gray-900">{{ s.attendeesCount }}</span> / {{ s.totalStudents }}
+                </div>
+              </div>
+            </div>
+
+            <button class="btn primary btn-sm cursor-pointer">
+              Join Classroom
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <div class="col-span-full py-16 text-center bg-white rounded-2xl border border-gray-100">
+          <div class="size-14 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-3 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z"/><rect x="3" y="6" width="12" height="12" rx="2" ry="2"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-gray-800 text-base">No active live classrooms right now</h3>
+          <p class="text-xs text-gray-500 mt-1">Check the Upcoming tab for scheduled sessions starting later today.</p>
+        </div>
+      }
+    </div>
+  }
+
+  @if (activeTab() === 'upcoming') {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      @for (s of filteredSessions(); track s.id) {
+        <div class="bg-white p-5 rounded-2xl relative overflow-hidden group border border-gray-100 flex flex-col justify-between">
+          <div>
+            <div class="flex gap-4 items-start mb-4">
+              <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+              </div>
+
+              <div class="flex flex-col justify-center min-w-0">
+                <div class="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">{{ s.timeLabel }}</div>
+                <h3 class="text-gray-900 font-bold text-lg leading-tight line-clamp-2">{{ s.title }}</h3>
+                <p class="text-gray-500 text-xs mt-1 leading-relaxed">{{ s.courseCode }} &middot; {{ s.classCohort }} &middot; {{ s.durationLabel }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <div class="flex gap-2 items-center">
+              <img [src]="s.instructorAvatar" [alt]="s.instructor" class="size-8 rounded-full border border-gray-200 object-cover shrink-0" />
+              <div class="flex-1 min-w-0">
+                <div class="text-[10px] text-gray-400 font-medium uppercase">Instructor</div>
+                <div class="text-xs text-gray-800 font-semibold truncate">{{ s.instructor }}</div>
+              </div>
+            </div>
+
+            <button class="btn outline btn-sm" disabled>
+              Starts Soon
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (activeTab() === 'past') {
+    <div class="bg-white border border-gray-100 rounded-2xl p-1 flex-1 flex flex-col">
+      <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden flex-1 flex flex-col">
+        <div class="overflow-x-auto flex-1">
+          <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-gray-100 bg-gray-100">
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Session Topic</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Class & Course</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Date & Time</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Duration</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Attendance Status</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            @for (s of filteredSessions(); track s.id) {
+              <tr class="hover:bg-gray-50/50 transition-colors group">
+                <!-- Topic with Leading Avatar -->
+                <td class="p-4">
+                  <div class="flex items-center gap-3">
+                    <img [src]="s.instructorAvatar" [alt]="s.instructor" class="size-9 rounded-full object-cover shrink-0" />
+                    <div>
+                      <div class="font-medium text-gray-900 group-hover:text-primary transition-colors cursor-pointer">
+                        {{ s.title }}
+                      </div>
+                      <div class="text-xs text-gray-500">Instructor: {{ s.instructor }}</div>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Class & Course -->
+                <td class="p-4 text-sm text-gray-600">
+                  <span class="font-medium text-gray-900 block">{{ s.courseCode }}</span>
+                  <span class="text-xs text-gray-500">{{ s.classCohort }}</span>
+                </td>
+
+                <!-- Date & Time -->
+                <td class="p-4 text-sm text-gray-600">
+                  {{ s.timeLabel }}
+                </td>
+
+                <!-- Duration -->
+                <td class="p-4 text-sm text-gray-600">
+                  {{ s.durationLabel }}
+                </td>
+
+                <!-- Status (Clean flat rounded-lg badge matching Image 1) -->
+                <td class="p-4">
+                  @if (s.myAttendanceStatus === 'attended') {
+                    <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-semibold">
+                      Present
+                    </span>
+                  } @else {
+                    <span class="px-2.5 py-1 bg-red-50 text-red-700 rounded-lg text-xs font-semibold">
+                      Absent
+                    </span>
+                  }
+                </td>
+
+                <!-- Action Button on Right -->
+                <td class="">
+                  <button 
+                    (click)="openRecordingModal(filteredRecordings()[0], recordingPlayerTemplate)"
+                    class="btn outline btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+}
+
+  @if (activeTab() === 'recordings') {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      @for (rec of filteredRecordings(); track rec.id) {
+        <div 
+          (click)="openRecordingModal(rec, recordingPlayerTemplate)" 
+          class="bg-white rounded-2xl relative overflow-hidden group border border-gray-100 cursor-pointer hover:border-gray-200 transition-all flex flex-col justify-between">
+          <div>
+            <div class="aspect-video bg-gradient-to-br {{ rec.thumbnailGradient }} relative flex items-center justify-center p-4">
+              <div class="absolute inset-0 bg-black/30"></div>
+              <button class="size-11 bg-white/20 backdrop-blur border border-white/30 rounded-full flex items-center justify-center text-white z-10 group-hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </button>
+              <div class="absolute bottom-2.5 right-2.5 text-[11px] font-semibold text-white bg-black/70 px-2 py-0.5 rounded backdrop-blur">{{ rec.duration }}</div>
+            </div>
+
+            <div class="p-4">
+              <div class="text-[11px] font-medium text-gray-500 mb-1">{{ rec.recordedDate }}</div>
+              <h3 class="text-gray-900 font-bold text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors">{{ rec.title }}</h3>
+              <p class="text-gray-500 text-xs mt-1">{{ rec.courseCode }} &middot; {{ rec.classCohort }}</p>
+            </div>
+          </div>
+
+          <div class="px-4 pb-3 pt-2 border-t border-gray-100 flex items-center justify-between text-xs text-primary font-semibold">
+            <span>Watch Full Lecture</span>
+            <span>&rarr;</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<ng-template #recordingPlayerTemplate>
+  <div class="bg-white rounded-3xl p-6 space-y-4">
+    <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+      <div>
+        <h3 class="font-bold text-lg text-gray-900">{{ activeRecording()?.title }}</h3>
+        <p class="text-xs text-gray-500">{{ activeRecording()?.courseCode }} &middot; {{ activeRecording()?.classCohort }} &middot; {{ activeRecording()?.instructor }}</p>
+      </div>
+      <button (click)="closeRecordingModal()" class="btn outline btn-sm">Close</button>
+    </div>
+
+    <!-- Video Player -->
+    <div class="rounded-2xl overflow-hidden bg-black aspect-video flex items-center justify-center">
+      @if (activeRecording()) {
+        <video 
+          controls 
+          autoplay 
+          [src]="activeRecording()!.videoUrl" 
+          class="w-full h-full object-contain"></video>
+      }
+    </div>
+  </div>
+</ng-template>

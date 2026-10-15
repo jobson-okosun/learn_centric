@@ -1,0 +1,172 @@
+<div class="flex flex-col gap-6 h-full p-1 sm:p-2">
+  <!-- Top Header Bar -->
+  <div class="flex items-start justify-between">
+    <div>
+      <h1 class="font-semibold text-2xl text-gray-800">My Classes & Cohorts</h1>
+      <p class="text-gray-500 text-sm mt-1">Review your active class cohorts, rosters, faculty contacts, and enrolled sections.</p>
+    </div>
+    <button (click)="joinClassVisible.set(true)" class="btn primary flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14"/><path d="M12 5v14"/>
+      </svg>
+      <span>Join Class</span>
+    </button>
+  </div>
+
+  <!-- Filter & Tab Toolbar -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="font-semibold text-xl text-gray-800">
+      Enrolled Cohorts
+    </div>
+    <div class="flex items-center gap-1 bg-gray-100/70 p-1 rounded-2xl w-fit">
+      <button 
+        (click)="setFilter('current')"
+        [class]="currentFilter() === 'current' ? 'bg-white text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-900'"
+        class="px-4 py-1.5 text-[13px] rounded-2xl transition-all cursor-pointer">
+        Current
+      </button>
+      <button 
+        (click)="setFilter('upcoming')"
+        [class]="currentFilter() === 'upcoming' ? 'bg-white text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-900'"
+        class="px-4 py-1.5 text-[13px] rounded-2xl transition-all cursor-pointer">
+        Upcoming
+      </button>
+      <button 
+        (click)="setFilter('completed')"
+        [class]="currentFilter() === 'completed' ? 'bg-white text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-900'"
+        class="px-4 py-1.5 text-[13px] rounded-2xl transition-all cursor-pointer">
+        Completed
+      </button>
+    </div>
+  </div>
+
+  <!-- Class Cards Grid (Strictly mirrors features/classes/pages/list/list.html) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+    @for (item of filteredClasses(); track item.id) {
+      <div class="bg-white p-5 rounded-2xl border border-gray-100 relative overflow-hidden group flex flex-col justify-between">
+        <div>
+          <!-- Header / Info -->
+          <div class="flex gap-4 items-start">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" [class]="item.iconBg" [class]="item.iconColor">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+              </svg>
+            </div>
+            
+            <div class="flex flex-col justify-center min-w-0">
+              <div class="text-xs font-semibold mb-1 uppercase tracking-wider" [class]="item.colorTheme">{{ item.cohort }}</div>
+              <h3 class="text-gray-900 font-bold text-lg leading-tight line-clamp-2">{{ item.title }}</h3>
+              <p class="text-gray-500 text-xs mt-1 leading-relaxed truncate">{{ item.courseName }}</p>
+            </div>
+          </div>
+
+          <!-- Middle Progress / Live Alert -->
+          <div class="mt-4 pt-4 border-t border-gray-100 space-y-3">
+            <div class="flex items-center justify-between text-sm">
+              <div class="text-gray-700 font-medium text-xs">
+                <span class="text-gray-400 font-normal">Classmates:</span> {{ item.classmatesCount }}
+              </div>
+              <div class="text-gray-700 font-medium text-xs">
+                <span class="text-gray-400 font-normal">Attendance:</span> {{ item.attendanceRate }}%
+              </div>
+            </div>
+
+            <!-- Next Live Session Notice -->
+            @if (item.nextSession) {
+              <div class="p-2.5 rounded-xl border border-gray-100 bg-gray-50/70 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2 truncate">
+                  <span class="size-2 rounded-full" [class.bg-emerald-500]="item.nextSession.isLiveNow" [class.bg-blue-500]="!item.nextSession.isLiveNow" [class.animate-pulse]="item.nextSession.isLiveNow"></span>
+                  <span class="font-semibold text-gray-800 truncate">{{ item.nextSession.title }}</span>
+                </div>
+                <span class="text-[11px] text-gray-500 shrink-0 font-medium">{{ item.nextSession.time }}</span>
+              </div>
+            }
+
+            <!-- Personal Progress Bar -->
+            <div class="w-full">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs text-gray-500 font-medium">Personal Progress</span>
+                <span class="text-xs font-bold text-primary">{{ item.personalProgress }}%</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-primary rounded-full h-1.5 transition-all duration-300" [style.width.%]="item.personalProgress"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Footer -->
+        <div class="flex items-center justify-between mt-6 pt-3 border-t border-gray-100">
+          <div class="flex gap-2.5 items-center min-w-0">
+            <img [src]="item.instructor.avatar" [alt]="item.instructor.name" class="size-8 rounded-full border border-gray-200 object-cover shrink-0" />
+            <div class="flex-1 min-w-0">
+              <div class="text-[10px] text-gray-400 font-medium uppercase leading-tight">{{ item.instructor.role }}</div>
+              <div class="text-xs text-gray-800 font-semibold truncate">{{ item.instructor.name }}</div>
+            </div>
+          </div>
+          <a [routerLink]="['/learn/classroom/classes', item.id]" class="btn dark btn-sm shrink-0">
+            Open Class
+          </a>
+        </div>
+      </div>
+    } @empty {
+      <div class="col-span-full p-12 text-center bg-white rounded-2xl border border-gray-100">
+        <div class="size-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3 text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h3 class="font-bold text-gray-800 text-base">No classes found</h3>
+        <p class="text-sm text-gray-500 mt-1">There are no cohorts under the selected tab.</p>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Join Class Slide-Over Drawer -->
+<z-drawer [(zVisible)]="joinClassVisible" [zPlacement]="'right'" [zDismissible]="true" class="w-full sm:w-[440px]">
+  <z-drawer-header>
+    <div class="flex items-center justify-between border-b border-gray-100 pb-4 w-full">
+      <div>
+        <div class="font-bold text-lg text-gray-900">Join a Class Cohort</div>
+        <div class="text-xs text-gray-500">Enter the invitation code provided by your instructor</div>
+      </div>
+    </div>
+  </z-drawer-header>
+
+  <div class="p-6 overflow-y-auto space-y-5">
+    @if (joinSuccessMessage()) {
+      <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-semibold flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>{{ joinSuccessMessage() }}</span>
+      </div>
+    }
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Cohort Access Code</label>
+      <input 
+        type="text" 
+        [ngModel]="joinCodeInput()"
+        (ngModelChange)="joinCodeInput.set($event)"
+        placeholder="e.g. MATH-204-A or BIO-FALL"
+        class="form-control h-11 w-full font-mono uppercase tracking-widest text-base">
+      <p class="text-xs text-gray-500 mt-2 leading-relaxed">
+        Ask your teacher, professor, or academic coordinator for the 6-10 character class code.
+      </p>
+    </div>
+
+    <div class="p-4 rounded-xl bg-gray-50 border border-gray-200/80 space-y-2 text-xs text-gray-600">
+      <div class="font-bold text-gray-900">What happens when you join?</div>
+      <p>You'll gain immediate access to the live virtual lecture stage, attendance check-ins, cohort schedule timetable, and class discussions.</p>
+    </div>
+
+    <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
+      <button (click)="joinClassVisible.set(false)" class="btn outline text-xs">Cancel</button>
+      <button (click)="submitJoinClass()" class="btn primary text-xs">Enroll in Class</button>
+    </div>
+  </div>
+</z-drawer>

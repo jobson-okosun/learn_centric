@@ -1,0 +1,134 @@
+<div class="flex flex-col h-full w-full bg-white">
+    
+    <!-- Scrollable content area -->
+    <div class="flex-1 min-h-0 overflow-y-auto custom-scrollbar flex flex-col">
+        @if (!previewMode()) {
+            <!-- Editor -->
+            <div class="p-6 border-b border-gray-100 shrink-0">
+                <app-tiptap-editor 
+                    [(content)]="stimulus" 
+                    placeholder="Type your question stimulus here..." 
+                    minHeight="200px" 
+                    [showCloze]="true" 
+                    [showClozeDropdown]="true" 
+                    [showClozeRadio]="true">
+                </app-tiptap-editor>
+            </div>
+            
+            <!-- Options & Settings -->
+            <div class="bg-white shrink-0">
+                @switch (questionType()) {
+                    @case ('MCQ') {
+                        <app-mcq-single-choice></app-mcq-single-choice>
+                    }
+                    @case ('MRQ') {
+                        <app-mcq-multiple-choice></app-mcq-multiple-choice>
+                    }
+                    @case ('TRUE_FALSE') {
+                        <app-true-false></app-true-false>
+                    }
+                    @case ('YES_NO') {
+                        <app-yes-no></app-yes-no>
+                    }
+                    @case ('CHOICE_MATRIX') {
+                        <app-choice-matrix></app-choice-matrix>
+                    }
+                    @case ('SHORT_TEXT') {
+                        <app-short-text></app-short-text>
+                    }
+                    @case ('ESSAY_PLAIN_TEXT') {
+                        <app-essay-plain-text></app-essay-plain-text>
+                    }
+                    @case ('ESSAY_RICH_TEXT') {
+                        <app-essay-rich-text></app-essay-rich-text>
+                    }
+                    @case ('CLOZE_TEXT') {
+                        <app-cloze-text></app-cloze-text>
+                    }
+                    @case ('CLOZE_DROPDOWN') {
+                        <app-cloze-dropdown></app-cloze-dropdown>
+                    }
+                    @case ('CLOZERADIO') {
+                        <app-cloze-radio></app-cloze-radio>
+                    }
+                    @case ('CLOZE_TEXT_IMAGE') {
+                        <app-cloze-text-image></app-cloze-text-image>
+                    }
+                    @case ('CLOZE_DROPDOWN_IMAGE') {
+                        <app-cloze-dropdown-image></app-cloze-dropdown-image>
+                    }
+                    @case ('IMAGE_DRAG_AND_DROP') {
+                        <app-image-drag-and-drop></app-image-drag-and-drop>
+                    }
+                    @case ('DRAWING_AND_WRITING') {
+                        <app-drawing-and-writing></app-drawing-and-writing>
+                    }
+                    @case ('ORDER_LIST') {
+                        <app-order-list></app-order-list>
+                    }
+                    @case ('ASSOCIATION') {
+                        <app-association></app-association>
+                    }
+                    @default {
+                        <div class="p-6 text-center text-gray-500 text-sm">
+                            Select a question type from the sidebar to configure its options.
+                        </div>
+                    }
+                }
+            </div>
+        } @else {
+            <!-- Preview Mode -->
+            <div class="p-6 bg-white shrink-0">
+                @switch (questionType()) {
+                    @case ('MCQ') {
+                        <!-- Note: Real question object will come from authoring state later -->
+                        <app-mcq-preview [question]="{id: '1', type: 'MCQ', stem: stimulus() || '<p>Sample single choice preview.</p>', points: 1, options: [{id: '1', text: 'Option A'}, {id: '2', text: 'Option B'}]}"></app-mcq-preview>
+                    }
+                    @case ('MRQ') {
+                        <app-mrq-preview [question]="{id: '1', type: 'MRQ', stem: stimulus() || '<p>Sample multiple response preview.</p>', points: 1, options: [{id: '1', text: 'Option A'}, {id: '2', text: 'Option B'}, {id: '3', text: 'Option C'}]}"></app-mrq-preview>
+                    }
+                    @case ('TRUE_FALSE') {
+                        <app-true-false-preview [question]="{id: '1', type: 'TRUE_FALSE', stem: stimulus() || '<p>Sample true or false preview.</p>', points: 1}"></app-true-false-preview>
+                    }
+                    @case ('YES_NO') {
+                        <app-yes-no-preview [question]="{id: '1', type: 'YES_NO', stem: stimulus() || '<p>Sample yes or no preview.</p>', points: 1}"></app-yes-no-preview>
+                    }
+                    @case ('CHOICE_MATRIX') {
+                        <app-choice-matrix-preview [question]="{id: '1', type: 'CHOICE_MATRIX', stem: stimulus() || '<p>Sample choice matrix preview.</p>', points: 1, options: [{id: '1', text: 'True'}, {id: '2', text: 'False'}], stems: ['First statement to evaluate', 'Second statement to evaluate']}"></app-choice-matrix-preview>
+                    }
+                    @case ('SHORT_TEXT') {
+                        <app-short-text-preview [question]="{id: '1', type: 'SHORT_TEXT', stem: stimulus() || '<p>Sample short text preview.</p>', points: 1}"></app-short-text-preview>
+                    }
+                    @case ('ESSAY_PLAIN_TEXT') {
+                        <app-essay-plain-text-preview [question]="{id: '1', type: 'ESSAY_PLAIN_TEXT', stem: stimulus() || '<p>Sample essay plain text preview.</p>', points: 1}"></app-essay-plain-text-preview>
+                    }
+                    @case ('ESSAY_RICH_TEXT') {
+                        <app-essay-rich-text-preview [question]="{id: '1', type: 'ESSAY_RICH_TEXT', stem: stimulus() || '<p>Sample essay rich text preview.</p>', points: 1}"></app-essay-rich-text-preview>
+                    }
+                    @case ('CLOZE_TEXT') {
+                        <app-cloze-text-preview [question]="{id: '1', type: 'CLOZE_TEXT', stem: stimulus() || '<p>Fill in the <input type=\'text\' class=\'cloze-placeholder\' data-answer=\'blank\'> with correct text.</p>', points: 1}"></app-cloze-text-preview>
+                    }
+                    @case ('CLOZE_DROPDOWN') {
+                        <app-cloze-dropdown-preview [question]="{id: '1', type: 'CLOZE_DROPDOWN', stem: stimulus() || '<p>Select the <input type=\'text\' class=\'cloze-placeholder\' data-answer=\'option\'> from dropdown.</p>', points: 1}"></app-cloze-dropdown-preview>
+                    }
+                    @case ('CLOZERADIO') {
+                        <app-cloze-radio-preview [question]="{id: '1', type: 'CLOZERADIO', stem: stimulus() || '<p>Choose the <input type=\'text\' class=\'cloze-placeholder\' data-answer=\'radio\'> value.</p>', points: 1}"></app-cloze-radio-preview>
+                    }
+                    @case ('CLOZE_TEXT_IMAGE') {
+                        <app-cloze-text-image-preview [question]="{id: '1', type: 'CLOZE_TEXT_IMAGE', stem: stimulus() || '<p>Refer to image and type <input type=\'text\' class=\'cloze-placeholder\' data-answer=\'answer\'> here.</p>', points: 1}"></app-cloze-text-image-preview>
+                    }
+                    @case ('CLOZE_DROPDOWN_IMAGE') {
+                        <app-cloze-dropdown-image-preview [question]="{id: '1', type: 'CLOZE_DROPDOWN_IMAGE', stem: stimulus() || '<p>Refer to image and select <input type=\'text\' class=\'cloze-placeholder\' data-answer=\'answer\'> here.</p>', points: 1}"></app-cloze-dropdown-image-preview>
+                    }
+                    @default {
+                        <div class="p-12 text-center flex flex-col items-center justify-center text-gray-500 gap-3 border border-dashed border-gray-300 rounded-2xl bg-gray-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><path d="m21 16-5.16-5.16a2 2 0 0 0-2.83 0l-5.16 5.16"></path><path d="m21 12-1.16-1.16a2 2 0 0 0-2.83 0l-5.01 5.01"></path><circle cx="9" cy="9" r="2"></circle><rect width="20" height="16" x="2" y="4" rx="2"></rect></svg>
+                            <div class="text-sm font-semibold text-gray-600">Preview not yet implemented</div>
+                            <p class="text-xs">The preview component for {{ questionType() }} will be available soon.</p>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>

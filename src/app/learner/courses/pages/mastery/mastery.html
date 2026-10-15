@@ -1,0 +1,357 @@
+<div class="flex flex-col gap-6 h-full p-3">
+  <!-- Header Bar -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Learning Mastery</h1>
+      <p class="text-sm text-gray-500 mt-1">Track student performance against learning outcomes</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button 
+        (click)="openReportDrawer()" 
+        class="btn outline p-2 px-3 cursor-pointer"
+        title="View Official Progress Report">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Analytics Summary -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="bg-white p-5 rounded-2xl border border-gray-200 flex flex-col gap-1">
+      <div class="text-sm font-medium text-gray-500">Exceeds Mastery</div>
+      <div class="text-3xl font-bold text-emerald-600">{{ analytics().exceedsPercent }}</div>
+    </div>
+    <div class="bg-white p-5 rounded-2xl border border-gray-200 flex flex-col gap-1">
+      <div class="text-sm font-medium text-gray-500">Meets Mastery</div>
+      <div class="text-3xl font-bold text-green-500">{{ analytics().meetsPercent }}</div>
+    </div>
+    <div class="bg-white p-5 rounded-2xl border border-gray-200 flex flex-col gap-1">
+      <div class="text-sm font-medium text-gray-500">Near Mastery</div>
+      <div class="text-3xl font-bold text-amber-500">{{ analytics().nearPercent }}</div>
+    </div>
+    <div class="bg-white p-5 rounded-2xl border border-gray-200 flex flex-col gap-1">
+      <div class="text-sm font-medium text-gray-500">Well Below</div>
+      <div class="text-3xl font-bold text-red-500">{{ analytics().wellBelowPercent }}</div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="bg-white p-4 rounded-2xl border border-gray-100 flex flex-col sm:flex-row gap-4 items-center justify-between">
+    <div class="relative w-full sm:w-80">
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input 
+        type="text" 
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+        placeholder="Search your learning outcomes..." 
+        class="form-control !pl-10 h-10 w-full">
+    </div>
+
+    <div class="flex items-center gap-3 w-full sm:w-auto">
+      <select 
+        [ngModel]="selectedLevel()"
+        (ngModelChange)="selectedLevel.set($event)"
+        class="form-control h-10 w-full sm:w-48 text-sm">
+        <option value="all">All Mastery Levels</option>
+        <option value="exceeds">Exceeds Mastery (4.0)</option>
+        <option value="meets">Meets Mastery (3.0+)</option>
+        <option value="near">Near Mastery (<3.0)</option>
+        <option value="well-below">Well Below (<2.0)</option>
+      </select>
+
+      <select 
+        [ngModel]="selectedModule()"
+        (ngModelChange)="selectedModule.set($event)"
+        class="form-control h-10 w-full sm:w-60 text-sm">
+        <option value="all">All Course Modules</option>
+        @for (m of modules; track m) {
+          <option [value]="m">{{ m }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- The Student's Personal Mastery Report Table -->
+  <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden flex-1 flex flex-col">
+    <div class="overflow-x-auto flex-1 pb-4">
+      <table class="w-full text-left border-collapse border-spacing-0 min-w-max">
+        <thead>
+          <tr class="bg-gray-50/50">
+            <!-- Learning Standard -->
+            <th class="p-4 border-b border-r border-gray-100 min-w-[240px]">
+              <div class="text-xs font-bold text-gray-600 uppercase tracking-wider">Learning Outcome & Standard</div>
+            </th>
+
+            <!-- Competency Focus -->
+            <th class="p-4 border-b border-r border-gray-100 min-w-[280px]">
+              <div class="text-xs font-bold text-gray-600 uppercase tracking-wider">Competency Focus</div>
+            </th>
+
+            <!-- Your Mastery Score (Tutor score cell style) -->
+            <th class="p-4 border-b border-r border-gray-100 min-w-[120px] text-center">
+              <div class="text-xs font-bold text-gray-600 uppercase tracking-wider">Your Score</div>
+              <div class="text-[10px] text-gray-400 mt-0.5">Scale: 1.0 - 4.0</div>
+            </th>
+
+            <!-- Mastery Level -->
+            <th class="p-4 border-b border-r border-gray-100 min-w-[150px] text-center">
+              <div class="text-xs font-bold text-gray-600 uppercase tracking-wider">Mastery Status</div>
+            </th>
+
+            <!-- Assessed Evidence -->
+            <th class="p-4 border-b border-r border-gray-100 min-w-[260px]">
+              <div class="text-xs font-bold text-gray-600 uppercase tracking-wider">Assessed Evidence</div>
+            </th>
+
+            <!-- Proficiency Progress -->
+            <th class="p-4 border-b border-gray-100 min-w-[130px] text-right">
+              <div class="text-xs font-bold text-gray-600 uppercase tracking-wider pr-2">Proficiency</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          @for (outcome of filteredOutcomes(); track outcome.id) {
+            <tr class="hover:bg-gray-50/30 transition-colors">
+              <!-- Standard / Code -->
+              <td class="p-4 border-r border-gray-100">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs font-bold font-mono px-2 py-0.5 rounded-md bg-gray-100 text-gray-800">
+                    {{ outcome.code }}
+                  </span>
+                  <span class="text-xs text-gray-400 font-medium">
+                    {{ outcome.module }}
+                  </span>
+                </div>
+                <div class="text-sm font-semibold text-gray-900">
+                  {{ outcome.title }}
+                </div>
+              </td>
+
+              <!-- Description -->
+              <td class="p-4 border-r border-gray-100 text-xs text-gray-600 leading-relaxed max-w-md">
+                {{ outcome.description }}
+              </td>
+
+              <!-- Score Cell (Matches tutor color block) -->
+              <td class="p-2 border-r border-gray-100 text-center">
+                <div class="flex items-center justify-center">
+                  <div 
+                    class="min-h-[40px] w-14 rounded-lg flex items-center justify-center font-bold text-sm"
+                    [class.bg-emerald-50]="outcome.level === 'exceeds'"
+                    [class.text-emerald-700]="outcome.level === 'exceeds'"
+                    [class.bg-green-50]="outcome.level === 'meets'"
+                    [class.text-green-700]="outcome.level === 'meets'"
+                    [class.bg-amber-50]="outcome.level === 'near'"
+                    [class.text-amber-700]="outcome.level === 'near'"
+                    [class.bg-red-50]="outcome.level === 'well-below'"
+                    [class.text-red-700]="outcome.level === 'well-below'">
+                    {{ outcome.score.toFixed(1) }}
+                  </div>
+                </div>
+              </td>
+
+              <!-- Level Status Badge -->
+              <td class="p-3 border-r border-gray-100 text-center">
+                <div class="flex justify-center">
+                  @if (outcome.level === 'exceeds') {
+                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60 flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Exceeds Mastery
+                    </span>
+                  } @else if (outcome.level === 'meets') {
+                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700 border border-green-200/60 flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Meets Mastery
+                    </span>
+                  } @else if (outcome.level === 'near') {
+                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/60 flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                      </svg>
+                      Near Mastery
+                    </span>
+                  } @else {
+                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200/60 flex items-center gap-1">
+                      Well Below
+                    </span>
+                  }
+                </div>
+              </td>
+
+              <!-- Assessed Evidence Chips -->
+              <td class="p-3 border-r border-gray-100">
+                <div class="flex flex-col gap-1.5">
+                  @for (ev of outcome.evidenceItems; track ev.name) {
+                    <div class="text-xs text-gray-700 flex items-center gap-1.5">
+                      <span class="size-1.5 rounded-full bg-primary shrink-0"></span>
+                      <span class="font-medium truncate">{{ ev.name }}</span>
+                      <span class="text-gray-400 font-normal">({{ ev.score }})</span>
+                    </div>
+                  }
+                </div>
+              </td>
+
+              <!-- Proficiency Percentage & Bar -->
+              <td class="p-4 text-right">
+                <div class="text-xs font-bold text-gray-900 pr-2">
+                  {{ outcome.percentage }}%
+                </div>
+                <div class="w-24 bg-gray-100 rounded-full h-1.5 overflow-hidden ml-auto mt-1 mr-2">
+                  <div 
+                    class="h-1.5 rounded-full"
+                    [class.bg-emerald-600]="outcome.level === 'exceeds'"
+                    [class.bg-green-500]="outcome.level === 'meets'"
+                    [class.bg-amber-500]="outcome.level === 'near'"
+                    [class.bg-red-500]="outcome.level === 'well-below'"
+                    [style.width.%]="outcome.percentage"></div>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Socratic AI Diagnostic Note for Alex Morgan -->
+  <div class="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-5 flex items-start gap-4">
+    <div class="size-9 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0 mt-0.5">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+        <polyline points="3.29 7 12 12 20.71 7"></polyline>
+        <line x1="12" y1="22" x2="12" y2="12"></line>
+      </svg>
+    </div>
+    <div class="flex-1">
+      <div class="flex items-center gap-2">
+        <h2 class="text-sm font-bold text-indigo-950">AI Mastery Diagnostic for Alex Morgan</h2>
+        <span class="text-[10px] font-semibold text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full">Personalized Diagnostic</span>
+      </div>
+      <p class="text-xs text-indigo-900 mt-1 leading-relaxed">
+        You have achieved <strong>Exceeds Mastery</strong> in Multivariable Limits, Gradients, and Matrix Chain Rules. Your sole remaining target is <strong class="text-indigo-950 font-semibold">Green’s Theorem & Surface Circulation (VC.4.2)</strong> at 70%. Reviewing parameterization of closed curve boundaries will advance all 8 competencies to full mastery.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Official Student Progress Report Drawer (matches tutor members drawer) -->
+<z-drawer [(zVisible)]="reportDrawerVisible" [zPlacement]="'right'" [zDismissible]="true" class="w-full sm:w-[460px]">
+  <z-drawer-header>
+    <div class="flex items-center justify-between border-b border-gray-100 pb-4 w-full">
+      <div class="flex items-center gap-3">
+        <img src="https://i.pravatar.cc/150?u=alex" alt="Alex Morgan" class="size-11 rounded-full object-cover border border-gray-200 shrink-0">
+        <div>
+          <div class="font-bold text-lg text-gray-900">Alex Morgan</div>
+          <div class="text-xs text-gray-500">MATH-204 · Section B · Official Student Report</div>
+        </div>
+      </div>
+    </div>
+  </z-drawer-header>
+
+  <div class="p-6 overflow-y-auto space-y-6">
+    <!-- Key Report Metrics -->
+    <div>
+      <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Executive Summary</h3>
+      <div class="bg-gray-50 rounded-2xl border border-gray-200/70 p-4 space-y-2.5 text-sm">
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600 font-medium">Course Completion</span>
+          <span class="font-bold text-gray-900">68%</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600 font-medium">Current Grade</span>
+          <span class="font-bold text-emerald-600">96.2% (Grade A)</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600 font-medium">Overall Mastery Score</span>
+          <span class="font-bold text-gray-900">3.8 / 4.0 (95%)</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600 font-medium">Assessed Outcomes Mastered</span>
+          <span class="font-bold text-gray-900">7 of 8 (88%)</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600 font-medium">Lecture & Lab Attendance</span>
+          <span class="font-bold text-gray-900">96%</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600 font-medium">Academic Risk Level</span>
+          <span class="font-bold text-emerald-600">Low (On Track)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Competency Breakdown by Topic -->
+    <div>
+      <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Topic Competencies</h3>
+      <div class="space-y-3">
+        <div class="p-3 rounded-xl border border-gray-100 bg-white">
+          <div class="flex justify-between items-center text-sm font-semibold text-gray-800">
+            <span>Multivariable Limits</span>
+            <span class="text-emerald-600">100%</span>
+          </div>
+          <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+            <div class="bg-emerald-600 h-1.5 rounded-full" style="width: 100%"></div>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl border border-gray-100 bg-white">
+          <div class="flex justify-between items-center text-sm font-semibold text-gray-800">
+            <span>Partial Differentiation & Gradients</span>
+            <span class="text-emerald-600">97%</span>
+          </div>
+          <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+            <div class="bg-emerald-600 h-1.5 rounded-full" style="width: 97%"></div>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl border border-gray-100 bg-white">
+          <div class="flex justify-between items-center text-sm font-semibold text-gray-800">
+            <span>Multiple Integrals & Transformations</span>
+            <span class="text-green-600">89%</span>
+          </div>
+          <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+            <div class="bg-green-500 h-1.5 rounded-full" style="width: 89%"></div>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl border border-gray-100 bg-white">
+          <div class="flex justify-between items-center text-sm font-semibold text-gray-800">
+            <span>Vector Fields & Green’s Theorem</span>
+            <span class="text-amber-600">75%</span>
+          </div>
+          <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+            <div class="bg-amber-500 h-1.5 rounded-full" style="width: 75%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
+      <button 
+        (click)="closeReportDrawer()" 
+        class="btn outline text-xs">
+        Close
+      </button>
+      <button 
+        (click)="closeReportDrawer()" 
+        class="btn primary text-xs flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>Print Report</span>
+      </button>
+    </div>
+  </div>
+</z-drawer>

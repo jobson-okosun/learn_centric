@@ -1,0 +1,307 @@
+@switch (type()) {
+ @case ('MCQ') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none">
+ <p class="font-semibold text-[11px] text-gray-700 leading-tight">What is the capital of France?</p>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-primary/30 bg-primary/5 shrink-0">
+ <div class="w-3.5 h-3.5 rounded-full border-[1.5px] border-primary flex items-center justify-center bg-white shrink-0">
+ <div class="w-1.5 h-1.5 bg-primary rounded-full"></div>
+ </div>
+ <span class="text-[9px] font-bold text-primary bg-white border border-primary/20 rounded-md px-1.5 py-0.5 leading-none ">A</span>
+ <span class="text-[11px] text-gray-800 font-medium truncate">Paris</span>
+ </div>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-gray-100 shrink-0">
+ <div class="w-3.5 h-3.5 rounded-full border-[1.5px] border-gray-300 shrink-0"></div>
+ <span class="text-[9px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded-md px-1.5 py-0.5 leading-none ">B</span>
+ <span class="text-[11px] text-gray-500 font-medium truncate">London</span>
+ </div>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-gray-100 shrink-0">
+ <div class="w-3.5 h-3.5 rounded-full border-[1.5px] border-gray-300 shrink-0"></div>
+ <span class="text-[9px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded-md px-1.5 py-0.5 leading-none ">C</span>
+ <span class="text-[11px] text-gray-500 font-medium truncate">Berlin</span>
+ </div>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-gray-100 shrink-0">
+ <div class="w-3.5 h-3.5 rounded-full border-[1.5px] border-gray-300 shrink-0"></div>
+ <span class="text-[9px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded-md px-1.5 py-0.5 leading-none ">D</span>
+ <span class="text-[11px] text-gray-500 font-medium truncate">Madrid</span>
+ </div>
+
+ <div class="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent"></div>
+ </div>
+ }
+ @case ('MRQ') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none">
+ <p class="font-semibold text-[11px] text-gray-700 leading-tight">Which of these are fruits?</p>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-primary/30 bg-primary/5 shrink-0">
+ <div class="w-3.5 h-3.5 rounded border-[1.5px] border-primary flex items-center justify-center bg-primary shrink-0">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-2.5 h-2.5 text-white"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+ </div>
+ <span class="text-[9px] font-bold text-primary bg-white border border-primary/20 rounded-md px-1.5 py-0.5 leading-none ">A</span>
+ <span class="text-[11px] text-gray-800 font-medium truncate">Apple</span>
+ </div>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-primary/30 bg-primary/5 shrink-0">
+ <div class="w-3.5 h-3.5 rounded border-[1.5px] border-primary flex items-center justify-center bg-primary shrink-0">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-2.5 h-2.5 text-white"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+ </div>
+ <span class="text-[9px] font-bold text-primary bg-white border border-primary/20 rounded-md px-1.5 py-0.5 leading-none ">B</span>
+ <span class="text-[11px] text-gray-800 font-medium truncate">Banana</span>
+ </div>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-gray-100 shrink-0">
+ <div class="w-3.5 h-3.5 rounded border-[1.5px] border-gray-300 shrink-0 bg-white"></div>
+ <span class="text-[9px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded-md px-1.5 py-0.5 leading-none ">C</span>
+ <span class="text-[11px] text-gray-500 font-medium truncate">Carrot</span>
+ </div>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-gray-100 shrink-0">
+ <div class="w-3.5 h-3.5 rounded border-[1.5px] border-gray-300 shrink-0 bg-white"></div>
+ <span class="text-[9px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded-md px-1.5 py-0.5 leading-none ">D</span>
+ <span class="text-[11px] text-gray-500 font-medium truncate">Potato</span>
+ </div>
+ 
+ <div class="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent"></div>
+ </div>
+ }
+ @case ('TRUE_FALSE') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none">
+ <p class="font-semibold text-[11px] text-gray-700 leading-tight mb-1">The sun rises in the east.</p>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-primary/30 bg-primary/5 shrink-0">
+ <div class="w-3.5 h-3.5 rounded-full border-[1.5px] border-primary flex items-center justify-center bg-white shrink-0">
+ <div class="w-1.5 h-1.5 bg-primary rounded-full"></div>
+ </div>
+ <span class="text-[9px] font-bold text-primary bg-white border border-primary/20 rounded-md px-1.5 py-0.5 leading-none ">A</span>
+ <span class="text-[11px] text-gray-800 font-medium truncate">True</span>
+ </div>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-gray-100 shrink-0">
+ <div class="w-3.5 h-3.5 rounded-full border-[1.5px] border-gray-300 shrink-0"></div>
+ <span class="text-[9px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded-md px-1.5 py-0.5 leading-none ">B</span>
+ <span class="text-[11px] text-gray-500 font-medium truncate">False</span>
+ </div>
+ </div>
+ }
+ @case ('YES_NO') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none">
+ <p class="font-semibold text-[11px] text-gray-700 leading-tight mb-1">Do you have prior experience?</p>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-primary/30 bg-primary/5 shrink-0">
+ <div class="w-3.5 h-3.5 rounded-full border-[1.5px] border-primary flex items-center justify-center bg-white shrink-0">
+ <div class="w-1.5 h-1.5 bg-primary rounded-full"></div>
+ </div>
+ <span class="text-[9px] font-bold text-primary bg-white border border-primary/20 rounded-md px-1.5 py-0.5 leading-none ">A</span>
+ <span class="text-[11px] text-gray-800 font-medium truncate">Yes</span>
+ </div>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-gray-100 shrink-0">
+ <div class="w-3.5 h-3.5 rounded-full border-[1.5px] border-gray-300 shrink-0"></div>
+ <span class="text-[9px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded-md px-1.5 py-0.5 leading-none ">B</span>
+ <span class="text-[11px] text-gray-500 font-medium truncate">No</span>
+ </div>
+ </div>
+ }
+ @case ('CHOICE_MATRIX') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none">
+ <p class="font-semibold text-[11px] text-gray-700 leading-tight mb-1">Evaluate the following:</p>
+ 
+ <div class="w-full border border-gray-200 rounded-lg overflow-hidden flex flex-col shrink-0">
+ <div class="flex bg-gray-50 border-b border-gray-200 p-1">
+ <div class="flex-[2]"></div>
+ <div class="flex-1 text-center text-[8px] font-bold text-gray-500 uppercase tracking-wide">True</div>
+ <div class="flex-1 text-center text-[8px] font-bold text-gray-500 uppercase tracking-wide">False</div>
+ </div>
+ <div class="flex border-b border-gray-100 p-1.5 items-center bg-primary/5">
+ <div class="flex-[2] text-[9px] text-gray-700 font-medium truncate">Sky is blue</div>
+ <div class="flex-1 flex justify-center">
+ <div class="w-3 h-3 rounded-full border-[1.5px] border-primary flex items-center justify-center bg-white shrink-0">
+ <div class="w-1.5 h-1.5 bg-primary rounded-full"></div>
+ </div>
+ </div>
+ <div class="flex-1 flex justify-center">
+ <div class="w-3 h-3 rounded-full border-[1.5px] border-gray-300 shrink-0"></div>
+ </div>
+ </div>
+ <div class="flex p-1.5 items-center">
+ <div class="flex-[2] text-[9px] text-gray-700 font-medium truncate">Fire is cold</div>
+ <div class="flex-1 flex justify-center">
+ <div class="w-3 h-3 rounded-full border-[1.5px] border-gray-300 shrink-0"></div>
+ </div>
+ <div class="flex-1 flex justify-center">
+ <div class="w-3 h-3 rounded-full border-[1.5px] border-primary flex items-center justify-center bg-white shrink-0">
+ <div class="w-1.5 h-1.5 bg-primary rounded-full"></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ }
+ @case ('CLOZE_TEXT') {
+ <div class="w-full h-full flex flex-col p-4 gap-2 overflow-hidden relative select-none justify-center items-center">
+ <p class="font-semibold text-[11px] text-gray-700 leading-relaxed text-center">
+ The quick brown <span class="inline-block w-14 h-5 bg-white border border-gray-300 rounded mx-1 align-middle"></span> jumps over the lazy dog.
+ </p>
+ </div>
+ }
+ @case ('CLOZE_DROPDOWN') {
+ <div class="w-full h-full flex flex-col p-4 gap-2 overflow-hidden relative select-none justify-center items-center">
+ <p class="font-semibold text-[11px] text-gray-700 leading-relaxed text-center">
+ The quick brown <span class="inline-flex items-center justify-between w-14 h-5 bg-white border border-gray-300 rounded mx-1 px-1.5 align-middle "><span class="w-2"></span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-2.5 h-2.5 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg></span> jumps over the lazy dog.
+ </p>
+ </div>
+ }
+ @case ('CLOZERADIO') {
+ <div class="w-full h-full flex flex-col p-4 gap-2 overflow-hidden relative select-none justify-center items-center">
+ <p class="font-semibold text-[11px] text-gray-700 leading-relaxed text-center">
+ The quick brown <span class="inline-flex items-center bg-gray-50 rounded-full px-2 mx-1 gap-2 border border-gray-200 py-0.5 align-middle ">
+ <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full border border-primary bg-primary shrink-0"></span><span class="text-[9px] font-bold text-gray-600">fox</span></span>
+ <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full border border-gray-400 bg-white shrink-0"></span><span class="text-[9px] font-bold text-gray-600">cat</span></span>
+ </span> jumps over the lazy dog.
+ </p>
+ </div>
+ }
+ @case ('CLOZE_TEXT_IMAGE') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none items-center justify-center">
+ <div class="w-28 h-20 bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl relative flex items-center justify-center">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-300"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+ <div class="absolute top-2 right-2 w-10 h-4 bg-white border border-gray-300 rounded "></div>
+ <div class="absolute -bottom-2 left-4 w-12 h-4 bg-white border border-gray-300 rounded "></div>
+ </div>
+ </div>
+ }
+ @case ('CLOZE_DROPDOWN_IMAGE') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none items-center justify-center">
+ <div class="w-28 h-20 bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl relative flex items-center justify-center">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-300"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+ <div class="absolute top-2 right-2 w-10 h-4 bg-white border border-gray-300 rounded flex justify-end items-center px-1.5"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-2.5 h-2.5 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg></div>
+ <div class="absolute -bottom-2 left-4 w-12 h-4 bg-white border border-gray-300 rounded flex justify-end items-center px-1.5"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-2.5 h-2.5 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg></div>
+ </div>
+ </div>
+ }
+ @case ('IMAGE_DRAG_AND_DROP') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none items-center justify-center">
+ <div class="flex gap-2 mb-1">
+ <div class="px-2 py-0.5 bg-primary/10 border border-primary/30 rounded-full text-[9px] font-bold text-primary flex items-center "><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M10 9l-3 3 3 3"></path><path d="M22 12H14"></path><path d="M14 9l3 3-3 3"></path><path d="M2 12h8"></path></svg>Heart</div>
+ <div class="px-2 py-0.5 bg-primary/10 border border-primary/30 rounded-full text-[9px] font-bold text-primary flex items-center "><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M10 9l-3 3 3 3"></path><path d="M22 12H14"></path><path d="M14 9l3 3-3 3"></path><path d="M2 12h8"></path></svg>Lungs</div>
+ </div>
+ <div class="w-28 h-16 bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl relative flex items-center justify-center">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-300"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+ <div class="absolute top-2 right-2 w-10 h-4 bg-white/60 border border-gray-300 border-dashed rounded"></div>
+ </div>
+ </div>
+ }
+ @case ('ESSAY_PLAIN_TEXT') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none">
+ <p class="font-semibold text-[11px] text-gray-700 leading-tight">Write a short essay about climate change.</p>
+ <div class="w-full flex-1 bg-gray-50 border border-gray-200 rounded-lg p-2 mt-1">
+ <div class="w-1/2 h-2 bg-gray-200 rounded-full mb-2"></div>
+ <div class="w-3/4 h-2 bg-gray-200 rounded-full mb-2"></div>
+ <div class="w-1/3 h-2 bg-gray-200 rounded-full"></div>
+ </div>
+ </div>
+ }
+ @case ('ESSAY_RICH_TEXT') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none">
+ <p class="font-semibold text-[11px] text-gray-700 leading-tight">Write a detailed report.</p>
+ <div class="w-full flex-1 flex flex-col border border-gray-200 rounded-lg overflow-hidden mt-1 ">
+ <!-- fake toolbar -->
+ <div class="w-full h-6 bg-gray-100 border-b border-gray-200 flex items-center px-1.5 gap-2 shrink-0">
+ <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg>
+ <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><line x1="19" x2="10" y1="4" y2="4"/><line x1="14" x2="5" y1="20" y2="20"/><line x1="15" x2="9" y1="4" y2="20"/></svg>
+ <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="4" x2="20" y1="20" y2="20"/></svg>
+ <div class="w-px h-3 bg-gray-300 mx-0.5"></div>
+ <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><line x1="21" x2="3" y1="6" y2="6"/><line x1="15" x2="3" y1="12" y2="12"/><line x1="17" x2="3" y1="18" y2="18"/></svg>
+ <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><line x1="21" x2="3" y1="6" y2="6"/><line x1="17" x2="7" y1="12" y2="12"/><line x1="19" x2="5" y1="18" y2="18"/></svg>
+ </div>
+ <!-- fake text area -->
+ <div class="w-full flex-1 bg-white p-2">
+ <div class="w-1/2 h-2 bg-gray-200 rounded-full mb-2"></div>
+ <div class="w-3/4 h-2 bg-gray-200 rounded-full mb-2"></div>
+ <div class="w-1/3 h-2 bg-gray-200 rounded-full"></div>
+ </div>
+ </div>
+ </div>
+ }
+ @case ('SHORT_TEXT') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none justify-center">
+ <p class="font-semibold text-[11px] text-gray-700 leading-tight">What is the capital of Japan?</p>
+ <div class="w-full h-8 bg-gray-50 border border-gray-200 rounded-lg mt-1 px-2 flex items-center ">
+ <div class="w-1/3 h-2 bg-gray-200 rounded-full"></div>
+ </div>
+ </div>
+ }
+ @case ('ORDER_LIST') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none">
+ <p class="font-semibold text-[11px] text-gray-700 leading-tight">Order the steps correctly:</p>
+ 
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-gray-200 bg-gray-50 shrink-0 cursor-move">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+ <span class="text-[11px] text-gray-700 font-medium truncate">Step 1: Planning</span>
+ </div>
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-gray-200 bg-gray-50 shrink-0 cursor-move">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+ <span class="text-[11px] text-gray-700 font-medium truncate">Step 2: Execution</span>
+ </div>
+ <div class="flex items-center gap-2 p-1.5 rounded-lg border border-gray-200 bg-gray-50 shrink-0 cursor-move">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+ <span class="text-[11px] text-gray-700 font-medium truncate">Step 3: Review</span>
+ </div>
+ <div class="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent"></div>
+ </div>
+ }
+ @case ('ASSOCIATION') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none">
+ <p class="font-semibold text-[11px] text-gray-700 leading-tight">Match the items:</p>
+ 
+ <div class="flex gap-4 w-full px-2">
+ <div class="flex-1 flex flex-col gap-2">
+ <div class="p-1 border border-primary/30 bg-primary/5 rounded-md text-center text-[10px] font-medium text-primary z-10">Dog</div>
+ <div class="p-1 border border-gray-200 bg-gray-50 rounded-md text-center text-[10px] font-medium text-gray-600 z-10">Cat</div>
+ </div>
+ <div class="flex-1 flex flex-col gap-2 pt-3">
+ <div class="p-1 border border-gray-200 bg-gray-50 rounded-md text-center text-[10px] font-medium text-gray-600 relative z-10">
+ <div class="absolute w-8 border-t-[1.5px] border-dashed border-gray-300 top-1/2 -left-7 -z-10"></div>
+ Feline
+ </div>
+ <div class="p-1 border border-primary/30 bg-primary/5 rounded-md text-center text-[10px] font-medium text-primary relative z-10">
+ <div class="absolute w-8 border-t-[1.5px] border-primary top-1/2 -left-7 -translate-y-[9px] -rotate-[15deg] -z-10"></div>
+ Canine
+ </div>
+ </div>
+ </div>
+ </div>
+ }
+ @case ('DRAWING_AND_WRITING') {
+ <div class="w-full h-full flex flex-col p-3 gap-2 overflow-hidden relative select-none">
+ <p class="font-semibold text-[11px] text-gray-700 leading-tight">Draw a cell structure.</p>
+ <div class="w-full flex-1 flex flex-col border border-gray-200 rounded-lg overflow-hidden mt-1 relative bg-gray-50/50 ">
+ <!-- fake toolbar -->
+ <div class="w-full h-6 bg-white border-b border-gray-200 flex items-center px-1.5 gap-2 shrink-0">
+ <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+ <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></svg>
+ <div class="w-px h-3 bg-gray-200 mx-0.5"></div>
+ <div class="w-2.5 h-2.5 rounded-full bg-red-500 border border-black/10"></div>
+ <div class="w-2.5 h-2.5 rounded-full bg-blue-500 border border-black/10 "></div>
+ <div class="w-2.5 h-2.5 rounded-full bg-green-500 border border-black/10"></div>
+ </div>
+ <!-- canvas area -->
+ <div class="w-full flex-1 relative flex items-center justify-center overflow-hidden">
+ <!-- simple SVG squiggle to simulate drawing -->
+ <svg class="w-full h-full" viewBox="0 0 100 50">
+ <path d="M 20 25 Q 40 5 50 25 T 80 25" fill="transparent" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" />
+ </svg>
+ </div>
+ </div>
+ </div>
+ }
+ @default {
+ <div class="w-full h-full flex flex-col p-4 items-center justify-center text-gray-400 bg-gray-50/50">
+ <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-2 text-gray-300"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+ <span class="text-[10px] font-bold uppercase tracking-wider">Preview Pending</span>
+ </div>
+ }
+}

@@ -1,0 +1,267 @@
+<div class="flex flex-col gap-6 h-full p-3">
+    <div class="flex items-center justify-between">
+         <div>
+             <div class="flex items-center gap-3">
+                 <h1 class="text-2xl font-bold text-gray-900">People</h1>
+                 <span class="text-xs font-semibold bg-primary/10 text-primary px-2.5 py-0.5 rounded-full border border-primary/20">3 Members</span>
+             </div>
+             <p class="text-sm text-gray-500 mt-1">Manage students, teachers, and observers in this course</p>
+         </div>
+         <button class="btn primary flex items-center gap-2" (click)="openAddMemberModal(addMemberTemplate)">
+             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+             Add Member
+         </button>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="bg-white p-4 rounded-2xl border border-gray-100 flex flex-col sm:flex-row gap-4 items-center justify-between">
+         <div class="relative w-full sm:w-96">
+             <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+             <input type="text" placeholder="Search people..." class="form-control pl-10! h-10 w-full">
+         </div>
+         <div class="flex items-center gap-3 w-full sm:w-auto">
+             <select class="form-control h-10 w-full sm:w-48 text-sm">
+                 <option value="">All Roles</option>
+                 <option value="student">Students</option>
+                 <option value="teacher">Teachers</option>
+                 <option value="ta">TAs</option>
+             </select>
+         </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden flex-1 flex flex-col">
+         <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                   <thead>
+                        <tr class="border-b border-gray-100 bg-gray-100">
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Student Info</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">User ID</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Role</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Last Activity</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Total Activity</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-right">Actions</th>
+                        </tr>
+                   </thead>
+                   <tbody class="divide-y divide-gray-50">
+                        <tr class="hover:bg-gray-50/50 transition-colors group">
+                             <td class="p-4">
+                                  <div class="flex items-center gap-3">
+                                       <img src="https://ui-avatars.com/api/?name=Jane+Doe&background=0D8ABC&color=fff" class="size-9 rounded-full object-cover shrink-0">
+                                       <div>
+                                            <div (click)="profileDrawerVisible.set(true)" class="font-medium text-gray-900 group-hover:text-primary transition-colors cursor-pointer">Jane Doe</div>
+                                            <div class="text-xs text-gray-500">jane.doe@example.com</div>
+                                       </div>
+                                  </div>
+                             </td>
+                              <td class="p-4 text-sm font-medium text-gray-600">STU-84920</td>
+                              <td class="p-4">
+                                   <span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-semibold">Student</span>
+                              </td>
+                              <td class="p-4 text-sm text-gray-600">Oct 24 at 10:45 AM</td>
+                              <td class="p-4 text-sm text-gray-600">14:20:05</td>
+                              <td class="p-4 text-right">
+                                   <button zDropdown [zDropdownMenu]="itemMenu" class="p-2 text-gray-400 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                   </button>
+                              </td>
+                        </tr>
+                        <!-- Row 2 (Teacher) -->
+                        <tr class="hover:bg-gray-50/50 transition-colors group">
+                             <td class="p-4">
+                                  <div class="flex items-center gap-3">
+                                       <img src="https://ui-avatars.com/api/?name=Instructor+Smith&background=E11D48&color=fff" class="size-9 rounded-full object-cover shrink-0">
+                                       <div>
+                                            <div (click)="profileDrawerVisible.set(true)" class="font-medium text-gray-900 group-hover:text-primary transition-colors cursor-pointer">Instructor Smith</div>
+                                            <div class="text-xs text-gray-500">smith@example.com</div>
+                                       </div>
+                                  </div>
+                             </td>
+                              <td class="p-4 text-sm font-medium text-gray-600">TCH-10294</td>
+                              <td class="p-4">
+                                   <span class="px-2.5 py-1 bg-rose-50 text-rose-600 rounded-lg text-xs font-semibold">Teacher</span>
+                              </td>
+                              <td class="p-4 text-sm text-gray-600">Oct 25 at 8:00 AM</td>
+                              <td class="p-4 text-sm text-gray-600">42:15:30</td>
+                              <td class="p-4 text-right">
+                                   <button zDropdown [zDropdownMenu]="itemMenu" class="p-2 text-gray-400 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                   </button>
+                              </td>
+                        </tr>
+                        <!-- Row 3 -->
+                        <tr class="hover:bg-gray-50/50 transition-colors group">
+                             <td class="p-4">
+                                  <div class="flex items-center gap-3">
+                                       <img src="https://ui-avatars.com/api/?name=Alex+Johnson&background=0D8ABC&color=fff" class="size-9 rounded-full object-cover shrink-0">
+                                       <div>
+                                            <div (click)="profileDrawerVisible.set(true)" class="font-medium text-gray-900 group-hover:text-primary transition-colors cursor-pointer">Alex Johnson</div>
+                                            <div class="text-xs text-gray-500">alex.j@example.com</div>
+                                       </div>
+                                  </div>
+                             </td>
+                              <td class="p-4 text-sm font-medium text-gray-600">STU-91823</td>
+                              <td class="p-4">
+                                   <span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-semibold">Student</span>
+                              </td>
+                              <td class="p-4 text-sm text-gray-600">Oct 20 at 3:30 PM</td>
+                              <td class="p-4 text-sm text-gray-600">10:45:12</td>
+                              <td class="p-4 text-right">
+                                   <button zDropdown [zDropdownMenu]="itemMenu" class="p-2 text-gray-400 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                   </button>
+                              </td>
+                        </tr>
+                   </tbody>
+              </table>
+         </div>
+    </div>
+</div>
+
+<!-- Add Member Modal -->
+<ng-template #addMemberTemplate>
+    <div class="flex flex-col gap-5 pt-2">
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Add users by</label>
+            <div class="flex gap-4">
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="add-by" class="text-primary focus:ring-primary" checked>
+                    <span class="text-sm text-gray-700">Email Address</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="add-by" class="text-primary focus:ring-primary">
+                    <span class="text-sm text-gray-700">User ID</span>
+                </label>
+            </div>
+        </div>
+        
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Email Addresses</label>
+            <textarea rows="4" class="form-control w-full resize-none" placeholder="example@school.edu, student@school.edu"></textarea>
+            <p class="text-xs text-gray-500 mt-1.5">Enter multiple email addresses separated by commas.</p>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Role</label>
+                <select class="form-control w-full">
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="ta">TA</option>
+                    <option value="observer">Observer</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Section</label>
+                <select class="form-control w-full">
+                    <option value="all">All Sections</option>
+                    <option value="sec1">Section 1</option>
+                    <option value="sec2">Section 2</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
+            <button class="btn outline px-6" (click)="closeAddMemberModal()">Cancel</button>
+            <button class="btn primary px-6">Add Members</button>
+        </div>
+    </div>
+</ng-template>
+
+<z-dropdown-menu-content #itemMenu="zDropdownMenuContent" zAlign="end" class="w-48">
+    <z-dropdown-menu-item>Message user</z-dropdown-menu-item>
+    <z-dropdown-menu-item (click)="profileDrawerVisible.set(true)">View progress report</z-dropdown-menu-item>
+    <z-dropdown-menu-item>Change role</z-dropdown-menu-item>
+    <z-dropdown-menu-separator></z-dropdown-menu-separator>
+    <z-dropdown-menu-item class="text-red-600 focus:text-red-600 focus:bg-red-50">Remove from course</z-dropdown-menu-item>
+</z-dropdown-menu-content>
+
+<!-- Profile Drawer -->
+<z-drawer [(zVisible)]="profileDrawerVisible" [zPlacement]="'right'" [zDismissible]="true" class="w-full sm:w-[400px]">
+  <z-drawer-header>
+    <div class="flex items-center gap-4 border-b border-gray-100 pb-4">
+        <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&background=0D8ABC&color=fff" class="size-12 rounded-full object-cover shrink-0">
+        <div>
+            <div class="font-bold text-xl">Sarah Johnson</div>
+            <div class="text-sm text-gray-500">BIO 201 Class A</div>
+        </div>
+     </div>
+  </z-drawer-header>
+  <div class="p-6 overflow-y-auto">
+      
+      <!-- Stats -->
+      <div class="flex flex-col gap-3 mb-8">
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-500 font-medium">Course completion</span>
+              <span class="font-bold text-gray-900">71%</span>
+          </div>
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-500 font-medium">Overall mastery</span>
+              <span class="font-bold text-gray-900">68%</span>
+          </div>
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-500 font-medium">Assignments completed</span>
+              <span class="font-bold text-gray-900">14/18</span>
+          </div>
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-500 font-medium">Attendance</span>
+              <span class="font-bold text-gray-900">92%</span>
+          </div>
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-500 font-medium">Current risk</span>
+              <span class="font-bold text-amber-600">Medium</span>
+          </div>
+      </div>
+
+      <!-- Mastery -->
+      <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Mastery</h3>
+      <div class="flex flex-col gap-3 mb-8">
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-700 font-medium">Cell structure</span>
+              <span class="font-bold text-green-600">91%</span>
+          </div>
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-700 font-medium">Cell division</span>
+              <span class="font-bold text-gray-900">76%</span>
+          </div>
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-700 font-medium">Genetics</span>
+              <div class="flex items-center gap-1.5">
+                  <span class="font-bold text-red-600">54%</span>
+                  <svg class="text-red-500" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+              </div>
+          </div>
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-700 font-medium">Metabolism</span>
+              <span class="font-bold text-gray-900">68%</span>
+          </div>
+      </div>
+
+      <!-- AI Insight -->
+      <div class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-4 mb-6">
+          <div class="flex justify-between items-center mb-2">
+              <h3 class="text-xs font-bold text-indigo-800 uppercase tracking-wider flex items-center gap-1.5">
+                  <svg class="text-indigo-600" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><line x1="12" y1="22" x2="12" y2="12"></line></svg>
+                  AI Insight
+              </h3>
+              <span class="text-[10px] font-semibold text-indigo-500 bg-indigo-100/50 px-2 py-0.5 rounded-full">AI generated</span>
+          </div>
+          <p class="text-sm text-indigo-900 leading-relaxed">
+              Sarah is struggling primarily with Genetics. Her errors suggest difficulty with Mendelian inheritance.
+          </p>
+      </div>
+
+      <!-- Intervention -->
+      <div class="bg-amber-50/50 border border-amber-100 rounded-xl p-4">
+          <h3 class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-2">Recommended Intervention</h3>
+          <p class="text-sm text-amber-900 mb-4 font-medium flex items-center flex-wrap gap-1">
+              Review Lesson 6 <span class="text-amber-400">→</span> Practice Set B <span class="text-amber-400">→</span> Reattempt Quiz 3
+          </p>
+          <div class="flex items-center gap-2">
+              <button class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors">Assign</button>
+              <button class="text-amber-700 hover:bg-amber-100 text-xs font-bold py-1.5 px-3 rounded-lg transition-colors">Dismiss</button>
+          </div>
+      </div>
+
+  </div>
+</z-drawer>

@@ -1,0 +1,258 @@
+<div class="flex items-start justify-between mb-5">
+     <div>
+          <h1 class="font-semibold text-2xl text-gray-800">Students</h1>
+          <p class="text-gray-500 text-sm mt-1">Manage and monitor student progress across all courses.</p>
+     </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 gap-5 mb-8">
+    <div class="rounded-2xl bg-white p-4">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="bg-primary/5 rounded-full size-10 flex items-center justify-center text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" color="#3c3c3c" fill="none" stroke="#3c3c3c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 8C15 5.23858 12.7614 3 10 3C7.23858 3 5 5.23858 5 8C5 10.7614 7.23858 13 10 13C12.7614 13 15 10.7614 15 8Z"></path>
+                    <path d="M3 20C3 16.134 6.13401 13 10 13C11.9587 13 13.7295 13.8045 15 15.101"></path>
+                    <path d="M13 18.5C13 18.5 14.3485 19.0067 15 21C15 21 18.1765 16 21 15"></path>
+                </svg>
+            </span>
+            <span class="text-gray-800 text-sm font-semibold">Total Students</span>
+        </div>
+        <div class="font-bold text-3xl">342</div>
+    </div>
+
+    <div class="rounded-2xl bg-white p-4">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="bg-primary/5 rounded-full size-10 flex items-center justify-center text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </span>
+            <span class="text-gray-800 text-sm font-semibold">Avg Progress</span>
+        </div>
+        <div class="font-bold text-3xl">68%</div>
+    </div>
+
+    <div class="rounded-2xl bg-white p-4">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="bg-primary/5 rounded-full size-10 flex items-center justify-center text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="7"></circle>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                </svg>
+            </span>
+            <span class="text-gray-800 text-sm font-semibold">Avg Mastery</span>
+        </div>
+        <div class="font-bold text-3xl">72%</div>
+    </div>
+
+    <div class="rounded-2xl bg-white p-4">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="bg-primary/5 rounded-full size-10 flex items-center justify-center text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            </span>
+            <span class="text-gray-800 text-sm font-semibold">At Risk</span>
+        </div>
+        <div class="font-bold text-3xl">28</div>
+    </div>
+
+    <div class="rounded-2xl bg-white p-4">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="bg-primary/5 rounded-full size-10 flex items-center justify-center text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                    <path d="m9 16 2 2 4-4"></path>
+                </svg>
+            </span>
+            <span class="text-gray-800 text-sm font-semibold">Avg Attendance</span>
+        </div>
+        <div class="font-bold text-3xl">92%</div>
+    </div>
+</div>
+
+<div class="flex items-center justify-between mb-6">
+     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+          @for (nav of navItems; track nav.id) {
+              <button class="px-4 py-1.5 text-[13px] rounded-2xl transition-all whitespace-nowrap"
+                      [class.font-semibold]="activeNav() === nav.id"
+                      [class.bg-white]="activeNav() === nav.id"
+                      [class.text-gray-900]="activeNav() === nav.id"
+                      [class.font-medium]="activeNav() !== nav.id"
+                      [class.text-gray-500]="activeNav() !== nav.id"
+                      [class.hover:text-gray-900]="activeNav() !== nav.id"
+                      [class.hover:bg-gray-200/50]="activeNav() !== nav.id"
+                      (click)="activeNav.set(nav.id)">
+                  {{nav.label}}
+              </button>
+          }
+     </div>
+     
+     <div class="flex items-center gap-3">
+         <div class="relative w-full max-w-[200px]">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input type="text" class="form-control !pl-9 !py-1.5 h-auto text-sm w-full rounded-2xl" placeholder="Search students...">
+         </div>
+         
+         <button zDropdown [zDropdownMenu]="filterMenu" class="px-3 py-1.5 text-[13px] font-medium rounded-2xl transition-all flex items-center gap-2 bg-gray-100 text-gray-500 hover:text-gray-900 hover:bg-gray-200">
+             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+             Filter
+         </button>
+         
+         <z-dropdown-menu-content #filterMenu="zDropdownMenuContent" class="w-[300px] sm:w-[450px] p-5 !bg-white">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-bold text-gray-900">Advanced Filters</h3>
+                <button class="text-xs font-medium text-primary hover:text-primary-600">Clear All</button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="form-group">
+                    <label class="text-sm font-medium text-gray-700">Course</label>
+                    <z-combobox class="w-full">
+                        <z-combobox-input placeholder="Select Course" class="z-form-control"/>
+                        <z-combobox-content>
+                            <z-combobox-list>
+                                @for (option of courseOptions; track option.value) {
+                                    <z-combobox-item [zValue]="option.value">{{option.label}}</z-combobox-item>
+                                }
+                            </z-combobox-list>
+                        </z-combobox-content>
+                    </z-combobox>
+                </div>
+                <div class="form-group">
+                    <label class="text-sm font-medium text-gray-700">Class</label>
+                    <z-combobox class="w-full">
+                        <z-combobox-input placeholder="Select Class" class="z-form-control"/>
+                        <z-combobox-content>
+                            <z-combobox-list>
+                                @for (option of classOptions; track option.value) {
+                                    <z-combobox-item [zValue]="option.value">{{option.label}}</z-combobox-item>
+                                }
+                            </z-combobox-list>
+                        </z-combobox-content>
+                    </z-combobox>
+                </div>
+                <div class="form-group">
+                    <label class="text-sm font-medium text-gray-700">Level</label>
+                    <z-combobox class="w-full">
+                        <z-combobox-input placeholder="Select Level" class="z-form-control"/>
+                        <z-combobox-content>
+                            <z-combobox-list>
+                                @for (option of levelOptions; track option.value) {
+                                    <z-combobox-item [zValue]="option.value">{{option.label}}</z-combobox-item>
+                                }
+                            </z-combobox-list>
+                        </z-combobox-content>
+                    </z-combobox>
+                </div>
+                <div class="form-group">
+                    <label class="text-sm font-medium text-gray-700">Status</label>
+                    <z-combobox class="w-full">
+                        <z-combobox-input placeholder="Select Status" class="z-form-control"/>
+                        <z-combobox-content>
+                            <z-combobox-list>
+                                @for (option of statusOptions; track option.value) {
+                                    <z-combobox-item [zValue]="option.value">{{option.label}}</z-combobox-item>
+                                }
+                            </z-combobox-list>
+                        </z-combobox-content>
+                    </z-combobox>
+                </div>
+            </div>
+         </z-dropdown-menu-content>
+     </div>
+</div>
+
+<div class="bg-white border border-gray-100 rounded-2xl overflow-hidden p-1">
+    <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 border-b border-gray-100">
+                        <th class="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Student Info</th>
+                        <th class="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Course</th>
+                        <th class="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Progress</th>
+                        <th class="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Mastery</th>
+                        <th class="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Risk</th>
+                        <th class="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center w-16"></th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    @for (student of students(); track student.id) {
+                        <tr class="hover:bg-gray-50/50 transition-colors group">
+                            <td class="py-4 px-6">
+                                <div class="flex items-center gap-3">
+                                    <img [src]="'https://ui-avatars.com/api/?name=' + student.name + '&background=0D8ABC&color=fff'" class="size-9 rounded-full object-cover shrink-0">
+                                    <div>
+                                        <div (click)="navigateToProfile(student.id)" class="font-medium text-gray-900 group-hover:text-primary transition-colors cursor-pointer text-sm">{{student.name}}</div>
+                                        <div class="text-xs text-gray-500">{{student.email}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 text-sm text-gray-600 font-medium">
+                                {{student.course}}
+                            </td>
+                            <td class="py-4 px-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-24 h-1.5 rounded-full bg-gray-100 overflow-hidden hidden sm:block">
+                                        <div class="h-full rounded-full" 
+                                             [class.bg-green-500]="student.progress >= 80"
+                                             [class.bg-yellow-500]="student.progress >= 50 && student.progress < 80"
+                                             [class.bg-red-500]="student.progress < 50"
+                                             [style.width.%]="student.progress">
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-gray-700">{{student.progress}}%</span>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6">
+                                <span class="text-sm font-bold"
+                                      [class.text-green-600]="student.mastery >= 80"
+                                      [class.text-yellow-600]="student.mastery >= 50 && student.mastery < 80"
+                                      [class.text-red-600]="student.mastery < 50">
+                                    {{student.mastery}}%
+                                </span>
+                            </td>
+                            <td class="py-4 px-6">
+                                <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider inline-flex"
+                                      [class.bg-green-50]="student.risk === 'Low'"
+                                      [class.text-green-700]="student.risk === 'Low'"
+                                      [class.bg-yellow-50]="student.risk === 'Medium'"
+                                      [class.text-yellow-700]="student.risk === 'Medium'"
+                                      [class.bg-red-50]="student.risk === 'High'"
+                                      [class.text-red-700]="student.risk === 'High'">
+                                    {{student.risk}}
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <button zDropdown [zDropdownMenu]="listMenu" class="p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                </button>
+                                
+                                <z-dropdown-menu-content #listMenu="zDropdownMenuContent" class="w-48 text-left">
+                                    <z-dropdown-menu-item>
+                                        <span class="flex items-center gap-2 w-full h-full" (click)="navigateToProfile(student.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                            View Profile
+                                        </span>
+                                    </z-dropdown-menu-item>
+                                    <z-dropdown-menu-item>
+                                        <span class="flex items-center gap-2 text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                            Message Student
+                                        </span>
+                                    </z-dropdown-menu-item>
+                                    <z-dropdown-menu-item>
+                                        <span class="flex items-center gap-2 text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                            Update Risk Status
+                                        </span>
+                                    </z-dropdown-menu-item>
+                                </z-dropdown-menu-content>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

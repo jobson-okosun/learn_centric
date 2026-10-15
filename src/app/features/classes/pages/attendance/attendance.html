@@ -1,0 +1,183 @@
+<div class="flex flex-col gap-6 h-full">
+    <div class="flex items-center justify-between">
+         <div>
+             <div class="flex items-center gap-3">
+                 <h1 class="text-2xl font-bold text-gray-900">Attendance</h1>
+             </div>
+             <p class="text-sm text-gray-500 mt-1">Take roll call for your class session</p>
+         </div>
+         <div class="flex items-center gap-3">
+             <button class="btn primary flex items-center gap-2" (click)="saveAttendance()">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                 Save Attendance
+             </button>
+         </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+        <!-- Present -->
+        <div class="rounded-2xl bg-white p-4 border border-gray-200">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="bg-emerald-50 rounded-full size-10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                <span class="text-gray-800 text-sm font-semibold">Present</span>
+            </div>
+            <div class="font-bold text-3xl">{{presentCount()}}</div>
+        </div>
+
+        <!-- Absent -->
+        <div class="rounded-2xl bg-white p-4 border border-gray-200">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="bg-red-50 rounded-full size-10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </span>
+                <span class="text-gray-800 text-sm font-semibold">Absent</span>
+            </div>
+            <div class="font-bold text-3xl">{{absentCount()}}</div>
+        </div>
+
+        <!-- Late -->
+        <div class="rounded-2xl bg-white p-4 border border-gray-200">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="bg-amber-50 rounded-full size-10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </span>
+                <span class="text-gray-800 text-sm font-semibold">Late</span>
+            </div>
+            <div class="font-bold text-3xl">{{lateCount()}}</div>
+        </div>
+
+        <!-- Excused -->
+        <div class="rounded-2xl bg-white p-4 border border-gray-200">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="bg-gray-100 rounded-full size-10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </span>
+                <span class="text-gray-800 text-sm font-semibold">Excused</span>
+            </div>
+            <div class="font-bold text-3xl">{{excusedCount()}}</div>
+        </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="bg-white p-4 rounded-2xl border border-gray-100 flex flex-col sm:flex-row gap-4 items-center justify-between">
+         <div class="flex items-center gap-3 w-full sm:w-auto">
+             <div class="relative w-full sm:w-64">
+                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                 <input type="date" [value]="selectedDate()" (change)="selectedDate.set($any($event.target).value)" class="form-control pl-10! h-10 w-full text-sm">
+             </div>
+         </div>
+         <div class="flex items-center gap-3 w-full sm:w-auto">
+             <div class="relative w-full sm:w-64">
+                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                 <input type="text" placeholder="Search students..." class="form-control pl-10! h-10 w-full">
+             </div>
+             <button (click)="markAllPresent()" class="btn outline whitespace-nowrap">
+                 Mark All Present
+             </button>
+         </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden flex-1 flex flex-col">
+         <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                   <thead>
+                        <tr class="border-b border-gray-100 bg-gray-100">
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Student</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Student ID</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Status</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-right">Attendance Record</th>
+                        </tr>
+                   </thead>
+                   <tbody class="divide-y divide-gray-50">
+                        @for (student of students(); track student.id) {
+                            <tr class="hover:bg-gray-50/50 transition-colors group">
+                                 <!-- Student -->
+                                 <td class="p-4">
+                                      <div class="flex items-center gap-3">
+                                        <img src="https://ui-avatars.com/api/?name=Jane+Doe&background=0D8ABC&color=fff" class="size-9 rounded-full object-cover shrink-0">
+                                        <div>
+                                            <div class="font-medium text-gray-900 group-hover:text-primary transition-colors cursor-pointer">Jane Doe</div>
+                                            <div class="text-xs text-gray-500">jane.doe@example.com</div>
+                                        </div>
+                                    </div>
+                                 </td>
+                                 <!-- ID -->
+                                 <td class="p-4 text-sm text-gray-500">
+                                      {{student.studentId}}
+                                 </td>
+                                 <!-- Status (Current Class Record) -->
+                                 <td class="p-4">
+                                      @switch (student.status) {
+                                          @case ('present') {
+                                              <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-semibold">Present</span>
+                                          }
+                                          @case ('absent') {
+                                              <span class="px-2.5 py-1 bg-red-50 text-red-700 rounded-lg text-xs font-semibold">Absent</span>
+                                          }
+                                          @case ('late') {
+                                              <span class="px-2.5 py-1 bg-amber-50 text-amber-700 rounded-lg text-xs font-semibold">Late</span>
+                                          }
+                                          @case ('excused') {
+                                              <span class="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-semibold">Excused</span>
+                                          }
+                                          @case ('unmarked') {
+                                              <span class="px-2.5 py-1 border border-gray-200 text-gray-500 rounded-lg text-xs font-semibold">Unmarked</span>
+                                          }
+                                      }
+                                 </td>
+                                 <!-- Actions -->
+                                 <td class="p-4 text-right">
+                                      <div class="inline-flex p-1 bg-gray-100 rounded-xl gap-1 border border-gray-200/50">
+                                          <button (click)="setStatus(student.id, 'present')" 
+                                                  [class.bg-white]="student.status === 'present'"
+                                                  [class.border]="student.status === 'present'"
+                                                  [class.border-gray-200]="student.status === 'present'"
+                                                  [class.text-emerald-700]="student.status === 'present'"
+                                                  [class.text-gray-500]="student.status !== 'present'"
+                                                  [class.hover:bg-gray-200]="student.status !== 'present'"
+                                                  class="px-4 py-1.5 text-xs font-bold rounded-lg transition-colors">
+                                              Present
+                                          </button>
+                                          <button (click)="setStatus(student.id, 'absent')" 
+                                                  [class.bg-white]="student.status === 'absent'"
+                                                  [class.border]="student.status === 'absent'"
+                                                  [class.border-gray-200]="student.status === 'absent'"
+                                                  [class.text-red-700]="student.status === 'absent'"
+                                                  [class.text-gray-500]="student.status !== 'absent'"
+                                                  [class.hover:bg-gray-200]="student.status !== 'absent'"
+                                                  class="px-4 py-1.5 text-xs font-bold rounded-lg transition-colors">
+                                              Absent
+                                          </button>
+                                          <button (click)="setStatus(student.id, 'late')" 
+                                                  [class.bg-white]="student.status === 'late'"
+                                                  [class.border]="student.status === 'late'"
+                                                  [class.border-gray-200]="student.status === 'late'"
+                                                  [class.text-amber-700]="student.status === 'late'"
+                                                  [class.text-gray-500]="student.status !== 'late'"
+                                                  [class.hover:bg-gray-200]="student.status !== 'late'"
+                                                  class="px-4 py-1.5 text-xs font-bold rounded-lg transition-colors">
+                                              Late
+                                          </button>
+                                          <button (click)="setStatus(student.id, 'excused')" 
+                                                  [class.bg-white]="student.status === 'excused'"
+                                                  [class.border]="student.status === 'excused'"
+                                                  [class.border-gray-200]="student.status === 'excused'"
+                                                  [class.text-gray-800]="student.status === 'excused'"
+                                                  [class.text-gray-500]="student.status !== 'excused'"
+                                                  [class.hover:bg-gray-200]="student.status !== 'excused'"
+                                                  class="px-4 py-1.5 text-xs font-bold rounded-lg transition-colors">
+                                              Excused
+                                          </button>
+                                      </div>
+                                 </td>
+                            </tr>
+                        }
+                   </tbody>
+              </table>
+         </div>
+    </div>
+</div>

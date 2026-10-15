@@ -1,0 +1,176 @@
+<div class="h-full flex flex-col p-6 -mx-6 -my-6 bg-gray-50/50">
+    <!-- Header Area -->
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">Content Library</h1>
+        
+        <div class="flex items-center gap-3">
+            <button type="button" (click)="uploadModal().open()" class="btn primary flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                Upload File
+            </button>
+        </div>
+    </div>
+
+    <!-- Controls Toolbar (Tabs, Search, Filter, View Toggle) -->
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+            @for (source of sources(); track source.id) {
+                <button class="px-4 py-1.5 text-[13px] rounded-2xl transition-all whitespace-nowrap"
+                        [class.font-semibold]="activeSource() === source.id"
+                        [class.bg-white]="activeSource() === source.id"
+                        [class.text-gray-900]="activeSource() === source.id"
+                        [class.font-medium]="activeSource() !== source.id"
+                        [class.text-gray-500]="activeSource() !== source.id"
+                        [class.hover:text-gray-900]="activeSource() !== source.id"
+                        [class.hover:bg-gray-200]="activeSource() !== source.id"
+                        [class.hover:bg-opacity-50]="activeSource() !== source.id"
+                        (click)="activeSource.set(source.id)">
+                    {{source.label}}
+                </button>
+            }
+        </div>
+        
+        <div class="flex items-center gap-3">
+            <div class="relative w-full max-w-[200px]">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="text" 
+                       class="form-control !pl-9 !py-1.5 h-auto text-sm w-full rounded-2xl" 
+                       placeholder="Search...">
+            </div>
+            
+            <button zDropdown [zDropdownMenu]="filterMenu"
+                    class="px-3 py-1.5 text-[13px] font-medium rounded-2xl transition-all flex items-center gap-2 bg-gray-100 text-gray-500 hover:text-gray-900 hover:bg-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                Filter
+            </button>
+
+            <z-dropdown-menu-content #filterMenu="zDropdownMenuContent" class="w-[300px] sm:w-[450px] p-5 !bg-white">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-bold text-gray-900">Advanced Filters</h3>
+                    <button class="text-xs font-medium text-primary hover:text-primary-600">Clear All</button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label class="text-sm font-medium text-gray-700">Type</label>
+                        <z-combobox class="w-full" [options]="typeOptions" [zValue]="'all'"></z-combobox>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-sm font-medium text-gray-700">Subject</label>
+                        <z-combobox class="w-full" [options]="subjectOptions" [zValue]="'all'"></z-combobox>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-sm font-medium text-gray-700">Level</label>
+                        <z-combobox class="w-full" [options]="levelOptions" [zValue]="'all'"></z-combobox>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-sm font-medium text-gray-700">Licence</label>
+                        <z-combobox class="w-full" [options]="licenceOptions" [zValue]="'all'"></z-combobox>
+                    </div>
+                    <div class="form-group sm:col-span-2">
+                        <label class="text-sm font-medium text-gray-700">Outcome / Skill</label>
+                        <input type="text" placeholder="Search outcome..." class="form-control w-full text-sm !py-[9px]">
+                    </div>
+                </div>
+            </z-dropdown-menu-content>
+
+            <!-- Separator -->
+            <div class="w-px h-5 bg-gray-200"></div>
+
+            <div class="flex items-center gap-1">
+                <button class="px-3 py-1.5 text-[13px] rounded-2xl transition-all"
+                        [class.font-semibold]="viewMode() === 'grid'"
+                        [class.bg-white]="viewMode() === 'grid'"
+                        [class.text-gray-900]="viewMode() === 'grid'"
+                        [class.font-medium]="viewMode() !== 'grid'"
+                        [class.text-gray-500]="viewMode() !== 'grid'"
+                        [class.hover:text-gray-900]="viewMode() !== 'grid'"
+                        [class.hover:bg-gray-200]="viewMode() !== 'grid'"
+                        [class.hover:bg-opacity-50]="viewMode() !== 'grid'"
+                        (click)="viewMode.set('grid')">
+                    Grid
+                </button>
+                <button class="px-3 py-1.5 text-[13px] rounded-2xl transition-all"
+                        [class.font-semibold]="viewMode() === 'list'"
+                        [class.bg-white]="viewMode() === 'list'"
+                        [class.text-gray-900]="viewMode() === 'list'"
+                        [class.font-medium]="viewMode() !== 'list'"
+                        [class.text-gray-500]="viewMode() !== 'list'"
+                        [class.hover:text-gray-900]="viewMode() !== 'list'"
+                        [class.hover:bg-gray-200]="viewMode() !== 'list'"
+                        [class.hover:bg-opacity-50]="viewMode() !== 'list'"
+                        (click)="viewMode.set('list')">
+                    List
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Content Area -->
+    <div class="flex-1 min-h-0 overflow-y-auto no-scrollbar pr-2 pb-6">
+        @if (viewMode() === 'grid') {
+            <app-object-grid 
+                [objects]="objects()" 
+                [selectedIds]="selectedIds()"
+                (objectSelected)="onObjectSelected($event)" 
+                (useInCourse)="onUseInCourse($event)"
+                (toggleSelection)="onToggleSelection($event)">
+            </app-object-grid>
+        } @else {
+            <app-object-list 
+                [objects]="objects()" 
+                [selectedIds]="selectedIds()"
+                [allSelected]="allSelected()"
+                (objectSelected)="onObjectSelected($event)" 
+                (useInCourse)="onUseInCourse($event)"
+                (toggleSelection)="onToggleSelection($event)"
+                (toggleAll)="onToggleAll()">
+            </app-object-list>
+        }
+    </div>
+
+    <!-- Floating Bulk Action Bar -->
+    @if (selectedIds().size > 0) {
+        <div class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-6 z-50 animate-in slide-in-from-bottom-10 fade-in duration-200">
+            <div class="flex items-center gap-2">
+                <span class="flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-xs font-bold">{{selectedIds().size}}</span>
+                <span class="text-sm font-medium">Selected</span>
+            </div>
+            
+            <div class="w-px h-6 bg-gray-700"></div>
+            
+            <div class="flex items-center gap-2">
+                <button class="px-3 py-1.5 text-sm font-medium hover:bg-white/10 rounded-xl transition-colors flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                    Share
+                </button>
+                <button class="px-3 py-1.5 text-sm font-medium hover:bg-white/10 rounded-xl transition-colors flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                    Tag
+                </button>
+                <button class="px-3 py-1.5 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-white/10 rounded-xl transition-colors flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    Archive
+                </button>
+            </div>
+            
+            <div class="w-px h-6 bg-gray-700"></div>
+            
+            <button (click)="clearSelection()" class="p-1.5 text-gray-400 hover:text-white rounded-lg transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+    }
+
+    <!-- Object Detail Slide-over -->
+    @if (selectedObject()) {
+        <app-object-detail [object]="selectedObject()!" (close)="selectedObject.set(null)"></app-object-detail>
+    }
+
+    <!-- Use In Course Modal -->
+    <app-use-in-course-modal></app-use-in-course-modal>
+
+    <!-- Upload Resource Modal -->
+    <app-upload-resource-modal></app-upload-resource-modal>
+</div>

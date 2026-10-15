@@ -1,0 +1,181 @@
+<div class="flex flex-col gap-6 h-full">
+    <div class="flex items-center justify-between">
+         <div>
+             <h1 class="text-2xl font-bold text-gray-900">Live Sessions</h1>
+             <p class="text-sm text-gray-500 mt-1">Join active virtual classrooms and review past recordings.</p>
+         </div>
+         <button class="btn primary flex items-center gap-2" (click)="openScheduleModal(scheduleTemplate)">
+             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+             Schedule Session
+         </button>
+    </div>
+
+    <div class="bg-slate-900 text-white rounded-4xl p-8 sm:p-10 relative overflow-hidden">
+        <!-- Live Indicator -->
+        <div class="flex items-center gap-2 mb-6 relative z-10">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
+            </span>
+            <span class="text-xs font-bold text-rose-400 uppercase tracking-[0.2em]">Live Now</span>
+        </div>
+        
+        <div class="relative z-10 max-w-2xl">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-3 tracking-tight">Cellular Biology Q&A</h2>
+            <p class="text-slate-400 text-base sm:text-lg mb-8 leading-relaxed">Join Professor Smith to review the core concepts of cellular division before the mid-term exam. Bring your questions!</p>
+            
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <button class="bg-white text-slate-900 hover:bg-slate-100 font-bold px-8 py-3 rounded-xl transition-colors shadow-sm flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                    Join Session
+                </button>
+                <div class="flex items-center gap-3">
+                    <div class="flex -space-x-2">
+                        <img src="https://ui-avatars.com/api/?name=Jane+Doe&background=0D8ABC&color=fff" class="size-8 rounded-full border-2 border-slate-900">
+                        <img src="https://ui-avatars.com/api/?name=Alex+Johnson&background=10B981&color=fff" class="size-8 rounded-full border-2 border-slate-900">
+                        <div class="size-8 rounded-full border-2 border-slate-900 bg-slate-800 text-slate-300 text-[10px] font-bold flex items-center justify-center">+12</div>
+                    </div>
+                    <span class="text-sm font-medium text-slate-400">already joined</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Decorative bg pattern -->
+        <div class="absolute -bottom-24 -right-24 text-slate-800/50 opacity-20 transform -rotate-12 pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 24 24" fill="currentColor"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+        </div>
+    </div>
+
+    <!-- The Archive (Past Recordings) -->
+    <div class="mt-4">
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Past Recordings</h3>
+        
+        <!-- Toolbar -->
+        <div class="bg-white p-3 rounded-t-2xl border-x border-t border-gray-200 flex flex-col sm:flex-row gap-4 items-center justify-between">
+             <div class="relative w-full sm:w-80">
+                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                 <input type="text" placeholder="Search recordings..." class="form-control pl-10! h-9 w-full text-sm">
+             </div>
+             <div class="flex items-center gap-3 w-full sm:w-auto">
+                 <select class="form-control h-9 w-full sm:w-40 text-sm">
+                     <option value="">All Topics</option>
+                     <option value="lectures">Lectures</option>
+                     <option value="reviews">Review Sessions</option>
+                 </select>
+             </div>
+        </div>
+        
+        <!-- Table -->
+        <div class="bg-white border border-gray-200 rounded-b-2xl overflow-hidden flex-1 flex flex-col">
+             <div class="overflow-x-auto">
+                  <table class="w-full text-left border-collapse">
+                       <thead>
+                            <tr class="border-b border-gray-100 bg-gray-100">
+                                 <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Topic</th>
+                                 <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Date & Time</th>
+                                 <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Duration</th>
+                                 <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Attendees</th>
+                                 <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-right">Actions</th>
+                            </tr>
+                       </thead>
+                       <tbody class="divide-y divide-gray-50">
+                            <!-- Row 1 -->
+                            <tr class="hover:bg-gray-50/50 transition-colors group">
+                                 <td class="p-4">
+                                     <div class="font-bold text-gray-900 group-hover:text-primary transition-colors cursor-pointer">Introduction to Genetics</div>
+                                     <div class="text-xs text-gray-500 mt-1">Lecture 4</div>
+                                 </td>
+                                  <td class="p-4 text-sm font-medium text-gray-600">Oct 18, 2026<span class="block text-xs font-normal text-gray-400">10:00 AM</span></td>
+                                  <td class="p-4 text-sm text-gray-600">1h 15m</td>
+                                  <td class="p-4 text-sm text-gray-600">38 students</td>
+                                  <td class="p-4 text-right flex justify-end">
+                                       <button class="btn outline !text-sm px-4 py-1.5 inline-flex items-center gap-2 group-hover:border-primary group-hover:text-primary transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                            Watch
+                                       </button>
+                                  </td>
+                            </tr>
+                            <!-- Row 2 -->
+                            <tr class="hover:bg-gray-50/50 transition-colors group">
+                                 <td class="p-4">
+                                     <div class="font-bold text-gray-900 group-hover:text-primary transition-colors cursor-pointer">Cell Structure Review</div>
+                                     <div class="text-xs text-gray-500 mt-1">Review Session</div>
+                                 </td>
+                                  <td class="p-4 text-sm font-medium text-gray-600">Oct 14, 2026<span class="block text-xs font-normal text-gray-400">4:00 PM</span></td>
+                                  <td class="p-4 text-sm text-gray-600">45m</td>
+                                  <td class="p-4 text-sm text-gray-600">22 students</td>
+                                  <td class="p-4 text-right flex justify-end">
+                                       <button class="btn outline !text-sm px-4 py-1.5 inline-flex items-center gap-2 group-hover:border-primary group-hover:text-primary transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                            Watch
+                                       </button>
+                                  </td>
+                            </tr>
+                            <!-- Row 3 -->
+                            <tr class="hover:bg-gray-50/50 transition-colors group">
+                                 <td class="p-4">
+                                     <div class="font-bold text-gray-900 group-hover:text-primary transition-colors cursor-pointer">Course Introduction</div>
+                                     <div class="text-xs text-gray-500 mt-1">Lecture 1</div>
+                                 </td>
+                                  <td class="p-4 text-sm font-medium text-gray-600">Sep 01, 2026<span class="block text-xs font-normal text-gray-400">10:00 AM</span></td>
+                                  <td class="p-4 text-sm text-gray-600">55m</td>
+                                  <td class="p-4 text-sm text-gray-600">42 students</td>
+                                  <td class="p-4 text-right flex justify-end">
+                                       <button class="btn outline !text-sm px-4 py-1.5 inline-flex items-center gap-2 group-hover:border-primary group-hover:text-primary transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                            Watch
+                                       </button>
+                                  </td>
+                            </tr>
+                       </tbody>
+                  </table>
+             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Schedule Session Modal -->
+<ng-template #scheduleTemplate>
+    <div class="flex flex-col gap-5 pt-2">
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Session Topic</label>
+            <input type="text" class="form-control w-full" placeholder="e.g. Introduction to Genetics">
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Date</label>
+                <input type="date" class="form-control w-full">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Time</label>
+                <input type="time" class="form-control w-full">
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Duration (Minutes)</label>
+            <input type="number" class="form-control w-full" placeholder="e.g. 60">
+        </div>
+        
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Agenda / Description (Optional)</label>
+            <textarea rows="3" class="form-control w-full resize-none" placeholder="Provide details about the session..."></textarea>
+        </div>
+        
+        <div class="pt-4 border-t border-gray-100 flex flex-col gap-5">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="font-medium text-gray-900">Start Session Now</div>
+                    <div class="text-xs text-gray-500">Launch the virtual classroom immediately</div>
+                </div>
+                <z-switch [zChecked]="false"></z-switch>
+            </div>
+        </div>
+        
+        <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
+            <button class="btn outline px-6" (click)="closeScheduleModal()">Cancel</button>
+            <button class="btn primary px-6">Schedule Session</button>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,216 @@
+<div class="flex flex-col gap-6 h-full">
+    <div class="flex items-center justify-between">
+         <div>
+             <div class="flex items-center gap-3">
+                 <h1 class="text-2xl font-bold text-gray-900">Performance Report</h1>
+             </div>
+             <p class="text-sm text-gray-500 mt-1">Cumulative grades and progress for this cohort</p>
+         </div>
+         <div class="flex items-center gap-3">
+             <button class="btn outline flex items-center gap-2" title="Export Report">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                 Export
+             </button>
+             <button routerLink="/courses/1/gradebook" class="btn primary flex items-center gap-2">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                 Course Gradebook
+             </button>
+         </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="rounded-2xl bg-white p-4 border border-gray-200">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="bg-violet-50 rounded-full size-10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3c3c3c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
+                </span>
+                <span class="text-gray-800 text-sm font-semibold">Class Average</span>
+            </div>
+            <div class="font-bold text-3xl">12%</div>
+        </div>
+
+        <div class="rounded-2xl bg-white p-4 border border-gray-200">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="bg-red-50 rounded-full size-10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3c3c3c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </span>
+                <span class="text-gray-800 text-sm font-semibold">At Risk Students</span>
+            </div>
+            <div class="font-bold text-3xl">{{2}}</div>
+        </div>
+
+        <div class="rounded-2xl bg-white p-4 border border-gray-200">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="bg-emerald-50 rounded-full size-10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3c3c3c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                </span>
+                <span class="text-gray-800 text-sm font-semibold">Avg Progress</span>
+            </div>
+            <div class="font-bold text-3xl">{{20}}%</div>
+        </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="bg-white p-4 rounded-2xl border border-gray-100 flex flex-col sm:flex-row gap-4 items-center justify-between">
+         <div class="relative w-full sm:w-96">
+             <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+             <input type="text" placeholder="Search students..." class="form-control pl-10! h-10 w-full">
+         </div>
+         <div class="flex items-center gap-3 w-full sm:w-auto">
+             <select class="form-control h-10 w-full sm:w-48 text-sm">
+                 <option value="">All Statuses</option>
+                 <option value="on-track">On Track</option>
+                 <option value="at-risk">At Risk</option>
+                 <option value="falling-behind">Falling Behind</option>
+             </select>
+         </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden flex-1 flex flex-col">
+         <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                   <thead>
+                        <tr class="border-b border-gray-100 bg-gray-100">
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Student</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Current Grade</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase min-w-[200px]">Course Progress</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Mastery</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Status</th>
+                             <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-right">Actions</th>
+                        </tr>
+                   </thead>
+                   <tbody class="divide-y divide-gray-50">
+                        @for (student of students(); track student.id) {
+                            <tr class="hover:bg-gray-50/50 transition-colors group cursor-pointer">
+                                 <!-- Student -->
+                                 <td class="p-4">
+                                      <div class="flex items-center gap-3">
+                                           <img [src]="student.avatar" class="size-9 rounded-full object-cover shrink-0">
+                                           <div>
+                                               <div (click)="profileDrawerVisible.set(true)" class="font-medium text-gray-900 group-hover:text-primary transition-colors cursor-pointer">{{student.name}}</div>
+                                               <div class="text-xs text-gray-500">{{student.email}}</div>
+                                           </div>
+                                      </div>
+                                 </td>
+                                 <!-- Current Grade -->
+                                 <td class="p-4 text-sm font-medium text-gray-900">
+                                      <div class="flex items-center gap-2">
+                                          <span>{{student.currentGrade.percentage}}%</span>
+                                          <span class="px-2 py-0.5 rounded text-xs font-bold bg-gray-100 text-gray-700">{{student.currentGrade.letter}}</span>
+                                      </div>
+                                 </td>
+                                 <!-- Course Progress -->
+                                 <td class="p-4">
+                                      <div class="w-full">
+                                          <div class="flex items-center justify-between mb-1.5">
+                                              <span class="text-xs font-bold text-gray-700">{{student.progress}}%</span>
+                                          </div>
+                                          <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                                              <div class="rounded-full h-1.5 transition-all duration-500"
+                                                   [class.bg-emerald-500]="student.progress >= 80"
+                                                   [class.bg-amber-500]="student.progress >= 50 && student.progress < 80"
+                                                   [class.bg-red-500]="student.progress < 50"
+                                                   [style.width.%]="student.progress"></div>
+                                          </div>
+                                      </div>
+                                 </td>
+                                 <!-- Mastery -->
+                                 <td class="p-4 text-sm font-medium"
+                                     [class.text-emerald-600]="student.mastery >= 80"
+                                     [class.text-gray-700]="student.mastery >= 60 && student.mastery < 80"
+                                     [class.text-red-600]="student.mastery < 60">
+                                     <div class="flex items-center gap-1.5">
+                                          @if (student.mastery >= 80) {
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                          } @else if (student.mastery < 60) {
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                          }
+                                          {{student.mastery}}%
+                                     </div>
+                                 </td>
+                                 <!-- Status -->
+                                 <td class="p-4">
+                                      @switch (student.status) {
+                                          @case ('on-track') {
+                                              <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-semibold">On Track</span>
+                                          }
+                                          @case ('at-risk') {
+                                              <span class="px-2.5 py-1 bg-red-50 text-red-700 rounded-lg text-xs font-semibold">At Risk</span>
+                                          }
+                                          @case ('falling-behind') {
+                                              <span class="px-2.5 py-1 bg-amber-50 text-amber-700 rounded-lg text-xs font-semibold">Falling Behind</span>
+                                          }
+                                      }
+                                 </td>
+                                 <!-- Actions -->
+                                 <td class="p-4 text-right">
+                                      <button zDropdown [zDropdownMenu]="itemMenu" class="p-2 text-gray-400 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                      </button>
+                                 </td>
+                            </tr>
+                        }
+                   </tbody>
+              </table>
+         </div>
+    </div>
+</div>
+
+<!-- Action Menu -->
+<z-dropdown-menu-content #itemMenu="zDropdownMenuContent" zAlign="end" class="w-48">
+    <z-dropdown-menu-item>Message student</z-dropdown-menu-item>
+    <z-dropdown-menu-item (click)="profileDrawerVisible.set(true)">View progress report</z-dropdown-menu-item>
+    <z-dropdown-menu-separator></z-dropdown-menu-separator>
+    <z-dropdown-menu-item routerLink="/courses/1/gradebook">Edit grade in Gradebook</z-dropdown-menu-item>
+</z-dropdown-menu-content>
+
+<!-- Profile Drawer -->
+<z-drawer [(zVisible)]="profileDrawerVisible" [zPlacement]="'right'" [zDismissible]="true" class="w-full sm:w-[400px]">
+  <z-drawer-header>
+    <div class="flex items-center gap-4 border-b border-gray-100 pb-4">
+        <img src="https://ui-avatars.com/api/?name=Jane+Doe&background=0D8ABC&color=fff" class="size-12 rounded-full object-cover shrink-0">
+        <div>
+            <div class="font-bold text-xl">Jane Doe</div>
+            <div class="text-sm text-gray-500">jane.doe@example.com</div>
+        </div>
+     </div>
+  </z-drawer-header>
+  <div class="p-6 overflow-y-auto">
+      
+      <!-- Stats -->
+      <div class="flex flex-col gap-3 mb-8">
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-500 font-medium">Class completion</span>
+              <span class="font-bold text-gray-900">85%</span>
+          </div>
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-500 font-medium">Overall score</span>
+              <span class="font-bold text-gray-900">92%</span>
+          </div>
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-500 font-medium">Topic Mastery</span>
+              <span class="font-bold text-gray-900">88%</span>
+          </div>
+          <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-500 font-medium">Status</span>
+              <span class="font-bold text-green-600">On Track</span>
+          </div>
+      </div>
+
+      <!-- AI Insight -->
+      <div class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-4 mb-6">
+          <div class="flex justify-between items-center mb-2">
+              <h3 class="text-xs font-bold text-indigo-800 uppercase tracking-wider flex items-center gap-1.5">
+                  <svg class="text-indigo-600" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><line x1="12" y1="22" x2="12" y2="12"></line></svg>
+                  AI Insight
+              </h3>
+              <span class="text-[10px] font-semibold text-indigo-500 bg-indigo-100/50 px-2 py-0.5 rounded-full">AI generated</span>
+          </div>
+          <p class="text-sm text-indigo-900 leading-relaxed">
+              Jane is performing exceptionally well across all modules. Her assignment scores are consistently above the class average.
+          </p>
+      </div>
+  </div>
+</z-drawer>

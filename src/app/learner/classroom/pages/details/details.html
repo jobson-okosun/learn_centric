@@ -1,0 +1,716 @@
+<div class="space-y-6">
+  <!-- Cohort Breadcrumb & Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-2 text-xs font-medium text-gray-500 mb-1.5">
+        <a routerLink="/learn/classroom/classes" class="hover:text-primary transition-colors flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          My Classes
+        </a>
+        <span>/</span>
+        <span class="text-gray-900 font-semibold">{{ classInfo().code }}</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <h1 class="text-2xl font-bold text-gray-900 tracking-tight">{{ classInfo().title }}</h1>
+        
+        @if (classInfo().isLiveNow) {
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+            Live Now
+          </span>
+        }
+        
+      </div>
+      <p class="text-xs text-gray-500 mt-1 flex items-center gap-2">
+        <span>{{ classInfo().courseName }}</span>
+        <span>•</span>
+        <span>{{ classInfo().cohort }}</span>
+      </p>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="flex items-center gap-2.5">
+      @if (classInfo().isLiveNow) {
+        <button
+          type="button"
+          (click)="enterLiveStage(liveStageTpl)"
+          class="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-xl transition-colors cursor-pointer"
+        >
+          <svg class="w-4 h-4 animate-spin text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" stroke-linecap="round"/>
+          </svg>
+          Join Live Stage
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Tab Navigation Shell -->
+  <div class="bg-white p-2 pb-1 rounded-2xl border border-gray-100">
+    <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+      <button
+        type="button"
+        (click)="setTab('overview')"
+        [class]="activeTab() === 'overview' ? 'bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'"
+        class="flex items-center gap-2 font-medium text-xs rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 11.9896V14.5C3 17.7998 3 19.4497 4.02513 20.4749C5.05025 21.5 6.70017 21.5 10 21.5H14C17.2998 21.5 18.9497 21.5 19.9749 20.4749C21 19.4497 21 17.7998 21 14.5V11.9896C21 10.3083 21 9.46773 20.6441 8.74005C20.2882 8.01237 19.6247 7.49628 18.2976 6.46411L16.2976 4.90855C14.2331 3.30285 13.2009 2.5 12 2.5C10.7991 2.5 9.76689 3.30285 7.70242 4.90855L5.70241 6.46411C4.37533 7.49628 3.71179 8.01237 3.3559 8.74005C3 9.46773 3 10.3083 3 11.9896Z"></path>
+        </svg>
+        Dashboard
+      </button>
+
+      <button
+        type="button"
+        (click)="setTab('recordings')"
+        [class]="activeTab() === 'recordings' ? 'bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'"
+        class="flex items-center gap-2 font-medium text-xs rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="23 7 16 12 23 17 23 7"></polygon>
+          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+        </svg>
+        Lecture Recordings
+      </button>
+
+      <button
+        type="button"
+        (click)="setTab('calendar')"
+        [class]="activeTab() === 'calendar' ? 'bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'"
+        class="flex items-center gap-2 font-medium text-xs rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        Schedule & Timetable
+      </button>
+
+      <button
+        type="button"
+        (click)="setTab('attendance')"
+        [class]="activeTab() === 'attendance' ? 'bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'"
+        class="flex items-center gap-2 font-medium text-xs rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        My Attendance
+      </button>
+    </div>
+  </div>
+
+  <!-- TAB CONTENT -->
+
+  <!-- 1. DASHBOARD / OVERVIEW -->
+  @if (activeTab() === 'overview') {
+    <div class="space-y-6">
+      <!-- Live Stage Hero Alert (if session is ongoing) -->
+      @if (classInfo().isLiveNow) {
+        <div class="bg-gradient-to-r from-rose-600 via-rose-700 to-indigo-900 rounded-2xl p-6 text-white flex flex-col md:flex-row md:items-center justify-between gap-6 border border-rose-500/20">
+          <div class="space-y-2 max-w-xl">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white text-rose-700 uppercase tracking-wide">
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse"></span>
+                In Session
+              </span>
+              <span class="text-xs text-rose-100">{{ classInfo().room }}</span>
+            </div>
+            <h2 class="text-xl font-bold tracking-tight">Stokes’ Theorem & Surface Circulation</h2>
+            <p class="text-xs text-rose-100 leading-relaxed">
+              Dr. Sarah Johnson is currently demonstrating contour vector integration. Join with microphone or camera to participate in live recitations.
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              (click)="enterLiveStage(liveStageTpl)"
+              class="px-5 py-3 text-xs font-bold text-rose-900 bg-white hover:bg-rose-50 rounded-xl transition-colors cursor-pointer flex items-center gap-2"
+            >
+              <svg class="w-4 h-4 text-rose-600" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              Enter Live Stage
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Cohort Stat Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-2xl border border-gray-100 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">
+            {{ classInfo().attendanceRate }}%
+          </div>
+          <div>
+            <div class="text-[11px] text-gray-400 font-medium uppercase">Attendance</div>
+            <div class="text-sm font-bold text-gray-900">Good Standing</div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-gray-100 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
+            A
+          </div>
+          <div>
+            <div class="text-[11px] text-gray-400 font-medium uppercase">Grade</div>
+            <div class="text-sm font-bold text-gray-900">{{ classInfo().currentGrade }}</div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-gray-100 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="text-[11px] text-gray-400 font-medium uppercase">Peers</div>
+            <div class="text-sm font-bold text-gray-900">{{ classInfo().classmatesCount }} Students</div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-gray-100 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <div>
+            <div class="text-[11px] text-gray-400 font-medium uppercase">Recordings</div>
+            <div class="text-sm font-bold text-gray-900">{{ recordings().length }} Archives</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Overview Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Upcoming Sessions Column (2 cols) -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="bg-white p-6 rounded-2xl border border-gray-100 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-bold text-base text-gray-900">Scheduled Sessions</h3>
+                <p class="text-xs text-gray-500">Upcoming live classes and laboratory recitations</p>
+              </div>
+              <button
+                type="button"
+                (click)="setTab('calendar')"
+                class="text-xs font-semibold text-primary hover:underline cursor-pointer"
+              >
+                View Timetable →
+              </button>
+            </div>
+
+            <div class="divide-y divide-gray-100">
+              @for (session of upcomingSessions(); track session.id) {
+                <div class="py-3.5 flex items-center justify-between gap-4 first:pt-0 last:pb-0">
+                  <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center text-center shrink-0">
+                      <span class="text-[10px] font-bold text-primary leading-tight uppercase">{{ session.type }}</span>
+                    </div>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <h4 class="text-sm font-semibold text-gray-900">{{ session.title }}</h4>
+                        @if (session.isLiveNow) {
+                          <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-200">
+                            LIVE
+                          </span>
+                        }
+                      </div>
+                      <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                        <span>{{ session.date }}</span>
+                        <span>•</span>
+                        <span>{{ session.time }}</span>
+                        <span>•</span>
+                        <span>{{ session.room }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    @if (session.isLiveNow) {
+                      <button
+                        type="button"
+                        (click)="enterLiveStage(liveStageTpl)"
+                        class="px-3.5 py-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors cursor-pointer"
+                      >
+                        Join
+                      </button>
+                    } @else {
+                      <span class="text-xs font-medium text-gray-400">Scheduled</span>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Announcements Board -->
+          <div class="bg-white p-6 rounded-2xl border border-gray-100 space-y-4">
+            <h3 class="font-bold text-base text-gray-900">Cohort Notices & Updates</h3>
+            <div class="space-y-4">
+              @for (ann of announcements(); track ann.id) {
+                <div class="p-4 rounded-xl bg-gray-50/70 border border-gray-100 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                      <img [src]="ann.authorAvatar" [alt]="ann.author" class="w-6 h-6 rounded-full" />
+                      <span class="text-xs font-semibold text-gray-900">{{ ann.author }}</span>
+                      <span class="text-[11px] text-gray-400">{{ ann.date }}</span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/10 text-primary">
+                      {{ ann.tag }}
+                    </span>
+                  </div>
+                  <h4 class="text-xs font-bold text-gray-900">{{ ann.title }}</h4>
+                  <p class="text-xs text-gray-600 leading-relaxed">{{ ann.content }}</p>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructor & Cohort Profile Column (1 col) -->
+        <div class="space-y-6">
+          <!-- Instructor Profile Card -->
+          <div class="bg-white p-6 rounded-2xl border border-gray-100 space-y-4">
+            <h3 class="font-bold text-sm text-gray-900">Course Instructor</h3>
+            <div class="flex items-center gap-3">
+              <img [src]="classInfo().instructorAvatar" [alt]="classInfo().instructor" class="w-12 h-12 rounded-full border border-gray-200" />
+              <div>
+                <h4 class="text-sm font-bold text-gray-900">{{ classInfo().instructor }}</h4>
+                <p class="text-xs text-gray-500">{{ classInfo().instructorRole }}</p>
+              </div>
+            </div>
+            <div class="pt-2 border-t border-gray-100 text-xs text-gray-600 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-gray-400">Office Hours</span>
+                <span class="font-medium text-gray-800">Wed 4:00 PM – 5:30 PM</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-gray-400">Meeting Room</span>
+                <span class="font-medium text-gray-800">{{ classInfo().room }}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-gray-400">Email</span>
+                <a href="mailto:sarah.j@learncentric.edu" class="font-medium text-primary hover:underline">sarah.j&#64;learncentric.edu</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Course Navigation -->
+          <div class="bg-gray-50/80 p-5 rounded-2xl border border-gray-200/80 space-y-3">
+            <h4 class="text-xs font-bold text-gray-900 uppercase tracking-wider">Associated Course</h4>
+            <p class="text-xs text-gray-600 leading-relaxed">
+              Access complete lecture notes, problem sets, and syllabus modules in the course catalog.
+            </p>
+            <a
+              routerLink="/learn/courses/details"
+              class="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline pt-1"
+            >
+              Open Full Course Syllabus →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- 2. RECORDINGS ARCHIVE TAB -->
+  @if (activeTab() === 'recordings') {
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-bold text-gray-900">Lecture Recordings & Recitations</h2>
+          <p class="text-xs text-gray-500">Rewatch previous live sessions, blackboard reviews, and TA problem sessions</p>
+        </div>
+        <div class="text-xs text-gray-500 font-medium">
+          {{ recordings().length }} archives available
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        @for (rec of recordings(); track rec.id) {
+          <div class="bg-white border border-gray-100 rounded-xl overflow-hidden hover:border-gray-200 transition-colors flex flex-col justify-between">
+            <div>
+              <div class="h-36 bg-gradient-to-br {{ rec.thumbnailGradient }} relative flex items-center justify-center p-4">
+                <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white cursor-pointer hover:scale-105 transition-transform"
+                     (click)="openRecordingPlayer(rec, recordingPlayerTpl)">
+                  <svg class="w-6 h-6 ml-0.5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+                <span class="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded text-[10px] font-bold bg-black/70 text-white">
+                  {{ rec.duration }}
+                </span>
+              </div>
+              <div class="p-4 space-y-1.5">
+                <h4 class="text-xs font-bold text-gray-900 line-clamp-1">{{ rec.title }}</h4>
+                <div class="flex items-center gap-2 text-[11px] text-gray-500">
+                  <span>{{ rec.recordedDate }}</span>
+                  <span>•</span>
+                  <span>{{ rec.instructor }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-4 pt-0">
+              <button
+                type="button"
+                (click)="openRecordingPlayer(rec, recordingPlayerTpl)"
+                class="w-full py-2 text-xs font-semibold text-primary bg-primary/5 hover:bg-primary/10 rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+              >
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                Watch Lecture
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- 3. SCHEDULE & TIMETABLE TAB -->
+  @if (activeTab() === 'calendar') {
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-bold text-gray-900">Cohort Schedule & Meetings</h2>
+          <p class="text-xs text-gray-500">{{ classInfo().title }} • {{ currentMonth() }}</p>
+        </div>
+        <div class="flex items-center gap-2 bg-gray-100 p-1 rounded-xl">
+          <button
+            type="button"
+            (click)="setCalendarView('agenda')"
+            [class]="calendarView() === 'agenda' ? 'bg-white text-gray-900 font-bold' : 'text-gray-500 font-medium hover:text-gray-900'"
+            class="px-3 py-1 text-xs rounded-lg transition-colors cursor-pointer"
+          >
+            Agenda
+          </button>
+          <button
+            type="button"
+            (click)="setCalendarView('month')"
+            [class]="calendarView() === 'month' ? 'bg-white text-gray-900 font-bold' : 'text-gray-500 font-medium hover:text-gray-900'"
+            class="px-3 py-1 text-xs rounded-lg transition-colors cursor-pointer"
+          >
+            Month
+          </button>
+        </div>
+      </div>
+
+      @if (calendarView() === 'agenda') {
+        <div class="space-y-4">
+          @for (session of upcomingSessions(); track session.id) {
+            <div class="p-4 rounded-xl border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-gray-200 transition-colors">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex flex-col items-center justify-center shrink-0">
+                  <span class="text-[10px] uppercase font-bold">OCT</span>
+                  <span class="text-sm font-extrabold leading-none">14</span>
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-gray-900">{{ session.title }}</h4>
+                  <div class="flex items-center gap-3 text-xs text-gray-500 mt-1">
+                    <span>{{ session.time }}</span>
+                    <span>•</span>
+                    <span>{{ session.room }}</span>
+                    <span>•</span>
+                    <span>{{ session.instructor }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                @if (session.isLiveNow) {
+                  <button
+                    type="button"
+                    (click)="enterLiveStage(liveStageTpl)"
+                    class="px-3 py-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors cursor-pointer"
+                  >
+                    Join Live
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <!-- Month View Grid -->
+        <div class="border border-gray-100 rounded-xl overflow-hidden">
+          <div class="grid grid-cols-7 bg-gray-50 border-b border-gray-100 text-center py-2 text-[11px] font-semibold text-gray-600">
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+            <div>Sun</div>
+          </div>
+          <div class="grid grid-cols-7 divide-x divide-y divide-gray-100 text-xs">
+            @for (day of monthDays(); track day) {
+              <div class="h-20 p-2 flex flex-col justify-between hover:bg-gray-50/50 transition-colors">
+                <span class="font-semibold text-gray-600">{{ day }}</span>
+                @if (day === 14) {
+                  <div class="bg-rose-50 border border-rose-200 text-rose-700 text-[10px] font-bold px-1.5 py-0.5 rounded truncate">
+                    Live 2:00 PM
+                  </div>
+                }
+                @if (day === 16) {
+                  <div class="bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded truncate">
+                    Review 11 AM
+                  </div>
+                }
+                @if (day === 20) {
+                  <div class="bg-indigo-50 border border-indigo-200 text-indigo-700 text-[10px] font-bold px-1.5 py-0.5 rounded truncate">
+                    Lab 1:00 PM
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- 4. ATTENDANCE LOG TAB -->
+  @if (activeTab() === 'attendance') {
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-bold text-gray-900">Attendance & Participation Log</h2>
+          <p class="text-xs text-gray-500">Official log of class attendance and verified session records</p>
+        </div>
+      </div>
+
+      <!-- Attendance Summary Bar -->
+      <div class="p-4 rounded-xl bg-gray-50/70 border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-center gap-6 text-xs">
+          <div>
+            <span class="text-gray-400 block text-[10px] uppercase font-bold">Present</span>
+            <span class="text-emerald-700 font-bold text-sm">18 Sessions</span>
+          </div>
+          <div>
+            <span class="text-gray-400 block text-[10px] uppercase font-bold">Late</span>
+            <span class="text-amber-700 font-bold text-sm">1 Session</span>
+          </div>
+          <div>
+            <span class="text-gray-400 block text-[10px] uppercase font-bold">Absence</span>
+            <span class="text-rose-700 font-bold text-sm">1 Session</span>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">
+          Current rate: <span class="font-bold text-gray-900">{{ classInfo().attendanceRate }}%</span> (Target: >80%)
+        </div>
+      </div>
+
+      <!-- Attendance Table -->
+      <div class="border border-gray-100 rounded-2xl p-1 flex-1 flex flex-col bg-white">
+        <div class="border border-gray-100 rounded-2xl overflow-hidden flex-1 flex flex-col">
+          <div class="overflow-x-auto flex-1">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-gray-100 bg-gray-100">
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Session Topic</th>
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Format</th>
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Date</th>
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Check-In Time</th>
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50">
+                @for (log of attendanceHistory(); track log.id) {
+                  <tr class="hover:bg-gray-50/50 transition-colors group">
+                    <td class="p-4 font-medium text-gray-900 group-hover:text-primary transition-colors cursor-pointer">
+                      {{ log.topic }}
+                    </td>
+                    <td class="p-4 text-xs text-gray-500">{{ log.type }}</td>
+                    <td class="p-4 text-sm text-gray-600 whitespace-nowrap">{{ log.date }}</td>
+                    <td class="p-4 text-sm text-gray-600 whitespace-nowrap">{{ log.checkInTime }}</td>
+                    <td class="p-4 text-right whitespace-nowrap">
+                      @switch (log.status) {
+                        @case ('present') {
+                          <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-semibold">
+                            Present
+                          </span>
+                        }
+                        @case ('late') {
+                          <span class="px-2.5 py-1 bg-amber-50 text-amber-700 rounded-lg text-xs font-semibold">
+                            Late
+                          </span>
+                        }
+                        @case ('absent') {
+                          <span class="px-2.5 py-1 bg-red-50 text-red-700 rounded-lg text-xs font-semibold">
+                            Absent
+                          </span>
+                        }
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL 1: LIVE STAGE SIMULATOR DIALOG -->
+<!-- ========================================== -->
+<ng-template #liveStageTpl>
+  <div class="space-y-4">
+    <!-- Stage Viewport (Instructor Broadcast + Whiteboard) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div class="lg:col-span-2 bg-slate-950 rounded-2xl overflow-hidden aspect-video relative flex flex-col justify-between p-4 text-white">
+        <!-- Stage Top Bar -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-rose-600 text-white font-bold text-[10px] uppercase">
+              LIVE
+            </span>
+            <span class="text-xs font-semibold text-slate-200">{{ classInfo().room }}</span>
+          </div>
+          <span class="text-xs font-medium text-slate-400">Dr. Sarah Johnson (Instructor)</span>
+        </div>
+
+        <!-- Instructor Blackboard Content -->
+        <div class="flex flex-col items-center justify-center text-center space-y-3 py-6">
+          <div class="w-16 h-16 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary-200">
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polygon points="23 7 16 12 23 17 23 7"></polygon>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-white tracking-wide">Live Blackboard Feed: Stokes’ Theorem</h4>
+            <p class="text-xs text-slate-400 font-mono mt-1">
+              &#x222E;&#x2202;S F · dr = &#x222C;S (&#x2207; × F) · dS
+            </p>
+          </div>
+        </div>
+
+        <!-- Stage Bottom Control Strip -->
+        <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              (click)="toggleMute()"
+              [class]="isMuted() ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : 'bg-slate-800 text-white border-slate-700'"
+              class="px-3 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer"
+            >
+              {{ isMuted() ? 'Unmute Mic' : 'Mute Mic' }}
+            </button>
+            <button
+              type="button"
+              (click)="toggleVideo()"
+              [class]="!isVideoOn() ? 'bg-slate-800 text-slate-300 border-slate-700' : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'"
+              class="px-3 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer"
+            >
+              {{ isVideoOn() ? 'Stop Video' : 'Start Video' }}
+            </button>
+            <button
+              type="button"
+              (click)="toggleHandRaise()"
+              [class]="isHandRaised() ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-800 text-white border-slate-700'"
+              class="px-3 py-1.5 rounded-lg border text-xs cursor-pointer"
+            >
+              ✋ {{ isHandRaised() ? 'Hand Raised' : 'Raise Hand' }}
+            </button>
+          </div>
+          <button
+            type="button"
+            (click)="closeStageModal()"
+            class="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold cursor-pointer"
+          >
+            Leave Stage
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Chat & Participant Feed -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl flex flex-col justify-between p-4 h-[340px] text-xs">
+        <div>
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <span class="font-bold text-white">Live Discussion</span>
+            <span class="text-slate-400">{{ classInfo().classmatesCount }} Online</span>
+          </div>
+
+          <div class="space-y-3 py-3 overflow-y-auto max-h-[200px] no-scrollbar">
+            @for (msg of chatMessages(); track msg.text + msg.time) {
+              <div class="space-y-1">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-semibold text-slate-200" [class.text-primary-300]="msg.isMe">{{ msg.sender }}</span>
+                  <span class="text-[10px] text-slate-500">{{ msg.time }}</span>
+                </div>
+                <p class="text-slate-300 bg-slate-800/60 p-2 rounded-lg leading-relaxed">{{ msg.text }}</p>
+              </div>
+            }
+          </div>
+        </div>
+
+        <form (ngSubmit)="sendChatMessage()" class="flex items-center gap-2 pt-2 border-t border-slate-800">
+          <input
+            type="text"
+            [ngModel]="chatMessageInput()"
+            (ngModelChange)="chatMessageInput.set($event)"
+            name="chatMsg"
+            placeholder="Ask question in live chat..."
+            class="flex-1 bg-slate-800 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 outline-none focus:border-primary"
+          />
+          <button
+            type="submit"
+            class="px-3 py-2 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg text-xs cursor-pointer"
+          >
+            Send
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- ========================================== -->
+<!-- MODAL 2: RECORDING PLAYER DIALOG -->
+<!-- ========================================== -->
+<ng-template #recordingPlayerTpl>
+  @if (activeRecording()) {
+    <div class="space-y-4">
+      <div class="bg-black rounded-2xl overflow-hidden aspect-video relative flex items-center justify-center">
+        <video
+          [src]="activeRecording()?.videoUrl"
+          controls
+          autoplay
+          class="w-full h-full object-contain"
+        ></video>
+      </div>
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-bold text-gray-900">{{ activeRecording()?.title }}</h3>
+          <p class="text-xs text-gray-500">{{ activeRecording()?.recordedDate }} • {{ activeRecording()?.instructor }}</p>
+        </div>
+        <button
+          type="button"
+          (click)="closeRecordingPlayer()"
+          class="px-3 py-1.5 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg cursor-pointer"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  }
+</ng-template>

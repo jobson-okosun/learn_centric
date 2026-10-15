@@ -1,0 +1,100 @@
+<div class="space-y-6">
+  <!-- Grades Summary Metric Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl border border-gray-200 p-5">
+      <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Current Overall Grade</div>
+      <div class="flex items-baseline gap-2 mt-2">
+        <span class="text-3xl font-extrabold text-gray-900">{{ gradeSummary().currentScore }}</span>
+        <span class="text-lg font-bold text-emerald-600">Grade {{ gradeSummary().letterGrade }}</span>
+      </div>
+      <div class="text-xs text-emerald-700 font-medium mt-1">Standing: High Distinction</div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-5">
+      <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Class Standing</div>
+      <div class="text-3xl font-extrabold text-gray-900 mt-2">Top 5%</div>
+      <div class="text-xs text-gray-500 mt-1">Class Average: {{ gradeSummary().classAverage }}</div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-5">
+      <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Completed Assessments</div>
+      <div class="text-3xl font-extrabold text-gray-900 mt-2">{{ gradeSummary().completedAssignments }} / {{ gradeSummary().totalAssignments }}</div>
+      <div class="text-xs text-gray-500 mt-1">2 upcoming assignments remaining</div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-5">
+      <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Grading Scale</div>
+      <div class="text-base font-semibold text-gray-800 mt-2">Standard Scale</div>
+      <div class="text-xs text-gray-500 mt-1">A &ge; 93%, B &ge; 85%, C &ge; 75%</div>
+    </div>
+  </div>
+
+  <!-- Category Weights -->
+  <div class="bg-white rounded-2xl border border-gray-200 p-6">
+    <h2 class="text-base font-bold text-gray-800 mb-4">Grade Category Weights</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      @for (cat of gradeCategories(); track cat.name) {
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+          <div class="text-xs font-semibold text-gray-600 truncate">{{ cat.name }}</div>
+          <div class="flex items-baseline justify-between mt-2">
+            <span class="text-xl font-bold text-gray-900">{{ cat.score }}</span>
+            <span class="text-xs font-medium text-gray-500 bg-white px-2 py-0.5 rounded border border-gray-200">Weight: {{ cat.weight }}</span>
+          </div>
+          <div class="text-xs text-gray-500 mt-1 font-medium">{{ cat.status }}</div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Itemized Grade Table -->
+  <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+    <div class="p-5 border-b border-gray-100 flex items-center justify-between">
+      <h2 class="text-base font-bold text-gray-800">Itemized Assignment & Examination Scores</h2>
+      <span class="text-xs text-gray-500">{{ gradeItems().length }} recorded assessments</span>
+    </div>
+
+    <div class="overflow-x-auto no-scrollbar">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-gray-50 text-gray-500 text-xs uppercase font-bold border-b border-gray-200">
+          <tr>
+            <th class="py-3.5 px-5">Assessment</th>
+            <th class="py-3.5 px-4">Category</th>
+            <th class="py-3.5 px-4">Due Date</th>
+            <th class="py-3.5 px-4">Status</th>
+            <th class="py-3.5 px-4">Score / Points</th>
+            <th class="py-3.5 px-5">Feedback / Comments</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 text-gray-700">
+          @for (row of gradeItems(); track row.title) {
+            <tr class="hover:bg-gray-50/70 transition-colors">
+              <td class="py-3.5 px-5 font-medium text-gray-900">{{ row.title }}</td>
+              <td class="py-3.5 px-4 text-xs">
+                <span class="px-2 py-0.5 rounded-md bg-gray-100 border border-gray-200 font-medium text-gray-600">
+                  {{ row.category }}
+                </span>
+              </td>
+              <td class="py-3.5 px-4 text-xs text-gray-500">{{ row.dueDate }}</td>
+              <td class="py-3.5 px-4 text-xs font-semibold">
+                @if (row.status === 'Graded') {
+                  <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Graded</span>
+                } @else if (row.status === 'Pending') {
+                  <span class="text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Pending</span>
+                } @else {
+                  <span class="text-gray-500 bg-gray-100 px-2 py-0.5 rounded border border-gray-200">Upcoming</span>
+                }
+              </td>
+              <td class="py-3.5 px-4 font-bold text-xs" [class.text-emerald-700]="row.status === 'Graded'">
+                {{ row.score }}
+                @if (row.percentage !== '--') {
+                  <span class="font-normal text-gray-500">({{ row.percentage }})</span>
+                }
+              </td>
+              <td class="py-3.5 px-5 text-xs text-gray-500 truncate max-w-xs">{{ row.feedback }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

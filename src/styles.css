@@ -1,3 +1,235 @@
-/* You can add global styles to this file, and also import other style files */
-
+@layer ng-icon, theme, base, components, utilities;
 @import 'tailwindcss';
+@import './app/shared/core/css/tailwind';
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+@custom-variant hover (&:hover);
+@custom-variant group-hover (:where(.group):hover &);
+
+@font-face {
+  font-family: 'Google Sans';
+  src: url('/fonts/Google_Sans/GoogleSans-VariableFont_GRAD,opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+:root {
+  --radius: 0.875rem;
+  --background: oklch(0.995 0.005 290);
+  --foreground: oklch(59.867% 0.00375 13.938);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.04 290);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.04 290);
+  --primary: oklch(45.444% 0.12462 327.943);
+  --primary-foreground: oklch(0.98 0.01 290);
+  --secondary: oklch(0.95 0.025 290);
+  --secondary-foreground: oklch(0.3 0.04 290);
+  /* --muted: oklch(93.374% 0.01885 325.464);
+  --muted-foreground: oklch(89.756% 0.02421 325.58); */
+  /* should be shades of gray */
+  --muted: oklch(96.416% 0.00011 271.152);
+  --muted-foreground: oklch(88.915% 0.00107 11.966);
+  --accent: oklch(0.92 0.05 290);
+  --accent-foreground: oklch(0.3 0.04 290);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0.025 290);
+  --input: oklch(0.9 0.025 290);
+  --ring: oklch(45.444% 0.12462 327.943);
+  --chart-1: oklch(0.55 0.22 290);
+  --chart-2: oklch(0.6 0.2 270);
+  --chart-3: oklch(0.7 0.18 310);
+  --chart-4: oklch(0.5 0.25 260);
+  --chart-5: oklch(0.75 0.15 300);
+  --sidebar: oklch(0.98 0.015 290);
+  --sidebar-foreground: oklch(0.2 0.04 290);
+  --sidebar-primary: oklch(0.55 0.22 290);
+  --sidebar-primary-foreground: oklch(0.98 0.015 290);
+  --sidebar-accent: oklch(0.95 0.025 290);
+  --sidebar-accent-foreground: oklch(0.3 0.04 290);
+  --sidebar-border: oklch(0.9 0.025 290);
+  --sidebar-ring: oklch(0.55 0.22 290);
+}
+
+/* .dark {
+  --background: oklch(0.15 0.025 290);
+  --foreground: oklch(0.95 0.01 290);
+  --card: oklch(0.2 0.03 290);
+  --card-foreground: oklch(0.95 0.01 290);
+  --popover: oklch(0.2 0.03 290);
+  --popover-foreground: oklch(0.95 0.01 290);
+  --primary: oklch(0.68 0.2 290);
+  --primary-foreground: oklch(0.15 0.025 290);
+  --secondary: oklch(0.28 0.035 290);
+  --secondary-foreground: oklch(0.95 0.01 290);
+  --muted: oklch(0.28 0.03 290);
+  --muted-foreground: oklch(0.65 0.05 290);
+  --accent: oklch(0.35 0.06 290);
+  --accent-foreground: oklch(0.95 0.01 290);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(0.35 0.04 290);
+  --input: oklch(0.35 0.04 290);
+  --ring: oklch(0.68 0.2 290);
+  --chart-1: oklch(0.68 0.2 290);
+  --chart-2: oklch(0.6 0.18 270);
+  --chart-3: oklch(0.7 0.15 310);
+  --chart-4: oklch(0.52 0.22 260);
+  --chart-5: oklch(0.75 0.12 300);
+  --sidebar: oklch(0.2 0.03 290);
+  --sidebar-foreground: oklch(0.95 0.01 290);
+  --sidebar-primary: oklch(0.68 0.2 290);
+  --sidebar-primary-foreground: oklch(0.15 0.025 290);
+  --sidebar-accent: oklch(0.28 0.035 290);
+  --sidebar-accent-foreground: oklch(0.95 0.01 290);
+  --sidebar-border: oklch(0.35 0.04 290);
+  --sidebar-ring: oklch(0.68 0.2 290);
+} */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: "Google Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground h-dvh overflow-hidden text-sm font-sans
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    /* Added for general compatibility */
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background: var(--muted);
+}
+
+.form-control {
+  @apply w-full py-2.5 px-3 bg-white border border-gray-300 rounded-xl outline-none text-sm text-gray-700 disabled:bg-neutral-200 ring-2 ring-transparent;
+}
+
+.z-form-control {
+  @apply w-full h-auto py-1 px-3 bg-white border border-gray-300 rounded-xl outline-none text-sm text-gray-700;
+}
+
+.form-group {
+  @apply flex flex-col gap-1 p-0.5;
+}
+
+.form-control:focus,
+.prime-form-control:focus {
+  @apply ring-primary;
+}
+
+.form-control.is-invalid,
+.form-control.ng-invalid.ng-touched {
+  @apply border-red-400 bg-red-50/20 focus:border-red-500 focus:ring-0;
+}
+
+.btn {
+  @apply px-4 py-2 text-sm font-semibold rounded-full transition-colors flex justify-center items-center text-center gap-2 cursor-pointer outline-none disabled:opacity-40 capitalize;
+}
+
+.btn.primary {
+  @apply text-white bg-primary hover:bg-primary/90; 
+}
+
+.btn.outline {
+  @apply bg-white font-semibold border border-neutral-300 hover:text-primary hover:border-primary/40 hover:bg-primary/5 text-gray-700 transition-colors;
+}
+
+.btn.danger {
+  @apply bg-red-700 text-white hover:bg-red-800;
+}
+
+.btn.dark {
+  @apply bg-slate-800 text-white hover:bg-slate-900;
+}
+
+.btn.btn-sm {
+  @apply px-3 py-2 text-xs
+}
+
+/* Global Zard Combobox Overrides to match form-control */
+z-combobox z-input-group {
+    @apply !min-h-[44px] !h-auto !bg-white !border-gray-300 !rounded-2xl !px-1 !py-0.5;
+    border-width: 1px !important;
+}
+
+z-combobox z-input-group:focus-within {
+    @apply !ring-1 !ring-primary !border-primary;
+}
+
+z-combobox input {
+    @apply !min-h-[34px] !py-1 !px-2 !border-0 focus:!ring-0;
+}

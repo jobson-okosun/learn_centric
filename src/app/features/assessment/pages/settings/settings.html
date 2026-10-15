@@ -1,0 +1,70 @@
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 flex flex-col gap-6">
+        <div class="bg-white border border-gray-100 rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-6 pb-6 border-b border-gray-100">
+                <div>
+                    <h1 class="text-lg font-bold text-gray-900">Settings & Delivery</h1>
+                    <p class="text-sm text-gray-500 mt-1">Configure the timing and delivery of your assessment</p>
+                </div>
+                <button class="btn primary">Save Changes</button>
+            </div>
+            <div class="space-y-8">
+                <!-- Timing -->
+                <div>
+                    <h3 class="text-sm font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Timing</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Open At</label>
+                            <input type="datetime-local" class="form-control w-full">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Close At (Due Date)</label>
+                            <input type="datetime-local" class="form-control w-full">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Time Limit (Minutes)</label>
+                            <input type="number" placeholder="No limit" class="form-control w-full">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Attempts Allowed</label>
+                            <input type="number" value="1" class="form-control w-full">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery -->
+                <div>
+                    <h3 class="text-sm font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Delivery</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary w-4 h-4">
+                            <span class="text-sm text-gray-800">Shuffle Items</span>
+                        </label>
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary w-4 h-4">
+                            <span class="text-sm text-gray-800">Shuffle Options</span>
+                        </label>
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary w-4 h-4" checked>
+                            <span class="text-sm text-gray-800">Allow returning to previous questions</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Grading -->
+                <div>
+                    <h3 class="text-sm font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Grading</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Grading Rubric</label>
+                            <z-combobox class="w-full" [zMultiple]="false" [options]="[]" placeholder="Select a rubric..." searchPlaceholder="Search rubrics..." emptyText="No rubrics found"></z-combobox>
+                            <p class="text-xs text-gray-500 mt-1">This rubric will be used to grade all manually graded questions in this assessment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

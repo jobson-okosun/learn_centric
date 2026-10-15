@@ -1,0 +1,89 @@
+<ng-template #modalTpl>
+  <div class="flex flex-col">
+    <form class="flex flex-col">
+      <div class="max-h-[70vh] overflow-y-auto flex flex-col gap-5 pr-2">
+        <!-- Drag and Drop Zone -->
+        <div class="border-2 border-dashed border-gray-200 rounded-2xl p-8 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors cursor-pointer group bg-gray-50/50">
+            <div class="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <div class="font-semibold text-gray-900 text-sm mb-1">Click to upload or drag and drop</div>
+            <div class="text-xs text-gray-500 font-medium">Supports PDF, DOCX, PPTX, MP4, MP3, PNG (Max 50MB)</div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <!-- Title -->
+            <div class="form-group md:col-span-2">
+                <label class="block text-sm font-semibold text-gray-800 mb-1.5">Resource Title <span class="text-red-500">*</span></label>
+                <input type="text" [ngModel]="title()" (ngModelChange)="title.set($event)" name="title" placeholder="e.g. Introduction to Genetics PDF" class="form-control w-full">
+            </div>
+
+            <!-- Subject -->
+            <div class="form-group">
+                <label class="block text-sm font-semibold text-gray-800 mb-1.5">Subject</label>
+                <z-combobox class="w-full" [options]="subjectOptions" placeholder="Select Subject..."></z-combobox>
+            </div>
+
+            <!-- Level --> 
+            <div class="form-group">
+                <label class="block text-sm font-semibold text-gray-800 mb-1.5">Level</label>
+                <z-combobox class="w-full" [options]="levelOptions" placeholder="Select Level..."></z-combobox>
+            </div>
+
+            <!-- Outcomes -->
+            <div class="form-group md:col-span-2">
+                <label class="block text-sm font-semibold text-gray-800 mb-1.5">Outcomes / Skills Tags</label>
+                <div class="form-control flex flex-wrap gap-2 items-center min-h-[42px] py-1.5 px-3 w-full">
+                    <input type="text" placeholder="Type a skill and press Enter..." class="flex-1 bg-transparent outline-none min-w-[120px] text-sm text-gray-700">
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group md:col-span-2">
+                <label class="block text-sm font-semibold text-gray-800 mb-1.5">Description</label>
+                <textarea rows="3" [ngModel]="description()" (ngModelChange)="description.set($event)" name="desc" class="form-control w-full resize-none" placeholder="Provide a brief overview of this resource..."></textarea>
+            </div>
+
+            <!-- Licence -->
+            <div class="form-group md:col-span-2">
+                <label class="block text-sm font-semibold text-gray-800 mb-1.5">Licence</label>
+                <z-combobox class="w-full" [options]="licenceOptions" placeholder="Select Licence..." [zValue]="'own_work'"></z-combobox>
+            </div>
+
+            <div class="form-group md:col-span-2 !pt-4 flex flex-col gap-4">
+                <label class="block text-sm font-semibold text-gray-800">Visibility & Access</label>
+                
+                <label class="flex items-start gap-3 cursor-pointer group">
+                    <input type="radio" name="visibility" value="private" [ngModel]="visibility()" (ngModelChange)="visibility.set($event)" class="mt-1 accent-primary">
+                    <div>
+                        <div class="font-semibold text-gray-900 group-hover:text-primary transition-colors">Private</div>
+                        <div class="text-sm text-gray-500 font-medium">Only you can view and use this resource</div>
+                    </div>
+                </label>
+                
+                <label class="flex items-start gap-3 cursor-pointer group">
+                    <input type="radio" name="visibility" value="org_unit" [ngModel]="visibility()" (ngModelChange)="visibility.set($event)" class="mt-1 accent-primary">
+                    <div>
+                        <div class="font-semibold text-gray-900 group-hover:text-primary transition-colors">Department / Org Unit</div>
+                        <div class="text-sm text-gray-500 font-medium">Available to instructors in your department</div>
+                    </div>
+                </label>
+
+                <label class="flex items-start gap-3 cursor-pointer group">
+                    <input type="radio" name="visibility" value="institution" [ngModel]="visibility()" (ngModelChange)="visibility.set($event)" class="mt-1 accent-primary">
+                    <div>
+                        <div class="font-semibold text-gray-900 group-hover:text-primary transition-colors">Entire Institution</div>
+                        <div class="text-sm text-gray-500 font-medium">Anyone in the institution can use this resource</div>
+                    </div>
+                </label>
+            </div>
+        </div>
+      </div>
+      
+      <div class="pt-4 mt-4 flex justify-end gap-3">
+          <button type="button" (click)="close()" class="btn outline">Cancel</button>
+          <button type="button" (click)="save()" class="btn primary">Upload to Library</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

@@ -1,0 +1,66 @@
+<div class="bg-white p-6 rounded-2xl flex flex-col gap-6">
+    <!-- Header & Controls -->
+    <div class="flex items-center justify-between">
+        <div class="flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+                <h1 class="text-lg font-bold text-gray-900">Questions</h1>
+                <span class="flex items-center justify-center bg-primary/10 border border-primary text-primary px-3 py-0.5 rounded-full text-xs font-bold">{{questions().length}}00</span>
+            </div>
+            <p class="text-sm text-gray-500">Manage all your question bank items</p>
+        </div>
+        
+        <div class="flex items-center gap-3">
+            <div class="relative w-[200px]">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="text" 
+                       class="form-control !pl-9 !py-1.5 h-auto text-sm w-full rounded-2xl" 
+                       placeholder="Search...">
+            </div>
+            
+            <button zDropdown [zDropdownMenu]="filterMenu"
+                    class="px-3 py-1.5 text-[13px] font-medium rounded-2xl transition-all flex items-center gap-2 bg-gray-100 text-gray-500 hover:text-gray-900 hover:bg-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                Filter
+            </button>
+
+            <z-dropdown-menu-content #filterMenu="zDropdownMenuContent" class="w-[300px] sm:w-[450px] p-5 !bg-white">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-bold text-gray-900">Advanced Filters</h3>
+                    <button class="btn btn-sm outline">Clear All</button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label class="text-sm font-medium text-gray-700">Question Type</label>
+                        <z-combobox class="w-full" [options]="questionTypes()" [zValue]="'all'"></z-combobox>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-sm font-medium text-gray-700">Course</label>
+                        <z-combobox class="w-full" [options]="courses()" [zValue]="'all'"></z-combobox>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-sm font-medium text-gray-700">Topic</label>
+                        <z-combobox class="w-full" [options]="topics()" [zValue]="'all'"></z-combobox>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-sm font-medium text-gray-700">Sub-Topic</label>
+                        <z-combobox class="w-full" [options]="subtopics()" [zValue]="'all'"></z-combobox>
+                    </div>
+                </div>
+            </z-dropdown-menu-content>
+
+            <div class="w-px h-6 bg-gray-200 mx-1"></div>
+
+            <button class="btn primary px-5 flex items-center gap-2" (click)="openAuthoringModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Create Question
+            </button>
+        </div>
+    </div>
+
+    <!-- Questions List -->
+    <div class="flex flex-col gap-6">
+        @for (q of questions(); track q.id; let i = $index) {
+            <app-mcq-preview [question]="q" [index]="i"></app-mcq-preview>
+        }
+    </div>
+</div>

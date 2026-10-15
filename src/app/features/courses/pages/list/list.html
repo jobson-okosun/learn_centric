@@ -1,0 +1,117 @@
+<div class="flex items-start justify-between mb-5">
+     <div>
+          <h1 class="font-semibold text-2xl text-gray-800">Courses</h1>
+          <p class="text-gray-500 text-sm mt-1">Manage your courses here.</p>
+     </div>
+     <button (click)="createCourseVisisble.set(true)" class="btn primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M5 12h14"/><path d="M12 5v14"/>
+          </svg>
+          Create course
+     </button>
+</div>
+
+<div class="flex items-center justify-between mb-6">
+     <div class="font-semibold text-xl text-gray-800">
+          My courses
+     </div>
+     <div class="flex items-center gap-1">
+          <button class="px-4 py-1.5 text-[13px] font-semibold rounded-2xl bg-white text-gray-900 transition-all">Current</button>
+          <button class="px-4 py-1.5 text-[13px] font-medium rounded-2xl text-gray-500 hover:text-gray-900 hover:bg-gray-200/50 transition-all">Draft</button>
+     </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mb-5 gap-6">
+     @for (item of [1, 2, 3,4,5,6]; track $index; let i=$index) {
+        <div class="bg-white p-5 rounded-2xl relative overflow-hidden group">
+             <div class="flex gap-2 items-center">
+                  <div 
+                    [class.bg-gray-100]="i === 1"
+                    class="w-[120px] h-[90px] rounded-lg bg-[#f0f4ff] shrink-0 relative overflow-hidden flex flex-col justify-center p-3 border border-[#e5edff]">
+                       <span 
+                         [class.text-gray-900]="i === 1"
+                         class="text-cyan-700 font-bold text-[11px] leading-tight z-10">Master<br>UI UX<br>Design<br>Systems<br>with AI.</span>
+                       <div 
+                         [class.bg-gray-500]="i === 1"
+                         class="absolute right-0 bottom-0 w-14 h-14 bg-cyan-500 rounded-tl-full opacity-20"></div>
+                  </div>
+                  
+                  <div class="flex flex-col justify-center">
+                       <h3 class="text-gray-900 font-bold text-lg leading-tight line-clamp-2">Getting started with learncentric</h3>
+                       <p class="text-gray-500 text-xs mt-2 leading-relaxed line-clamp-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Mollitia eaque, minima neque, incidunt similique magni corrupti asperiores ex corporis accusamus aperiam quia? Quidem dicta ea illo neque similique accusamus nostrum?</p>
+                  </div>
+             </div>
+
+             <div class="flex items-center justify-between mt-10">
+                  <div class="flex gap-2">
+                       <span class="size-10 rounded-full bg-gray-200/50 flex items-center justify-center">
+                       <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" class="w-6 h-6"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.78552 9.5 12.7855 14l9-4.5-9-4.5-8.99998 4.5Zm0 0V17m3-6v6.2222c0 .3483 2 1.7778 5.99998 1.7778 4 0 6-1.3738 6-1.7778V11"></path></svg>
+                       </span>
+                       <div class="flex-1">
+                            <div class="text-gray-500 text-xs font-medium">Instructor</div>
+                            <span class="text-gray-800 font-medium">John Doe</span>
+                       </div>
+                  </div>
+                  <a routerLink="1" class="btn dark btn-sm">
+                       Continue
+                  </a>
+             </div>
+        </div>
+     }
+</div>
+
+<z-drawer [(zVisible)]="createCourseVisisble" [zPlacement]="'right'" [zDismissible]="true">
+  <z-drawer-header>
+    <div class="flex flex-col border-b border-do border-gray-100 pb-4">
+       <div class="font-bold text-xl">Create course</div>
+       <div class="text-sm text-gray-500">Please provide the following information to create a new course.</div>
+     </div>
+  </z-drawer-header>
+  <div class="p-4">
+     <form class="flex flex-col gap-1">
+          <div class="form-group">
+             <label class="text-sm font-medium text-gray-700">Name</label>
+             <input type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="text-sm font-medium text-gray-700">Description</label>
+            <textarea class="form-control resize-none" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="text-sm font-medium text-gray-700">Subject category</label>
+            <z-combobox class="w-full">
+               <z-combobox-input placeholder="Select category" class="z-form-control"/>
+               <z-combobox-content>
+                    <z-combobox-empty>No items found.</z-combobox-empty>
+                    <z-combobox-list>
+                         <!-- <z-combobox-item [zValue]="framework.value">{{ framework.label }}</z-combobox-item> -->
+                          <z-combobox-item [zValue]="'Math'">Math</z-combobox-item>
+                         <!-- @for (framework of []; track framework.value) {
+                         } -->
+                    </z-combobox-list>
+               </z-combobox-content>
+               </z-combobox>
+          </div>
+          <div class="form-group">
+            <label class="text-sm font-medium text-gray-700">Level</label>
+            <z-combobox class="w-full">
+               <z-combobox-input placeholder="Select Level" class="z-form-control"/>
+               <z-combobox-content>
+                    <z-combobox-empty>No items found.</z-combobox-empty>
+                    <z-combobox-list>
+                         <z-combobox-item [zValue]="'Beginner'">Beginner</z-combobox-item>
+                         <z-combobox-item [zValue]="'Intermediate'">Intermediate</z-combobox-item>
+                         <z-combobox-item [zValue]="'Advanced'">Advanced</z-combobox-item>
+                    </z-combobox-list>
+               </z-combobox-content>
+               </z-combobox>
+          </div>
+     </form>
+  </div>
+  <z-drawer-footer>
+    <div class="flex items-center gap-3">
+      <button type="button" z-button z-drawer-close class="btn outline flex-1">Cancel</button>
+      <button type="button" z-button class="btn primary flex-1">Create course</button>
+    </div>
+  </z-drawer-footer>
+</z-drawer>

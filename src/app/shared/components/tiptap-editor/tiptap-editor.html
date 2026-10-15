@@ -1,0 +1,132 @@
+<div class="relative">
+  <angular-tiptap-editor
+    [content]="content()"
+    (contentChange)="onContentChange($event)"
+    (editorCreated)="onEditorReady($event)"
+    [tiptapExtensions]="extensions()"
+    [toolbar]="toolbarConfig()"
+    [imageBubbleMenu]="imageBubbleMenuConfig()"
+    [placeholder]="placeholder()"
+    [minHeight]="minHeight()"
+    [height]="height()"
+    [maxHeight]="maxHeight()"
+    [floatingToolbar]="floatingToolbar()"
+    [showFooter]="showFooter()"
+  ></angular-tiptap-editor>
+
+  @if (isFontMenuVisible()) {
+    <div (click)="isFontMenuVisible.set(false)" class="fixed inset-0 z-[9998]"></div>
+
+    <div class="absolute z-[9999] top-14 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-lg shadow-xl w-80 flex overflow-hidden">
+      <div class="flex-1 border-r border-gray-100 max-h-64 overflow-y-auto p-1">
+        <div class="text-[10px] font-bold text-gray-400 px-2 py-2 uppercase tracking-widest">Fonts</div>
+        @for (font of ['Arial', 'Courier New', 'Georgia', 'Helvetica', 'Tahoma', 'Times New Roman', 'Verdana']; track font) {
+          <button type="button" (click)="applyFont(font)"
+                  class="w-full text-left px-3 py-2 text-sm hover:bg-blue-50 hover:text-blue-600 rounded transition-colors"
+                  [style.font-family]="font">
+            {{font}}
+          </button>
+        }
+      </div>
+      
+      <div class="w-24 max-h-64 overflow-y-auto p-1 bg-gray-50">
+        <div class="text-[10px] font-bold text-gray-400 px-2 py-2 uppercase tracking-widest text-center">Size</div>
+        @for (size of ['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']; track size) {
+          <button type="button" (click)="applySize(size)"
+                  class="w-full text-center px-2 py-2 text-sm hover:bg-blue-100 hover:text-blue-700 rounded transition-colors">
+            {{size}}
+          </button>
+        }
+      </div>
+    </div>
+  }
+</div>
+
+
+<ng-template #mathDialogTemplate>
+  <div class="overflow-hidden">
+    <math-field #mathField (input)="onMathInput($event)" class="w-full min-h-38 border border-gray-300 rounded p-2 text-xl bg-white shadow-inner"></math-field>
+  </div>
+  
+  <div class="flex justify-end gap-2 mt-4 pt-4 border-t border-gray-100">
+    <button type="button" (click)="cancelEquation()" class="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-md transition-colors cursor-pointer outline-none">Cancel</button>
+    <button type="button" (click)="saveEquation()" [disabled]="!currentMathValue()" class="px-4 py-2 text-sm font-semibold text-white bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors flex items-center gap-2 cursor-pointer outline-none shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Save</button>
+  </div>
+</ng-template>
+
+<ng-template #imageDialogTemplate>
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      
+      @if (!imageFileBase64()) {
+        <div class="relative w-full border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 hover:border-primary/50 transition-all group overflow-hidden">
+            <input type="file" accept="image/*" (change)="onImageFileSelected($event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+            <div class="flex flex-col items-center justify-center p-8 text-center pointer-events-none">
+                <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                </div>
+                <p class="m-0 text-sm font-semibold text-gray-700 group-hover:text-primary transition-colors">Click to browse or drag file</p>
+                <p class="m-0 text-xs text-gray-500 mt-1">Supports PNG, JPG, JPEG, GIF</p>
+            </div>
+        </div>
+      }
+
+      @if (imageFileBase64()) {
+        <div class="relative mt-2 border border-gray-200 rounded-lg p-2 bg-gray-50 flex justify-center max-h-48 overflow-hidden group">
+          <img [src]="imageFileBase64()" class="max-h-full object-contain rounded shadow-sm">
+          <button type="button" (click)="imageFileBase64.set(null); imageAltText.set('')" class="absolute top-2 right-2 bg-white/90 hover:bg-red-50 text-red-500 rounded-full w-8 h-8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-md backdrop-blur-sm z-20 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          </button>
+        </div>
+      }
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium text-gray-700">Alt Text (Accessibility Description)</label>
+      <input type="text" [value]="imageAltText()" (input)="onAltTextInput($event)" placeholder="E.g., A smiling golden retriever puppy" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">
+    </div>
+  </div>
+  
+  <div class="flex justify-end gap-2 mt-6 pt-4 border-t border-gray-100">
+    <button type="button" (click)="cancelImage()" class="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer outline-none">Cancel</button>
+    <button type="button" (click)="saveImage()" [disabled]="!imageFileBase64()" class="px-4 py-2 text-sm font-semibold text-white bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors flex items-center gap-2 cursor-pointer outline-none shadow-sm">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> {{ isEditingImage() ? 'Update Image' : 'Insert Image' }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #charMapDialogTemplate>
+  <div class="relative max-h-125 bg-white flex flex-col py-2 px-1">
+    
+    <div class="flex flex-col md:flex-row flex-1 gap-5 min-h-0">
+      <div class="w-full md:w-44 flex flex-col shrink-0 gap-1 overflow-y-auto custom-scrollbar pr-2 min-h-0 pt-1">
+        @for (category of charMapCategories(); track category) {
+          <div (click)="selectCategory(category)"
+              class="px-4 py-2.5 rounded-xl cursor-pointer text-[13px] font-semibold transition-colors flex items-center justify-between shrink-0"
+              [class]="activeCategory() === category ? 'bg-[#e4edff] text-[#2c406e]' : 'bg-transparent text-gray-500 hover:text-gray-700'">
+            <span>{{ category }}</span>
+          </div>
+        }
+      </div>
+      
+      <div class="w-full flex-1 flex flex-col bg-gray-100 rounded-2xl p-4 relative">
+        <div class="relative shrink-0 mb-4 text-gray-400">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" [value]="charMapSearch()" (input)="onCharMapSearch($event)" 
+                 class="w-full bg-white border border-gray-200 rounded-xl pl-9 pr-4 py-2.5 text-[13px] focus:border-primary outline-none" 
+                 placeholder="Search characters or symbols...">
+        </div>
+        
+        <div class="grid grid-cols-7 sm:grid-cols-8 md:grid-cols-9 gap-1 overflow-y-auto flex-1 content-start pr-2 custom-scrollbar">
+          @for (charObj of filteredCharMap(); track $index) {
+            <button type="button" (click)="insertChar(charObj.char)"
+                    class="aspect-square flex items-center justify-center text-base bg-white border border-gray-100 rounded-xl cursor-pointer transition-all outline-none text-[#1b254b] font-medium hover:border-gray-300 hover:shadow"
+                    [title]="charObj.keywords.join(', ')">
+              {{ charObj.char }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

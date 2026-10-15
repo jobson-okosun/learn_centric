@@ -1,0 +1,263 @@
+<!-- 1. Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+     <div>
+          <h1 class="font-semibold text-2xl text-gray-900">My Courses</h1>
+          <p class="text-gray-500 text-sm mt-1">Track your ongoing courses, curriculum progress, and study materials.</p>
+     </div>
+     <div class="flex items-center gap-3">
+          <button (click)="joinDrawerVisible.set(true)" class="btn primary flex items-center gap-2 whitespace-nowrap">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+               </svg>
+               <span>Join with Code</span>
+          </button>
+     </div>
+</div>
+
+<!-- 2. Metric Overview Cards -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+     <div class="bg-white p-4 rounded-2xl border border-gray-100">
+          <div class="flex items-center gap-2.5 mb-2">
+               <span class="size-8 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                         <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                         <path d="M6 6h10M6 10h10"></path>
+                    </svg>
+               </span>
+               <span class="text-xs font-semibold text-gray-600">Total Courses</span>
+          </div>
+          <div class="font-bold text-2xl text-gray-900">{{ stats().total }}</div>
+     </div>
+
+     <div class="bg-white p-4 rounded-2xl border border-gray-100">
+          <div class="flex items-center gap-2.5 mb-2">
+               <span class="size-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                         <circle cx="12" cy="12" r="10"></circle>
+                         <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+               </span>
+               <span class="text-xs font-semibold text-gray-600">In Progress</span>
+          </div>
+          <div class="font-bold text-2xl text-gray-900">{{ stats().inProgressCount }}</div>
+     </div>
+
+     <div class="bg-white p-4 rounded-2xl border border-gray-100">
+          <div class="flex items-center gap-2.5 mb-2">
+               <span class="size-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+               </span>
+               <span class="text-xs font-semibold text-gray-600">Completed</span>
+          </div>
+          <div class="font-bold text-2xl text-gray-900">{{ stats().completedCount }}</div>
+     </div>
+
+     <div class="bg-white p-4 rounded-2xl border border-gray-100">
+          <div class="flex items-center gap-2.5 mb-2">
+               <span class="size-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                         <line x1="18" y1="20" x2="18" y2="10"></line>
+                         <line x1="12" y1="20" x2="12" y2="4"></line>
+                         <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+               </span>
+               <span class="text-xs font-semibold text-gray-600">Avg Completion</span>
+          </div>
+          <div class="font-bold text-2xl text-gray-900">{{ stats().avgProgress }}%</div>
+     </div>
+</div>
+
+<!-- 3. Toolbar & Filters -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+     <div class="flex items-center gap-1.5 p-1 bg-gray-100 rounded-2xl w-fit">
+          <button (click)="setFilter('all')"
+                  [class]="activeFilter() === 'all' ? 'bg-white text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-900'"
+                  class="px-4 py-1.5 text-xs rounded-xl transition-all cursor-pointer">
+               All Courses ({{ courses().length }})
+          </button>
+          <button (click)="setFilter('in-progress')"
+                  [class]="activeFilter() === 'in-progress' ? 'bg-white text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-900'"
+                  class="px-4 py-1.5 text-xs rounded-xl transition-all cursor-pointer">
+               In Progress ({{ stats().inProgressCount }})
+          </button>
+          <button (click)="setFilter('completed')"
+                  [class]="activeFilter() === 'completed' ? 'bg-white text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-900'"
+                  class="px-4 py-1.5 text-xs rounded-xl transition-all cursor-pointer">
+               Completed ({{ stats().completedCount }})
+          </button>
+     </div>
+
+     <!-- Search Box -->
+     <div class="relative w-full sm:w-72">
+          <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <circle cx="11" cy="11" r="8"></circle>
+               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text"
+                 [ngModel]="searchQuery()"
+                 (ngModelChange)="searchQuery.set($event)"
+                 placeholder="Search courses..."
+                 class="form-control !pl-10 !h-9 text-xs w-full !rounded-2xl">
+     </div>
+</div>
+
+<!-- 4. Course Cards Grid -->
+@if (filteredCourses().length > 0) {
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+          @for (course of filteredCourses(); track course.id) {
+               <div class="bg-white p-5 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors flex flex-col justify-between group">
+                    <div>
+                         <!-- Course Top Row (Thumbnail + Title) -->
+                         <div class="flex gap-3.5 items-start">
+                              <!-- Thumbnail Image or Badge -->
+                              @if (course.thumbnail) {
+                                   <img [src]="course.thumbnail" [alt]="course.title" class="w-[110px] h-[88px] rounded-xl shrink-0 object-cover border border-gray-200" />
+                              } @else {
+                                   <div class="w-[110px] h-[88px] rounded-xl shrink-0 p-2.5 border flex flex-col justify-center relative overflow-hidden" [class]="course.coverTheme">
+                                        <span class="font-bold text-[9px] leading-tight z-10 whitespace-pre-line">{{ course.coverBadge }}</span>
+                                        <div class="absolute right-0 bottom-0 w-12 h-12 rounded-tl-full opacity-25" [class]="course.accentColor"></div>
+                                   </div>
+                              }
+
+                              <div class="flex-1 min-w-0">
+                                   <div class="flex items-center gap-2 mb-0.5">
+                                        <span class="text-[10px] font-semibold text-primary uppercase tracking-wider">{{ course.cohort }}</span>
+                                        @if (course.status === 'completed') {
+                                             <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-full">Completed</span>
+                                        }
+                                   </div>
+                                   <h3 class="text-gray-900 font-bold text-base leading-snug line-clamp-2">
+                                        {{ course.title }}
+                                   </h3>
+                                   <div class="text-xs text-gray-500 mt-1 flex items-center gap-1.5">
+                                        <span class="font-medium text-gray-700">{{ course.courseCode }}</span>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <!-- Course Description -->
+                         <p class="text-xs text-gray-500 mt-3.5 line-clamp-2 leading-relaxed">
+                              {{ course.description }}
+                         </p>
+
+                         <!-- Progress Bar Section -->
+                         <div class="mt-4 pt-3.5 border-t border-gray-100">
+                              <div class="flex items-center justify-between mb-1.5">
+                                   <span class="text-[11px] text-gray-500 font-medium">
+                                        @if (course.status === 'completed') {
+                                             Completed Curriculum
+                                        } @else {
+                                             Progress ({{ course.completedActivities }} of {{ course.totalActivities }} items)
+                                        }
+                                   </span>
+                                   <span class="text-xs font-bold text-primary">{{ course.progress }}%</span>
+                              </div>
+                              <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                                   <div class="bg-primary rounded-full h-1.5 transition-all duration-500" [style.width.%]="course.progress"></div>
+                              </div>
+
+                              <!-- Next Up or Grade Badge -->
+                              @if (course.status === 'completed') {
+                                   <div class="mt-3 text-[11px] text-emerald-700 bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-100 flex items-center justify-between">
+                                        <span class="font-semibold">Final Grade: {{ course.grade }}</span>
+                                        <span class="text-emerald-600">{{ course.completedDate }}</span>
+                                   </div>
+                              } @else {
+                                   <div class="mt-3 text-[11px] text-gray-600 bg-neutral-50 px-2.5 py-1.5 rounded-lg border border-gray-100 flex items-center justify-between truncate">
+                                        <div class="truncate flex items-center gap-1.5">
+                                             <span class="font-semibold text-gray-800 shrink-0">Next:</span>
+                                             <span class="truncate text-gray-700">{{ course.nextActivity }}</span>
+                                        </div>
+                                        @if (course.nextDueDate) {
+                                             <span class="text-[10px] font-medium text-amber-600 shrink-0 ml-2">{{ course.nextDueDate }}</span>
+                                        }
+                                   </div>
+                              }
+                         </div>
+                    </div>
+
+                    <!-- Footer (Instructor + CTA Button) -->
+                    <div class="flex items-center justify-between mt-5 pt-3.5 border-t border-gray-100">
+                         <div class="flex items-center gap-2">
+                              <span class="size-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                                   <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" class="text-gray-700">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.78552 9.5 12.7855 14l9-4.5-9-4.5-8.99998 4.5Zm0 0V17m3-6v6.2222c0 .3483 2 1.7778 5.99998 1.7778 4 0 6-1.3738 6-1.7778V11"></path>
+                                   </svg>
+                              </span>
+                              <div class="text-xs">
+                                   <span class="text-gray-400 block text-[10px] uppercase font-medium leading-tight">Instructor</span>
+                                   <span class="text-gray-800 font-medium truncate block max-w-[120px]">{{ course.instructor }}</span>
+                              </div>
+                         </div>
+
+                         <a [routerLink]="['/learn/courses', course.id]" class="btn dark btn-sm flex items-center gap-1.5">
+                              <span>Enter Course</span>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                         </a>
+                    </div>
+               </div>
+          }
+     </div>
+} @else {
+     <!-- Empty State -->
+     <div class="bg-white rounded-2xl border border-gray-100 p-12 text-center max-w-md mx-auto my-12">
+          <div class="size-16 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-4 text-gray-400">
+               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+               </svg>
+          </div>
+          <h3 class="text-base font-bold text-gray-900 mb-1">No courses found</h3>
+          <p class="text-xs text-gray-500 mb-6">No courses match your selected filter or search term. Try resetting your search or join a new class.</p>
+          <button (click)="setFilter('all'); searchQuery.set('')" class="btn outline btn-sm">
+               Reset Filters
+          </button>
+     </div>
+}
+
+<!-- 5. Join Class Drawer -->
+<z-drawer [(zVisible)]="joinDrawerVisible" [zPlacement]="'right'" [zDismissible]="true">
+     <z-drawer-header>
+          <div class="flex flex-col border-b border-gray-100 pb-4">
+               <div class="font-bold text-xl text-gray-900">Join a Course</div>
+               <div class="text-sm text-gray-500">Enter the enrollment code provided by your instructor.</div>
+          </div>
+     </z-drawer-header>
+     <div class="p-6">
+          <form (submit)="handleJoinSubmit(); $event.preventDefault()" class="flex flex-col gap-4">
+               <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Class Enrollment Code</label>
+                    <input type="text"
+                           [ngModel]="joinCode()"
+                           (ngModelChange)="joinCode.set($event.toUpperCase())"
+                           name="enrollmentCode"
+                           placeholder="e.g. BIO-A829 or CALC-204"
+                           class="form-control w-full uppercase tracking-widest font-mono text-center text-lg h-12">
+                    <p class="text-xs text-gray-400 mt-1.5">Codes are 5–10 characters, case-insensitive.</p>
+               </div>
+
+               @if (joinError()) {
+                    <div class="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700">
+                         {{ joinError() }}
+                    </div>
+               }
+
+               @if (joinSuccess()) {
+                    <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-700 flex items-center gap-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                         <span>Course enrollment successful! Adding to your catalog...</span>
+                    </div>
+               }
+          </form>
+     </div>
+     <z-drawer-footer>
+          <div class="flex items-center gap-3 w-full">
+               <button type="button" (click)="joinDrawerVisible.set(false)" class="btn outline flex-1">Cancel</button>
+               <button type="button" (click)="handleJoinSubmit()" class="btn primary flex-1">Join Course</button>
+          </div>
+     </z-drawer-footer>
+</z-drawer>

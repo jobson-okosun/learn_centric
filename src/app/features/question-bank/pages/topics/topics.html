@@ -1,0 +1,190 @@
+<div class="bg-white p-6 rounded-2xl flex flex-col gap-6">
+    
+    <!-- Header & Controls -->
+    <div class="flex items-center justify-between">
+        <div class="flex flex-col gap-1">
+            <h1 class="text-lg font-bold text-gray-900">Topics & Subtopics</h1>
+            <p class="text-sm text-gray-500">Create and manage topics and subtopics for courses</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <div class="w-[200px]">
+                <z-combobox class="w-full" 
+                            [options]="courseOptions()" 
+                            [zValue]="selectedCourseId()" 
+                            (zValueChange)="onCourseChange($event)">
+                </z-combobox>
+            </div>
+
+            <button class="btn primary px-5 flex items-center gap-2" (click)="addTopic()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                New Topic
+            </button>
+        </div>
+    </div>
+    <!-- Topics List -->
+    <div class="flex flex-col gap-2 mt-2">
+        @for (topic of currentTopics(); track topic.id) {
+            <!-- Topic Row -->
+            <div class="bg-gray-50/30 border border-gray-200 rounded-2xl overflow-visible transition-colors relative">
+                <!-- Topic Header -->
+                <div class="p-4 flex items-center justify-between hover:bg-primary-50/50 rounded-2xl cursor-pointer group transition-colors" (click)="toggleTopic(topic.id)">
+                    <div class="flex items-start gap-3">
+                        <!-- Chevron icon -->
+                        <div class="transition-transform duration-200 mt-0.5" 
+                             [class.rotate-90]="isExpanded(topic.id)"
+                             [class.text-primary]="isExpanded(topic.id)"
+                             [class.text-gray-400]="!isExpanded(topic.id)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-gray-800 text-[15px] group-hover:text-primary transition-colors">{{ topic.name }}</span>
+                            <div class="flex items-center gap-2 mt-0.5">
+                                <span class="text-[12px] text-gray-500 font-medium">{{ topic.totalItems }} questions</span>
+                                <span class="text-gray-300">&bull;</span>
+                                <span class="text-[12px] text-gray-500 font-medium">{{ topic.subtopics.length }} subtopics</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Topic Actions Menu -->
+                    <div class="flex items-center gap-3">
+                        <!-- Quick Action Button -->
+                        <button class="btn outline !px-3 !py-1 !text-[12px] !rounded-lg" (click)="viewQuestions(topic.id); $event.stopPropagation()">
+                            View Questions
+                        </button>
+                        
+                        <button zDropdown [zDropdownMenu]="topicMenu" class="p-2 text-gray-400 hover:text-gray-800 rounded-xl hover:bg-gray-100 transition-colors outline-none" (click)="$event.stopPropagation()">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                            </svg>
+                        </button>
+                        
+                        <z-dropdown-menu-content #topicMenu="zDropdownMenuContent" zAlign="end" class="w-44 p-1 !bg-white">
+                            <button (click)="addSubtopic(topic.id)" class="w-full text-left px-3 py-2 text-[13px] font-medium text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2 rounded-lg cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                                Add Subtopic
+                            </button>
+                            <button (click)="renameItem(topic.id, topic.name)" class="w-full text-left px-3 py-2 text-[13px] font-medium text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2 rounded-lg cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" /></svg>
+                                Rename
+                            </button>
+                            <div class="h-px bg-gray-100 my-1 mx-2"></div>
+                            <button (click)="deleteItem(topic.id, topic.name)" class="w-full text-left px-3 py-2 text-[13px] font-medium text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2 rounded-lg cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                                Delete
+                            </button>
+                        </z-dropdown-menu-content>
+                    </div>
+                </div>
+
+                <!-- Subtopics Container -->
+                @if (isExpanded(topic.id)) {
+                    <div class="border-t border-gray-100 bg-white/50 p-2 rounded-b-2xl">
+                        @for (sub of topic.subtopics; track sub.id) {
+                            <div class="flex items-center justify-between p-3 pl-11 hover:bg-primary-50/50 rounded-xl transition-colors group relative">
+                                <!-- Connecting line visual -->
+                                <div class="absolute left-6 top-0 bottom-0 w-px bg-gray-200 group-hover:bg-primary-200 transition-colors"></div>
+                                <div class="absolute left-6 top-1/2 w-3 h-px bg-gray-200 group-hover:bg-primary-200 transition-colors"></div>
+                                
+                                <div class="flex flex-col relative z-10">
+                                    <span class="text-[14px] font-medium text-gray-700 group-hover:text-primary transition-colors">{{ sub.name }}</span>
+                                    <span class="text-[12px] text-gray-500 font-medium mt-0.5">{{ sub.totalItems }} questions</span>
+                                </div>
+                                
+                                <div class="flex items-center gap-3 relative z-10">
+                                    <button class="btn outline !px-3 !py-1 !text-[12px] !rounded-lg" (click)="viewQuestions(sub.id); $event.stopPropagation()">
+                                        View Questions
+                                    </button>
+                                    
+                                    <button zDropdown [zDropdownMenu]="subtopicMenu" class="p-1.5 text-gray-400 hover:text-gray-800 rounded-lg hover:bg-gray-100 transition-colors outline-none" (click)="$event.stopPropagation()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                        </svg>
+                                    </button>
+                                    
+                                    <z-dropdown-menu-content #subtopicMenu="zDropdownMenuContent" zAlign="end" class="w-44 p-1 !bg-white">
+                                        <button (click)="renameItem(sub.id, sub.name)" class="w-full text-left px-3 py-2 text-[13px] font-medium text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2 rounded-lg cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" /></svg>
+                                            Rename
+                                        </button>
+                                        <div class="h-px bg-gray-100 my-1 mx-2"></div>
+                                        <button (click)="deleteItem(sub.id, sub.name)" class="w-full text-left px-3 py-2 text-[13px] font-medium text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2 rounded-lg cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                                            Delete
+                                        </button>
+                                    </z-dropdown-menu-content>
+                                </div>
+                            </div>
+                        }
+                        @if (topic.subtopics.length === 0) {
+                            <div class="p-3 pl-11 text-[13px] text-gray-400 font-medium relative">
+                                <div class="absolute left-6 top-0 bottom-1/2 w-px bg-gray-200"></div>
+                                <div class="absolute left-6 top-1/2 w-3 h-px bg-gray-200"></div>
+                                No subtopics yet.
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+
+        <!-- Empty State for Course -->
+        @if (currentTopics().length === 0 && selectedCourseId()) {
+            <div class="p-10 flex flex-col items-center justify-center text-center bg-gray-50/50 border border-gray-200 rounded-2xl border-dashed">
+                <div class="w-12 h-12 bg-white border border-gray-200 rounded-2xl flex items-center justify-center mb-3 text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                    </svg>                      
+                </div>
+                <p class="text-gray-900 font-bold text-[15px]">No topics found</p>
+                <p class="text-gray-500 font-medium text-sm mt-1 max-w-[250px]">This course doesn't have any topics yet. Create the first one to get started.</p>
+                <button class="btn outline mt-4 !rounded-xl" (click)="addTopic()">Create Topic</button>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Add Topic Modal -->
+<ng-template #addTopicModalTemplate>
+    <div class="flex flex-col gap-4 pt-2">
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Topic Name</label>
+            <input type="text" class="form-control w-full" placeholder="Enter name">
+        </div>
+        
+        <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
+            <button class="btn outline px-6" (click)="closeModal()">Cancel</button>
+            <button class="btn primary px-6" (click)="closeModal()">Save</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- Rename Modal -->
+<ng-template #renameModalTemplate>
+    <div class="flex flex-col gap-4 pt-2">
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">New Name</label>
+            <input type="text" class="form-control w-full" [value]="activeItemName()">
+        </div>
+        
+        <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
+            <button class="btn outline px-6" (click)="closeModal()">Cancel</button>
+            <button class="btn primary px-6" (click)="closeModal()">Save Changes</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- Delete Modal -->
+<ng-template #deleteModalTemplate>
+    <div class="flex flex-col gap-4 pt-2">
+        <p class="text-sm text-gray-600">Are you sure you want to delete <span class="font-bold text-gray-900">"{{ activeItemName() }}"</span>? This action cannot be undone.</p>
+        
+        <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
+            <button class="btn outline px-6" (click)="closeModal()">Cancel</button>
+            <button class="btn primary px-6 !bg-red-600 !border-red-600 hover:!bg-red-700" (click)="closeModal()">Delete</button>
+        </div>
+    </div>
+</ng-template>

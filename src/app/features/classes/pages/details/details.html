@@ -1,0 +1,119 @@
+<div class="mb-3 flex items-center justify-between">
+     <div>
+          <h1 class="font-semibold text-2xl text-gray-800">Biology 101 - Section A</h1>   
+          <p class="text-sm text-gray-500">Fall 2026 Cohort</p>
+     </div>
+</div>
+
+<div class="bg-white p-2 pb-1 rounded-2xl">
+     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+          <a routerLink="overview" 
+             routerLinkActive
+             #rlaOverview="routerLinkActive"
+             [class]="rlaOverview.isActive ? 'bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'"
+             class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M3 11.9896V14.5C3 17.7998 3 19.4497 4.02513 20.4749C5.05025 21.5 6.70017 21.5 10 21.5H14C17.2998 21.5 18.9497 21.5 19.9749 20.4749C21 19.4497 21 17.7998 21 14.5V11.9896C21 10.3083 21 9.46773 20.6441 8.74005C20.2882 8.01237 19.6247 7.49628 18.2976 6.46411L16.2976 4.90855C14.2331 3.30285 13.2009 2.5 12 2.5C10.7991 2.5 9.76689 3.30285 7.70242 4.90855L5.70241 6.46411C4.37533 7.49628 3.71179 8.01237 3.3559 8.74005C3 9.46773 3 10.3083 3 11.9896Z"></path>
+               </svg>
+               Dashboard
+          </a>
+          
+          <a routerLink="roster" 
+             routerLinkActive="bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20"
+             #rlaRoster="routerLinkActive"
+             [class.text-gray-600]="!rlaRoster.isActive"
+             [class.hover:text-gray-900]="!rlaRoster.isActive"
+             [class.hover:bg-gray-100]="!rlaRoster.isActive"
+             class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" color="currentColor" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M15 8C15 5.23858 12.7614 3 10 3C7.23858 3 5 5.23858 5 8C5 10.7614 7.23858 13 10 13C12.7614 13 15 10.7614 15 8Z"></path>
+               <path d="M3 20C3 16.134 6.13401 13 10 13C11.9587 13 13.7295 13.8045 15 15.101"></path>
+               <path d="M13 18.5C13 18.5 14.3485 19.0067 15 21C15 21 18.1765 16 21 15"></path>
+               </svg>
+               Roster
+          </a>
+
+          <a routerLink="attendance" 
+             routerLinkActive="bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20"
+             #rlaAttendance="routerLinkActive"
+             [class.text-gray-600]="!rlaAttendance.isActive"
+             [class.hover:text-gray-900]="!rlaAttendance.isActive"
+             [class.hover:bg-gray-100]="!rlaAttendance.isActive"
+             class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" color="currentColor" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
+               </svg>
+               Attendance
+          </a>
+          
+          <a routerLink="calendar" 
+             routerLinkActive="bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20"
+             #rlaCalendar="routerLinkActive"
+             [class.text-gray-600]="!rlaCalendar.isActive"
+             [class.hover:text-gray-900]="!rlaCalendar.isActive"
+             [class.hover:bg-gray-100]="!rlaCalendar.isActive"
+             class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+               </svg>
+               Calendar
+          </a>
+
+          <a routerLink="live" 
+             routerLinkActive="bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20"
+             #rlaLive="routerLinkActive"
+             [class.text-gray-600]="!rlaLive.isActive"
+             [class.hover:text-gray-900]="!rlaLive.isActive"
+             [class.hover:bg-gray-100]="!rlaLive.isActive"
+             class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+               <polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+               </svg>
+               Live Sessions
+          </a>
+
+          <a routerLink="performance" 
+             routerLinkActive="bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20"
+             #rlaPerformance="routerLinkActive"
+             [class.text-gray-600]="!rlaPerformance.isActive"
+             [class.hover:text-gray-900]="!rlaPerformance.isActive"
+             [class.hover:bg-gray-100]="!rlaPerformance.isActive"
+             class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+               <line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>
+               </svg>
+               Performance
+          </a>
+
+          <a routerLink="discussions" 
+             routerLinkActive="bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20"
+             #rlaDiscussions="routerLinkActive"
+             [class.text-gray-600]="!rlaDiscussions.isActive"
+             [class.hover:text-gray-900]="!rlaDiscussions.isActive"
+             [class.hover:bg-gray-100]="!rlaDiscussions.isActive"
+             class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+               </svg>
+               Discussions
+          </a>
+          
+          <a routerLink="settings" 
+             routerLinkActive="bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20"
+             #rlaSettings="routerLinkActive"
+             [class.text-gray-600]="!rlaSettings.isActive"
+             [class.hover:text-gray-900]="!rlaSettings.isActive"
+             [class.hover:bg-gray-100]="!rlaSettings.isActive"
+             class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+               <circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+               </svg>
+               Settings
+          </a>
+
+     </div>
+</div>
+
+<div class="flex-1 mt-5 bg-white p-6 rounded-2xl border border-gray-100">
+     <router-outlet></router-outlet>
+</div>

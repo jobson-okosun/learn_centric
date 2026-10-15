@@ -1,0 +1,70 @@
+<div class="flex flex-col gap-6">
+    <div>
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-bold text-gray-900">History</h3>
+            <button class="btn primary">Export Report</button>
+        </div>
+        
+        <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden p-1">
+            <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr class="bg-gray-100 border-b border-gray-100">
+                                <th class="py-3 px-6 text-xs font-semibold text-gray-700 uppercase">Assessment Name</th>
+                                <th class="py-3 px-6 text-xs font-semibold text-gray-700 uppercase">Date Taken</th>
+                                <th class="py-3 px-6 text-xs font-semibold text-gray-700 uppercase">Score</th>
+                                <th class="py-3 px-6 text-xs font-semibold text-gray-700 uppercase">Attempts</th>
+                                <th class="py-3 px-6 text-xs font-semibold text-gray-700 uppercase">Status</th>
+                                <th class="py-3 px-6 text-xs font-semibold text-gray-700 uppercase text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            @for (item of assessments(); track item.name) {
+                        <tr class="hover:bg-gray-50/50 transition-colors group">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-xl bg-primary/5 text-primary flex items-center justify-center shrink-0">
+                                        @if (item.type === 'Exam') {
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                                        } @else {
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                        }
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="font-medium text-gray-900">{{item.name}}</span>
+                                        <span class="text-xs text-gray-500 font-medium">{{item.type}}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-gray-600 font-medium">{{item.date}}</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold"
+                                          [class.text-gray-900]="item.score >= 70"
+                                          [class.text-red-600]="item.score < 70">{{item.score}}%</span>
+                                    <span class="text-xs text-gray-400">/ {{item.total}}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-gray-600 font-medium">{{item.attempts}}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 text-[11px] font-bold rounded"
+                                      [class.bg-green-50]="item.status === 'Graded'"
+                                      [class.text-green-700]="item.status === 'Graded'"
+                                      [class.bg-amber-50]="item.status === 'Needs Review'"
+                                      [class.text-amber-700]="item.status === 'Needs Review'">
+                                    {{item.status}}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <button class="btn outline btn-sm float-right">View Submission</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</div>
