@@ -133,7 +133,9 @@ src/app/learner/
 - [x] `components/materials-list/`: recursive `ngTemplateOutlet` tree supporting all 12+ course material types, with media types launched in interactive modals (`video`, `audio`, `image`, `file`, `live-class`) and page material routed to dedicated page component. Features individual progress reports for every module, lesson, video, and audio item with real-time completion tracking and dynamic progress bar indicators.
 - [x] `pages/materials/page/`: routed page material component (`/learn/courses/:id/pages/:pageId`) that receives rich text HTML data, sanitizes it, and renders formatted reading notes with breadcrumbs, formulas, and completion tracking.
 - [x] `pages/overview/`: hosts `<app-materials-list>` with verified visual presentation of every course material type.
-- [x] `pages/assignments/`: problem sets and quizzes with filters (`all`, `pending`, `completed`), points, and deadlines.
+- [x] `pages/materials/assignment/`: dedicated routed assignment page (`/learn/courses/:id/materials/assignments/:assignmentId`) mirroring tutor 2-column layout (guidelines, formulas, starter attachments, rubric matrix, submission status card, and class Q&A thread).
+- [x] `components/assignment-submission-drawer/`: reusable deliverable submission drawer with drag-and-drop file uploader, online LaTeX/code response editor, academic integrity pre-check simulator, honor code pledge, and cryptographic receipt modal.
+- [x] `pages/assignments/`: problem sets and quizzes with filters (`all`, `pending`, `completed`), points, and deadlines, wired to submission drawer.
 - [x] `pages/discussion/`: Q&A forum feed with ZardDialog modal question composer, filter toolbar, and instructor answer badges.
 - [x] `pages/gradebook/`: itemized gradebook, category weighting cards, and letter grade summary.
 - [x] `pages/mastery/`: student learning outcomes matrix, analytics cards, Socratic AI diagnostic recommendations, and official progress report drawer.
@@ -178,9 +180,95 @@ src/app/learner/
   - Instructor rubric feedback card from course lead.
   - Itemized question review with filters (`All`, `Correct`, `Partial / Needs Review`), correct vs chosen answers, mathematical step-by-step solutions, and teacher rubric notes.
 
-### Phase 7: Socratic AI Tutor (`/learn/tutor`) — [NEXT MILESTONE]
-- [ ] 24/7 conversational study partner drawer / full page.
-- [ ] Socratic questioning hints (hints without spoiling exam answers).
+### Phase 7: Discussions & Communications 3-in-1 Hub (`/learn/discussions`) — [COMPLETED]
+- [x] Structure strictly aligned with standard feature pattern (`discussions.route.ts`, `pages/shell`, `pages/forum`, `pages/announcements`, `pages/messages`).
+- [x] Route-linked tab container (`/learn/discussions/forum`, `/learn/discussions/announcements`, `/learn/discussions/messages`).
+- [x] **Forum Q&A (`pages/forum/`)**:
+  - Filter pills: All Discussions, Instructor Answered, Open / Unanswered, My Questions, Bookmarked.
+  - Search input and Course selector.
+  - Thread list cards with upvote counters, verified instructor answer badges, reply counters, and bookmarking.
+  - "Ask a Question" modal with course selection, topic, title, and detailed markdown/code context.
+  - Thread detail drawer/modal with question content, verified answer callouts, and inline reply composer.
+- [x] **Announcements Broadcasts (`pages/announcements/`)**:
+  - Parity with tutor communication module (`channels`: In-App, Email, SMS, WhatsApp).
+  - High-priority urgent announcement banner.
+  - Course filter, unread indicators, and "Mark all as read" action.
+  - Full announcement modal with downloadable resource attachments.
+- [x] **Direct Messages (`pages/messages/`)**:
+  - 2-pane split inbox layout mirroring `src/app/features/communication/pages/inbox/`.
+  - Left pane: Conversation list with unread indicator bars, online indicators, course/topic context, and search.
+  - Right pane: Contact header with online status, educational context, chat bubble stream (sent vs received), and quick response composer.
+  - "Compose New Message" modal to start private conversations with course faculty and TAs.
+
+### Phase 8: Socratic AI Tutor (`/learn/tutor`) — [COMPLETED]
+- [x] Structure strictly aligned with standard feature pattern (`tutor.route.ts`, `pages/workspace/`).
+- [x] Full-height 2-pane interactive academic workspace matching the flat LearnCentric design system.
+- [x] **Study History & Context Sidebar (`w-80`)**:
+  - "+ New Chat" button and session search input.
+  - Course context filter dropdown (`MATH-301`, `PHYS-201`, `CS-210`, etc.).
+  - Pinned and recent study sessions with course tags, last active timestamps, and pin toggles.
+- [x] **Conversational Socratic Canvas**:
+  - Pedagogy mode switcher pills: `Socratic Guide`, `Mental Model`, `Diagnostic Drill`, `Misconception Check`.
+  - Welcome state with 4 starter prompt cards tailored across multivariable calculus, physics, and algorithms.
+  - Socratic tutor cards with sparkle persona badge, math formula callouts (LaTeX formatted), code syntax blocks, and follow-up suggestion chips.
+  - Progressive hint tiering (reveal progressive clues step-by-step without spoiling full answers).
+  - Multi-line message composer dock with Enter-to-send and thinking indicator.
+
+### Phase 9: Learner Profile & Academic Settings (`/learn/settings`) — [COMPLETED]
+- [x] Structure strictly aligned with standard feature pattern (`settings.route.ts`, `pages/shell`, `pages/profile`, `pages/academic`, `pages/notifications`, `pages/preferences`, `pages/security`).
+- [x] Route-linked vertical tab navigation shell with `<router-outlet>`.
+- [x] **Profile & Personal Info (`pages/profile/`)**: Student avatar, institutional email, phone, bio, pronouns, timezone.
+- [x] **Academic & Degree Status (`pages/academic/`)**: Degree program, student UID, GPA & credits progress, advisor card, enrolled cohorts.
+- [x] **Notification Preferences (`pages/notifications/`)**: In-app, Email, SMS, WhatsApp channels for deadlines, grades, live classes, discussions.
+- [x] **Study & AI Tutor Preferences (`pages/preferences/`)**: Default pedagogy mode, progressive hint depth, lecture playback defaults, practice goals.
+- [x] **Security & Privacy (`pages/security/`)**: Password management, 2FA toggle, active session devices, leaderboard visibility.
+
+### Phase 10: Instructor & Faculty Settings (`/app/settings`) — [COMPLETED]
+- [x] Feature route and shell structure in `src/app/features/settings/` (`settings.route.ts`, `pages/shell/`, and 5 dedicated sub-pages).
+- [x] Route mounted in `src/app/app.routes.ts` under `/app/settings` and wired to sidebar navigation footer.
+- [x] Independent scroll isolation: fixed sidebar navigation with only the right tab contents panel scrolling (`overflow-y-auto no-scrollbar`).
+- [x] **Faculty Profile & Credentials (`pages/profile/`)**: Academic title, department, office location, weekly office hours, faculty staff ID copy, public bio, and research links (Google Scholar, ORCID, GitHub).
+- [x] **Teaching & Grading Defaults (`pages/teaching/`)**: Default grading scale, pass mark threshold, minimum attendance requirement (80%), late submission policies & grace periods, blind/anonymous grading toggle, and AI integrity sensitivity.
+- [x] **Virtual Stage & Lecture Defaults (`pages/classroom/`)**: Stream broadcast resolution (1080p 60fps), AI background noise isolation, student audience permissions on entry, auto-recording to cloud, AI transcripts, and whiteboard grid settings.
+- [x] **Dispatch & Alert Channels (`pages/notifications/`)**: Submission digests, late submission alerts, forum mentions, office hours waiting room notifications, attendance deficit warnings, and Slack/Teams webhooks.
+- [x] **Security & Institutional Access (`pages/security/`)**: Institutional SSO SAML 2.0 status, password management, MFA enforcement for grade publishing, master proctor key generator & rotation, and active faculty workstation sessions.
+
+### Phase 11: Coursework Submission Lifecycle & Instructor Grading — [COMPLETED]
+- [x] **Learner Assignment Hub & Submission Flow (`src/app/learner/pages/materials/assignment/`)**:
+  - Parity with tutor assignment view: prompt details, criteria cards, rubric breakdown, resource attachments.
+  - Slide-over submission drawer (`assignment-submission-drawer`) supporting drag-and-drop file uploads, notes, and progress bar.
+  - Verification & digital receipt dialog with submission hash and timestamp.
+  - Integrated into course assignments tab (`src/app/learner/pages/assignments/`).
+- [x] **Instructor Assignment Submissions Roster (`src/app/features/courses/pages/materials/assignment-submissions/`)**:
+  - Accessible via primary **Submissions** action on tutor assignment page.
+  - Real-time submission counters (Total, Needs Grading, Graded).
+  - Search and filter controls without badge/pill clutter.
+  - Student submissions roster table with direct `Grade` and `Review` routing.
+- [x] **Instructor Assignment Grading Workspace (`src/app/features/courses/pages/materials/assignment-grading/`)**:
+  - Structural parity with Exam & Quiz grading (`src/app/features/assessment/pages/grading/`).
+  - Top student progression bar (`Student X of Y`), sequential `Prev` and `Save & Next` navigation.
+  - Left pane: prompt brief, multi-tab deliverable document viewer (`.pdf`, `.py`, `.txt`), submission receipt hash, AI score suggestion callout.
+  - Right pane: rubric criteria point selectors (`Excellent`, `Good`, `Fair`, `Poor`), live calculated total score (`/100`), feedback composer, draft save, and gradebook publication.
+  - Strict UI compliance: 0 drop shadows, 0 rings, standard `btn primary` and `btn outline`, flat 1px borders.
+
+### Phase 12: Learner Insights & Results Broadsheet Hub (`/learn/insights`) — [COMPLETED]
+- [x] Structure strictly aligned with standard feature pattern (`insights.route.ts`, `pages/overview`, `pages/assessments`, `pages/mastery`, `pages/ai-insights`).
+- [x] Integrated into learner sidebar navigation as expandable `insights` menu with matching SVG icon.
+- [x] **Academic Overview (`pages/overview/`)**:
+  - Composite Performance Score (89%), Course Completion Progress (14/18 Modules), and Top Performer status.
+  - Course Broadsheet ledger with module counts, attendance rate %, coursework average, assessment score, and overall ratings.
+  - Program certification criteria card and quick links to detailed sub-views.
+- [x] **Assessment Results History (`pages/assessments/`)**:
+  - Unified broadsheet across all enrolled courses and terms.
+  - Search input, course filter, and clean text buttons (All, Exams, Quizzes, Distinctions) with zero pill spam.
+  - Performance records with score/max points, letter grades, cohort percentile rankings, and direct `Review` links to rubric breakdown (`/learn/assessments/:id/result`).
+- [x] **Learning Outcomes & Mastery Matrix (`pages/mastery/`)**:
+  - Multi-subject competency tracker mapping institutional SLOs across mathematics, quantum physics, algorithms, and biology.
+  - Status counts (Exceeded, Mastered, Progressing, Needs Focus) with benchmark indicators and direct links to formative practice drills.
+- [x] **Socratic AI Study Diagnostics (`pages/ai-insights/`)**:
+  - Executive diagnostic summary from the AI tutor with overall exam readiness index (91%) and recommended study pace.
+  - Two-column split highlighting top mastered concepts vs priority weak-spot interventions with drill launchers.
+- [x] **Strict Flat Design**: 0 drop shadows, 0 rings, standard `btn primary` and `btn outline`, flat 1px borders.
 
 ---
 
@@ -189,3 +277,9 @@ src/app/learner/
 - [x] **No drop shadows or rings**: flat design only.
 - [x] **No arbitrary folders**: always `<feature>/pages/` and `<feature>/components/`.
 - [x] **Always build-verify**: run `npx ng build --configuration development` to ensure zero compilation regressions.
+
+---
+
+## 5. Next Implementation Candidates
+Detailed descriptions, scope, and comparison matrix for upcoming candidates are compiled in [ROADMAP_NEXT_STEPS.md](file:///c:/Users/DELL/Desktop/MULTILENT/JOB-OKOSUN-MULTILENT/APPS/learncentric/ROADMAP_NEXT_STEPS.md).
+

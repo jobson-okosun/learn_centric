@@ -1,0 +1,266 @@
+<div class="flex flex-col w-full mx-auto pb-10">
+  <!-- 1. Header Greeting (Strictly matching learner/tutor home pattern) -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+    <div>
+      <div class="font-semibold text-2xl text-gray-800">
+        Welcome back, <span class="text-gray-900">Administrator</span>
+      </div>
+      <p class="text-gray-500 text-sm mt-0.5">Track institutional performance, course approvals, and academic operations.</p>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap">
+      <a routerLink="/admin/people/directory" class="btn outline btn-sm !bg-white flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <line x1="19" y1="8" x2="19" y2="14"></line>
+          <line x1="22" y1="11" x2="16" y2="11"></line>
+        </svg>
+        <span>+ Add User</span>
+      </a>
+      <a routerLink="/admin/enrolments/classes" class="btn primary btn-sm flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+        </svg>
+        <span>+ New Class</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 2. Metric / Stat Overview Cards (Matching learner/tutor home pattern) -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-6 gap-5">
+    @for (card of metricCards(); track card.label) {
+      <div class="rounded-2xl bg-white p-4">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="rounded-full size-10 flex items-center justify-center shrink-0 {{ card.iconBg }} {{ card.iconColor }}">
+            @if (card.icon === 'users') {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            } @else if (card.icon === 'academic') {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+              </svg>
+            } @else if (card.icon === 'classes') {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            }
+          </span>
+          <div>
+            <span class="text-gray-800 text-xs font-semibold block leading-tight">{{ card.label }}</span>
+            <span class="text-[11px] text-gray-500 font-medium">{{ card.subtext }}</span>
+          </div>
+        </div>
+        <div class="font-bold text-3xl text-gray-900">{{ card.value }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- 3. Academic Session Hero Banner (Strictly matching learner continue-learning banner) -->
+  <div class="bg-white p-5 rounded-2xl border border-gray-100 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+      <!-- Left: Session Details -->
+      <div class="flex items-start sm:items-center gap-4 min-w-0 flex-1">
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 border border-blue-100 shrink-0 relative overflow-hidden flex flex-col justify-center items-center p-2 text-center">
+          <span class="text-primary font-bold text-[10px] sm:text-[11px] leading-tight z-10">TERM<br>02</span>
+          <div class="absolute right-0 bottom-0 w-8 h-8 bg-primary/10 rounded-tl-full"></div>
+        </div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-[10px] font-bold text-primary uppercase tracking-wider bg-primary/10 px-2 py-0.5 rounded-full">
+              Active Session
+            </span>
+            <span class="text-xs text-gray-400 font-medium">&middot; {{ currentTerm().sessionName }}</span>
+          </div>
+          <h2 class="text-gray-900 font-bold text-base sm:text-lg leading-snug">
+            {{ currentTerm().termName }}
+          </h2>
+          <div class="text-xs text-gray-500 mt-0.5">
+            {{ currentTerm().startDate }} – {{ currentTerm().endDate }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Progress Bar & Action -->
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4 lg:gap-6 shrink-0 lg:pl-6 lg:border-l lg:border-gray-100">
+        <div class="sm:w-64">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs text-gray-500 font-medium">Session Progress (Week {{ currentTerm().currentWeek }}/{{ currentTerm().totalWeeks }})</span>
+            <span class="text-xs font-bold text-primary">{{ currentTerm().progressPercent }}%</span>
+          </div>
+          <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+            <div class="bg-primary rounded-full h-2 transition-all duration-500" [style.width.%]="currentTerm().progressPercent"></div>
+          </div>
+          <div class="text-[11px] text-gray-400 mt-1 flex items-center justify-between">
+            <span>Midterm Period</span>
+            <span>8 weeks remaining</span>
+          </div>
+        </div>
+
+        <a routerLink="/admin/academics/calendar" class="btn primary btn-sm flex items-center justify-center gap-2 whitespace-nowrap">
+          <span>Academic Calendar</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Core Grid: Needs attention & Recent activity (Strictly matching learner/tutor container card pattern) -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    
+    <!-- Column 1 & 2: Needs attention Card -->
+    <div class="lg:col-span-2 rounded-2xl bg-white p-5 border border-gray-100 flex flex-col justify-between">
+      <div>
+        <!-- Header Inside Card -->
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <h3 class="font-semibold text-base text-gray-900">Needs attention</h3>
+            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
+              {{ attentionItems().length }}
+            </span>
+          </div>
+          <span class="text-xs text-gray-400 font-medium">Ranked by priority</span>
+        </div>
+
+        <!-- Items List Inside Card -->
+        <div class="flex flex-col gap-3">
+          @for (item of attentionItems(); track item.id) {
+            <div class="p-3.5 rounded-xl border border-gray-100 hover:border-gray-200 transition-colors bg-neutral-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-start gap-3 min-w-0 flex-1">
+                <span class="size-2 rounded-full bg-primary mt-1.5 shrink-0"></span>
+                <div class="flex flex-col min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-xs font-semibold text-gray-900">{{ item.title }}</span>
+                    <span class="text-[11px] text-gray-400">&middot; {{ item.category }} &middot; {{ item.time }}</span>
+                  </div>
+                  <p class="text-xs text-gray-600 mt-1 leading-relaxed">{{ item.description }}</p>
+                  <span class="text-[11px] text-gray-400 mt-0.5">{{ item.target }}</span>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+                <button type="button"
+                        (click)="dismissAttentionItem(item.id)"
+                        class="btn outline btn-sm !py-1 !px-2.5 !text-xs !bg-white">
+                  Dismiss
+                </button>
+                @if (item.route) {
+                  <a [routerLink]="item.route"
+                     class="btn primary btn-sm !py-1 !px-3 !text-xs whitespace-nowrap">
+                    {{ item.actionLabel }}
+                  </a>
+                }
+              </div>
+            </div>
+          } @empty {
+            <div class="p-8 text-center flex flex-col items-center justify-center gap-1.5">
+              <span class="text-sm font-semibold text-gray-800">Nothing needs attention</span>
+              <p class="text-xs text-gray-500">All administrative items and approval requests are up to date.</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 3: Recent activity Card -->
+    <div class="rounded-2xl bg-white p-5 border border-gray-100 flex flex-col justify-between">
+      <div>
+        <!-- Header Inside Card (With signature dark circular arrow button) -->
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <h3 class="font-semibold text-base text-gray-900">Recent activity</h3>
+          </div>
+          <a routerLink="/admin/audit/log" class="rounded-full size-8 flex items-center justify-center bg-slate-900 text-white hover:bg-slate-800 transition-colors" title="View Audit Log">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <path d="M16.5 7.5L6 18"></path>
+              <path d="M8 6.18791C8 6.18791 16.0479 5.50949 17.2692 6.73079C18.4906 7.95209 17.812 16 17.812 16" stroke-linejoin="round"></path>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Divided List Inside Card -->
+        <div class="flex flex-col divide-y divide-gray-100">
+          @for (item of recentActivity(); track item.id) {
+            <div class="py-3.5 first:pt-0 last:pb-0 flex flex-col gap-1">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-semibold text-gray-800">{{ item.actorName }}</span>
+                <span class="text-[11px] text-gray-400">{{ item.timestamp }}</span>
+              </div>
+              <p class="text-xs text-gray-600 leading-snug">{{ item.summary }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Organizational Units Card (Enclosed container matching dashboard standard) -->
+  <div class="rounded-2xl bg-white p-5 border border-gray-100 flex flex-col">
+    <!-- Header Inside Card -->
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h3 class="font-semibold text-base text-gray-900">Organizational units</h3>
+        <p class="text-xs text-gray-500 mt-0.5">Faculties, enrolled learners, and active course distribution</p>
+      </div>
+      <a routerLink="/admin/structure/units" class="rounded-full size-8 flex items-center justify-center bg-slate-900 text-white hover:bg-slate-800 transition-colors" title="View all units">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M16.5 7.5L6 18"></path>
+          <path d="M8 6.18791C8 6.18791 16.0479 5.50949 17.2692 6.73079C18.4906 7.95209 17.812 16 17.812 16" stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Double-border table container matching attendance.html pattern -->
+    <div class="border border-gray-100 rounded-xl overflow-hidden">
+      <div class="overflow-x-auto no-scrollbar">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-gray-100 bg-gray-50/80">
+              <th class="p-3.5 text-xs font-semibold text-gray-700 uppercase tracking-wider">Unit & Code</th>
+              <th class="p-3.5 text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
+              <th class="p-3.5 text-xs font-semibold text-gray-700 uppercase tracking-wider">Head of Unit</th>
+              <th class="p-3.5 text-xs font-semibold text-gray-700 uppercase tracking-wider text-center">Courses</th>
+              <th class="p-3.5 text-xs font-semibold text-gray-700 uppercase tracking-wider text-center">Learners</th>
+              <th class="p-3.5 text-xs font-semibold text-gray-700 uppercase tracking-wider text-right">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            @for (org of orgUnits(); track org.id) {
+              <tr class="hover:bg-gray-50/50 transition-colors">
+                <td class="p-3.5">
+                  <div class="flex flex-col">
+                    <span class="text-xs font-semibold text-gray-900">{{ org.name }}</span>
+                    <span class="text-[11px] text-gray-400">{{ org.code }}</span>
+                  </div>
+                </td>
+                <td class="p-3.5 text-xs text-gray-600">{{ org.type }}</td>
+                <td class="p-3.5 text-xs text-gray-800 font-medium">{{ org.headName }}</td>
+                <td class="p-3.5 text-xs font-semibold text-gray-900 text-center">{{ org.activeCourses }}</td>
+                <td class="p-3.5 text-xs font-semibold text-gray-900 text-center">{{ org.enrolledStudents }}</td>
+                <td class="p-3.5 text-right">
+                  <span class="inline-flex items-center gap-1.5 text-xs text-gray-600 font-medium">
+                    <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                    {{ org.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

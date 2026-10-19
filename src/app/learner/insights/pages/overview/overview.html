@@ -1,0 +1,235 @@
+<div class="flex flex-col gap-6 h-full pb-8">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 tracking-tight">My Performance</h1>
+      <p class="text-sm text-gray-500 mt-1">
+        Track your course grades, learning progress, and overall performance.
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      <select 
+        [ngModel]="selectedPeriod()"
+        (ngModelChange)="selectedPeriod.set($event)"
+        class="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors focus:ring-0 outline-none cursor-pointer">
+        <option value="Current Cohort 2026">Current Cohort 2026</option>
+        <option value="Previous Cohort 2025">Previous Cohort 2025</option>
+        <option value="All-Time">All-Time Cumulative</option>
+      </select>
+      <button type="button" class="btn outline flex items-center gap-2 text-xs">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Report
+      </button>
+    </div>
+  </div>
+
+  <!-- Metric / Stat Overview Cards (Matching Dashboard design) -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <!-- Overall Performance Score -->
+    <div class="rounded-2xl bg-white p-4">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="rounded-full size-10 flex items-center justify-center shrink-0 bg-violet-50">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="text-violet-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </span>
+        <div>
+          <span class="text-gray-800 text-xs font-semibold block leading-tight">Overall Grade</span>
+          <span class="text-[11px] text-gray-500 font-medium">&uarr; Top 8% &middot; Class avg {{ cohortAverage() }}%</span>
+        </div>
+      </div>
+      <div class="font-bold text-3xl text-gray-900">{{ overallScore() }}%</div>
+    </div>
+
+    <!-- Course & Module Completion -->
+    <div class="rounded-2xl bg-white p-4">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="rounded-full size-10 flex items-center justify-center shrink-0 bg-blue-50">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="text-blue-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/>
+          </svg>
+        </span>
+        <div>
+          <span class="text-gray-800 text-xs font-semibold block leading-tight">Course Progress</span>
+          <span class="text-[11px] text-gray-500 font-medium">{{ completedModules() }} of {{ totalModules() }} Modules</span>
+        </div>
+      </div>
+      <div class="font-bold text-3xl text-gray-900">{{ progressRate() }}%</div>
+    </div>
+
+    <!-- Assessment Pass Rate -->
+    <div class="rounded-2xl bg-white p-4">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="rounded-full size-10 flex items-center justify-center shrink-0 bg-emerald-50">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </span>
+        <div>
+          <span class="text-gray-800 text-xs font-semibold block leading-tight">Pass Rate</span>
+          <span class="text-[11px] text-gray-500 font-medium">{{ totalAssessmentsTaken() }} completed tests</span>
+        </div>
+      </div>
+      <div class="font-bold text-3xl text-gray-900">{{ assessmentPassRate() }}%</div>
+    </div>
+
+    <!-- Learning Standing / Status -->
+    <div class="rounded-2xl bg-white p-4">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="rounded-full size-10 flex items-center justify-center shrink-0 bg-amber-50">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="text-amber-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+        </span>
+        <div>
+          <span class="text-gray-800 text-xs font-semibold block leading-tight">Current Standing</span>
+          <span class="text-[11px] text-gray-500 font-medium">{{ courses().length }} active courses</span>
+        </div>
+      </div>
+      <div class="font-bold text-xl text-gray-900" [innerHTML]="performanceStanding()"></div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    <!-- Left: Courses Performance Ledger (8 Cols) -->
+    <div class="lg:col-span-8 flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-bold text-gray-900 tracking-tight">My Courses</h2>
+          <p class="text-xs text-gray-500 mt-0.5">Your current grades, attendance, and progress in each course</p>
+        </div>
+        <div class="text-xs text-gray-500 font-medium">
+          {{ courses().length }} Courses &middot; Avg Attendance: <span class="font-bold text-gray-900">{{ avgAttendance() }}%</span>
+        </div>
+      </div>
+
+      <!-- Table Wrapper matching attendance.html -->
+      <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden p-1 flex-1 flex flex-col">
+        <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden flex-1 flex flex-col">
+          <div class="overflow-x-auto flex-1">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-gray-100 bg-gray-100">
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Course</th>
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-center">Modules</th>
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-center">Attendance</th>
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-center">Assignments</th>
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-center">Quizzes & Tests</th>
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-center">Overall</th>
+                  <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50">
+                @for (c of courses(); track c.id) {
+                  <tr class="hover:bg-gray-50/50 transition-colors group">
+                    <td class="p-4">
+                      <div class="flex items-center gap-3">
+                        <div>
+                          <div class="font-medium text-gray-900 group-hover:text-primary transition-colors cursor-pointer">{{ c.title }}</div>
+                          <div class="text-xs text-gray-500">{{ c.code }} &middot; {{ c.instructor }}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="p-4 text-sm text-center text-gray-600 font-medium">
+                      {{ c.modulesCount }}
+                    </td>
+                    <td class="p-4 text-sm text-center font-semibold" [class.text-emerald-700]="c.attendanceRate >= 90" [class.text-amber-700]="c.attendanceRate < 90">
+                      {{ c.attendanceRate }}%
+                    </td>
+                    <td class="p-4 text-sm text-center font-medium text-gray-700">
+                      {{ c.courseworkAvg }}%
+                    </td>
+                    <td class="p-4 text-sm text-center font-medium text-gray-700">
+                      {{ c.assessmentScore }}%
+                    </td>
+                    <td class="p-4 text-center">
+                      <span class="font-bold text-sm text-gray-900">{{ c.overallScore }}%</span>
+                      <div class="text-[11px] text-gray-400 font-medium">{{ c.standing }}</div>
+                    </td>
+                    <td class="p-4 text-right">
+                      <a [routerLink]="['/learn/courses', c.id, 'gradebook']" class="btn outline text-xs !py-1 !px-2.5">
+                        Gradebook
+                      </a>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Program Target & Certification Card (4 Cols) -->
+    <div class="lg:col-span-4 flex flex-col gap-6">
+      <!-- Certification Status Card -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 space-y-4">
+        <h3 class="text-sm font-bold text-gray-900 tracking-tight uppercase tracking-wider text-[11px]">Certificate & Completion Goal</h3>
+        
+        <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 space-y-2.5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-gray-600 font-medium">Certificate Goal:</span>
+            <span class="font-bold text-gray-900">&ge; 85% Grade</span>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-gray-600 font-medium">Your Current Average:</span>
+            <span class="font-bold text-emerald-700">{{ overallScore() }}% (On Track)</span>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-gray-600 font-medium">Modules Completed:</span>
+            <span class="font-bold text-gray-900">{{ completedModules() }} / {{ totalModules() }} Modules</span>
+          </div>
+        </div>
+
+        <p class="text-xs text-gray-500 leading-relaxed">
+          You're on track to earn your completion certificate! Keep your overall grade above 85% and complete all course modules to finish successfully.
+        </p>
+      </div>
+
+      <!-- Quick Action Navigation Card -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 space-y-3">
+        <h3 class="text-sm font-bold text-gray-900 tracking-tight uppercase tracking-wider text-[11px]">Explore More</h3>
+        
+        <a routerLink="../assessments" class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors group">
+          <div class="flex items-center gap-2.5">
+            <span class="size-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600 group-hover:text-primary transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </span>
+            <div>
+              <div class="text-xs font-bold text-gray-900">Quiz & Test Results</div>
+              <div class="text-[11px] text-gray-500">16 completed quizzes and exams</div>
+            </div>
+          </div>
+          <span class="text-gray-400 group-hover:text-primary font-bold text-xs">&rarr;</span>
+        </a>
+
+        <a routerLink="../mastery" class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors group">
+          <div class="flex items-center gap-2.5">
+            <span class="size-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600 group-hover:text-primary transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </span>
+            <div>
+              <div class="text-xs font-bold text-gray-900">Topic Mastery</div>
+              <div class="text-[11px] text-gray-500">See topics you know and what to practice</div>
+            </div>
+          </div>
+          <span class="text-gray-400 group-hover:text-primary font-bold text-xs">&rarr;</span>
+        </a>
+
+        <a routerLink="../ai-insights" class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors group">
+          <div class="flex items-center gap-2.5">
+            <span class="size-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600 group-hover:text-primary transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            <div>
+              <div class="text-xs font-bold text-gray-900">AI Study Tips</div>
+              <div class="text-[11px] text-gray-500">Personalized advice and topics to review</div>
+            </div>
+          </div>
+          <span class="text-gray-400 group-hover:text-primary font-bold text-xs">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

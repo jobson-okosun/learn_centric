@@ -1,0 +1,249 @@
+<div class="flex flex-col gap-6">
+  <!-- Section Title & Description -->
+  <div class="border-b border-gray-100 pb-4 flex items-center justify-between">
+    <div>
+      <h2 class="text-base font-bold text-gray-900">Virtual Stage & Lecture Defaults</h2>
+      <p class="text-xs text-gray-500 mt-0.5">
+        Manage default streaming quality, student audience controls, cloud recordings, and whiteboard configurations.
+      </p>
+    </div>
+  </div>
+
+  @if (saveSuccess()) {
+    <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>Virtual classroom and lecture stage defaults updated successfully.</span>
+      </div>
+      <span class="text-[10px] font-semibold text-emerald-700 uppercase tracking-wide">Saved</span>
+    </div>
+  }
+
+  <form (submit)="saveStageSettings(); $event.preventDefault()" class="flex flex-col gap-6">
+    <!-- Section 1: Streaming & Studio Quality -->
+    <div class="flex flex-col gap-4">
+      <span class="text-xs font-bold text-gray-900 uppercase tracking-wider">Audio & Video Broadcast Quality</span>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Default Stream Resolution</label>
+          <select 
+            [ngModel]="videoQuality()" 
+            (ngModelChange)="videoQuality.set($event)"
+            name="videoQuality" 
+            class="form-control text-xs w-full bg-white">
+            <option value="1080p">1080p Full HD (Crisp Math & Code)</option>
+            <option value="720p">720p High Definition (Standard)</option>
+            <option value="adaptive">Adaptive Bitrate (Dynamic)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Broadcast Frame Rate</label>
+          <select 
+            [ngModel]="frameRate()" 
+            (ngModelChange)="frameRate.set($event)"
+            name="frameRate" 
+            class="form-control text-xs w-full bg-white">
+            <option value="60fps">60 fps (Ultra Smooth Screen Sharing)</option>
+            <option value="30fps">30 fps (Standard Webcast)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Microphone Noise Isolation</label>
+          <select 
+            [ngModel]="noiseSuppression()" 
+            (ngModelChange)="noiseSuppression.set($event)"
+            name="noiseSuppression" 
+            class="form-control text-xs w-full bg-white">
+            <option value="ai-enhanced">AI Neural Noise Filter (Recommended)</option>
+            <option value="standard">Standard Echo Cancellation</option>
+            <option value="off">Raw Audio (High-Fidelity Instrument)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Student Audience Permissions on Join -->
+    <div class="border-t border-gray-100 pt-5 flex flex-col gap-4">
+      <span class="text-xs font-bold text-gray-900 uppercase tracking-wider">Default Audience Permissions</span>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors cursor-pointer">
+          <input 
+            type="checkbox" 
+            [ngModel]="muteStudentsOnEntry()" 
+            (ngModelChange)="muteStudentsOnEntry.set($event)"
+            name="muteStudentsOnEntry" 
+            class="rounded border-gray-300 text-primary focus:ring-0 mt-0.5">
+          <div class="flex flex-col">
+            <span class="text-xs font-semibold text-gray-900">Mute Student Microphones on Entry</span>
+            <span class="text-[11px] text-gray-400 mt-0.5">Learners enter muted to prevent background audio disruption during lecture openings.</span>
+          </div>
+        </label>
+
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors cursor-pointer">
+          <input 
+            type="checkbox" 
+            [ngModel]="allowStudentChat()" 
+            (ngModelChange)="allowStudentChat.set($event)"
+            name="allowStudentChat" 
+            class="rounded border-gray-300 text-primary focus:ring-0 mt-0.5">
+          <div class="flex flex-col">
+            <span class="text-xs font-semibold text-gray-900">Enable In-Stage Text Chat</span>
+            <span class="text-[11px] text-gray-400 mt-0.5">Permit students to ask written questions and post formula links in the live side panel.</span>
+          </div>
+        </label>
+
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors cursor-pointer">
+          <input 
+            type="checkbox" 
+            [ngModel]="enableHandRaiseQueue()" 
+            (ngModelChange)="enableHandRaiseQueue.set($event)"
+            name="enableHandRaiseQueue" 
+            class="rounded border-gray-300 text-primary focus:ring-0 mt-0.5">
+          <div class="flex flex-col">
+            <span class="text-xs font-semibold text-gray-900">Queue Hand Raises Chronologically</span>
+            <span class="text-[11px] text-gray-400 mt-0.5">Track question priority in a dedicated side drawer with student profile chips.</span>
+          </div>
+        </label>
+
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors cursor-pointer">
+          <input 
+            type="checkbox" 
+            [ngModel]="allowStudentScreenShare()" 
+            (ngModelChange)="allowStudentScreenShare.set($event)"
+            name="allowStudentScreenShare" 
+            class="rounded border-gray-300 text-primary focus:ring-0 mt-0.5">
+          <div class="flex flex-col">
+            <span class="text-xs font-semibold text-gray-900">Allow Learner Screen Presentation</span>
+            <span class="text-[11px] text-gray-400 mt-0.5">Allow students to share terminal or slides without requiring explicit host promotion.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section 3: Cloud Recording & Transcripts -->
+    <div class="border-t border-gray-100 pt-5 flex flex-col gap-4">
+      <span class="text-xs font-bold text-gray-900 uppercase tracking-wider">Cloud Lecture Recording & AI Transcripts</span>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors cursor-pointer">
+          <input 
+            type="checkbox" 
+            [ngModel]="autoRecordLectures()" 
+            (ngModelChange)="autoRecordLectures.set($event)"
+            name="autoRecordLectures" 
+            class="rounded border-gray-300 text-primary focus:ring-0 mt-0.5">
+          <div class="flex flex-col">
+            <span class="text-xs font-semibold text-gray-900">Auto-Record Stage on Session Start</span>
+            <span class="text-[11px] text-gray-400 mt-0.5">Automatically trigger redundant 1080p cloud recording whenever you start broadcasting.</span>
+          </div>
+        </label>
+
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors cursor-pointer">
+          <input 
+            type="checkbox" 
+            [ngModel]="generateAiTranscripts()" 
+            (ngModelChange)="generateAiTranscripts.set($event)"
+            name="generateAiTranscripts" 
+            class="rounded border-gray-300 text-primary focus:ring-0 mt-0.5">
+          <div class="flex flex-col">
+            <span class="text-xs font-semibold text-gray-900">Generate AI Transcripts & Summaries</span>
+            <span class="text-[11px] text-gray-400 mt-0.5">Produce searchable timestamped notes and keyword indexes for student revision.</span>
+          </div>
+        </label>
+
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors cursor-pointer">
+          <input 
+            type="checkbox" 
+            [ngModel]="autoPublishRecordings()" 
+            (ngModelChange)="autoPublishRecordings.set($event)"
+            name="autoPublishRecordings" 
+            class="rounded border-gray-300 text-primary focus:ring-0 mt-0.5">
+          <div class="flex flex-col">
+            <span class="text-xs font-semibold text-gray-900">Auto-Publish to Enrolled Cohort</span>
+            <span class="text-[11px] text-gray-400 mt-0.5">Make processed lecture video instantly available to absent students within 2 hours.</span>
+          </div>
+        </label>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Cloud Storage Retention Period</label>
+          <select 
+            [ngModel]="retentionDays()" 
+            (ngModelChange)="retentionDays.set($event)"
+            name="retentionDays" 
+            class="form-control text-xs w-full bg-white">
+            <option value="180">Full Academic Term (180 Days)</option>
+            <option value="365">Full Academic Year (365 Days)</option>
+            <option value="indefinite">Indefinite (Permanent University Archive)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Whiteboard & Breakout Defaults -->
+    <div class="border-t border-gray-100 pt-5 flex flex-col gap-4">
+      <span class="text-xs font-bold text-gray-900 uppercase tracking-wider">Whiteboard & Group Workstations</span>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Whiteboard Canvas Grid</label>
+          <select 
+            [ngModel]="whiteboardGrid()" 
+            (ngModelChange)="whiteboardGrid.set($event)"
+            name="whiteboardGrid" 
+            class="form-control text-xs w-full bg-white">
+            <option value="dots">Dotted Isometric Grid</option>
+            <option value="grid">Orthogonal Graph Paper</option>
+            <option value="blank">Clean Blank Canvas</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Default Breakout Room Timer</label>
+          <div class="flex items-center gap-2">
+            <input 
+              type="number" 
+              [ngModel]="breakoutTimerDefault()" 
+              (ngModelChange)="breakoutTimerDefault.set($event)"
+              name="breakoutTimerDefault" 
+              min="5" 
+              max="60" 
+              step="5" 
+              class="form-control text-xs w-20 text-center font-bold">
+            <span class="text-xs text-gray-500">minutes per session</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col justify-end">
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 bg-gray-50/50 cursor-pointer hover:bg-gray-50 transition-colors">
+            <input 
+              type="checkbox" 
+              [ngModel]="persistWhiteboardNotes()" 
+              (ngModelChange)="persistWhiteboardNotes.set($event)"
+              name="persistWhiteboardNotes" 
+              class="rounded border-gray-300 text-primary focus:ring-0">
+            <div class="flex flex-col">
+              <span class="text-xs font-semibold text-gray-800">Auto-Export Canvas PDF</span>
+              <span class="text-[11px] text-gray-400">Save whiteboard slides into course materials automatically.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Dock -->
+    <div class="flex items-center justify-end gap-3 pt-5 border-t border-gray-100">
+      <button type="button" class="btn outline text-xs !h-9 !px-4">
+        Reset
+      </button>
+      <button type="submit" class="btn bg-primary text-white text-xs !h-9 !px-5 flex items-center gap-1.5 hover:opacity-95 transition-opacity cursor-pointer">
+        <span>Save Stage Defaults</span>
+      </button>
+    </div>
+  </form>
+</div>

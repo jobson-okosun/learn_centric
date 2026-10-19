@@ -8,7 +8,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 export const drawerVariants = cva(
   [
     'group/drawer pointer-events-auto fixed z-50 m-2 flex min-h-0 flex-col',
-    'rounded-3xl border border-popover bg-popover text-sm text-popover-foreground dark:border-border',
+    'rounded-3xl border border-popover bg-popover text-sm text-popover-foreground shadow-xl dark:border-border',
     'outline-none select-none will-change-transform',
   ],
   {

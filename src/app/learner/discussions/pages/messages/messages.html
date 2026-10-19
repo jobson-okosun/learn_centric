@@ -1,0 +1,314 @@
+<div class="h-full overflow-hidden flex bg-white rounded-2xl">
+  <!-- Left Pane: Conversations List -->
+  <div class="w-80 h-full overflow-hidden border-r border-gray-100 flex flex-col bg-white shrink-0">
+    <!-- Header Controls: Search & New Message Action -->
+    <div class="p-4 border-b border-gray-100 flex flex-col gap-3">
+      <div class="flex items-center justify-between gap-2">
+        <h2 class="text-sm font-bold text-gray-900">Direct Messages</h2>
+        <button 
+          (click)="openNewMessageModal()"
+          class="btn bg-primary text-white !h-7 !px-2.5 text-xs !rounded-lg flex items-center gap-1 hover:opacity-95 transition-opacity"
+          title="Compose New Message">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>New</span>
+        </button>
+      </div>
+
+      <div class="relative">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input 
+          type="text" 
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+          placeholder="Search conversations..." 
+          class="form-control !pl-9 !h-8 text-xs !rounded-xl border-gray-200 w-full"
+        />
+      </div>
+
+      <!-- Filter Sub-Tabs -->
+      <div class="flex items-center gap-1">
+        <button 
+          (click)="activeFilter.set('all')"
+          class="px-2.5 py-1 rounded-lg text-xs font-medium transition-colors"
+          [class.bg-gray-100]="activeFilter() === 'all'"
+          [class.text-gray-900]="activeFilter() === 'all'"
+          [class.font-semibold]="activeFilter() === 'all'"
+          [class.text-gray-500]="activeFilter() !== 'all'">
+          All ({{ conversations().length }})
+        </button>
+        <button 
+          (click)="activeFilter.set('unread')"
+          class="px-2.5 py-1 rounded-lg text-xs font-medium transition-colors"
+          [class.bg-gray-100]="activeFilter() === 'unread'"
+          [class.text-gray-900]="activeFilter() === 'unread'"
+          [class.font-semibold]="activeFilter() === 'unread'"
+          [class.text-gray-500]="activeFilter() !== 'unread'">
+          Unread
+        </button>
+      </div>
+    </div>
+
+    <!-- Conversation Items List -->
+    <div class="flex-1 overflow-y-auto no-scrollbar">
+      @for (conv of filteredConversations(); track conv.id) {
+        <button 
+          (click)="selectConversation(conv.id)"
+          class="w-full text-left p-4 border-b border-gray-50 hover:bg-gray-50/70 transition-colors relative flex gap-3 cursor-pointer"
+          [class.bg-primary/5]="activeConversationId() === conv.id">
+          
+          <!-- Unread indicator bar -->
+          @if (conv.unread) {
+            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-md"></div>
+          }
+
+          <!-- Avatar with Online Dot -->
+          <div class="relative shrink-0">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 text-gray-700 font-bold text-xs uppercase border border-gray-200/60">
+              {{ conv.contactInitials }}
+            </div>
+            @if (conv.isOnline) {
+              <div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white"></div>
+            }
+          </div>
+
+          <!-- Metadata & Preview -->
+          <div class="flex-1 min-w-0">
+            <div class="flex justify-between items-baseline mb-0.5">
+              <span class="text-xs font-semibold text-gray-900 truncate" [class.font-bold]="conv.unread">
+                {{ conv.contactName }}
+              </span>
+              <span class="text-[10px] text-gray-400 whitespace-nowrap ml-2" [class.text-primary]="conv.unread" [class.font-semibold]="conv.unread">
+                {{ conv.time }}
+              </span>
+            </div>
+
+            <!-- Course and Context Chip -->
+            <div class="text-[11px] font-medium text-primary mb-1 flex items-center gap-1 truncate">
+              <span>{{ conv.courseContext }}</span>
+              <span class="text-gray-300">•</span>
+              <span class="text-gray-500 truncate">{{ conv.topicContext }}</span>
+            </div>
+
+            <p class="text-xs text-gray-500 line-clamp-1 leading-relaxed" [class.text-gray-800]="conv.unread" [class.font-medium]="conv.unread">
+              {{ conv.preview }}
+            </p>
+          </div>
+        </button>
+      } @empty {
+        <div class="p-8 text-center text-xs text-gray-400">
+          No conversations found.
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Right Pane: Active Chat Conversation Stream -->
+  <div class="flex-1 h-full overflow-hidden flex flex-col bg-white">
+    @if (activeConversation(); as active) {
+      <!-- Contact Header -->
+      <div class="px-6 py-3.5 border-b border-gray-100 flex items-center justify-between shrink-0 bg-white">
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <div class="w-9 h-9 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-xs uppercase border border-gray-200/60">
+              {{ active.contactInitials }}
+            </div>
+            @if (active.isOnline) {
+              <div class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white"></div>
+            }
+          </div>
+
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-sm font-bold text-gray-900">{{ active.contactName }}</h3>
+              @if (active.contactRole === 'instructor') {
+                <span class="text-[10px] font-semibold text-primary uppercase">Course Instructor</span>
+              } @else if (active.contactRole === 'ta') {
+                <span class="text-[10px] font-semibold text-amber-600 uppercase">Teaching Assistant</span>
+              }
+            </div>
+            <div class="text-[11px] text-gray-400 flex items-center gap-1.5 mt-0.5">
+              <span>{{ active.courseContext }}</span>
+              <span>·</span>
+              <span class="text-gray-600">{{ active.topicContext }}</span>
+              @if (active.isOnline) {
+                <span>·</span>
+                <span class="text-emerald-600 font-medium">Online now</span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs text-gray-400">
+          <span class="bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-lg">
+            Direct Academic Message
+          </span>
+        </div>
+      </div>
+
+      <!-- Messages Bubble Stream -->
+      <div class="flex-1 overflow-y-auto no-scrollbar p-6 flex flex-col gap-4 bg-gray-50/20">
+        @for (msg of active.messages; track msg.id) {
+          <div 
+            class="flex flex-col gap-1 max-w-lg"
+            [class.self-end]="msg.isSelf"
+            [class.items-end]="msg.isSelf"
+            [class.self-start]="!msg.isSelf"
+            [class.items-start]="!msg.isSelf">
+            
+            <!-- Sender Header for clarity -->
+            <div class="flex items-center gap-1.5 text-[10px] text-gray-400 px-1">
+              <span>{{ msg.senderName }}</span>
+              <span>·</span>
+              <span>{{ msg.time }}</span>
+            </div>
+
+            <!-- Bubble -->
+            <div 
+              class="p-4 text-xs leading-relaxed"
+              [class]="msg.isSelf 
+                ? 'bg-primary text-white rounded-2xl rounded-tr-xs' 
+                : 'bg-white border border-gray-100 text-gray-800 rounded-2xl rounded-tl-xs'">
+              <p class="whitespace-pre-wrap">{{ msg.content }}</p>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Composer Bar -->
+      <div class="p-4 border-t border-gray-100 bg-white flex flex-col gap-2 shrink-0">
+        <!-- Unified Composer Card -->
+        <div class="border border-gray-200 rounded-2xl bg-white p-3.5 flex flex-col gap-2.5 focus-within:border-primary/50 transition-colors">
+          <textarea 
+            [ngModel]="draftReply()"
+            (ngModelChange)="draftReply.set($event)"
+            (keydown.enter)="$event.preventDefault(); sendMessage()"
+            rows="2"
+            placeholder="Type your message to {{ active.contactName }}... (Press Enter to send)" 
+            class="w-full text-xs text-gray-900 placeholder:text-gray-400 border-0 outline-none focus:outline-none focus:ring-0 p-0 resize-none leading-relaxed bg-transparent"></textarea>
+          
+          <!-- Direct In-Composer Bottom Bar: Hint + Send Button inside -->
+          <div class="flex items-center justify-between gap-2.5 pt-2 border-t border-gray-100">
+            <div class="flex items-center gap-2 text-[11px] text-gray-400">
+              <span>Shift+Enter for new line</span>
+            </div>
+
+            <div class="flex items-center gap-2.5">
+              <span class="text-[11px] text-gray-400 hidden sm:inline">Press Enter to send</span>
+              <button 
+                type="button"
+                (click)="sendMessage()"
+                [disabled]="!draftReply().trim()"
+                class="btn bg-primary text-white !h-8 !px-4 text-xs !rounded-xl flex items-center gap-1.5 disabled:opacity-40 hover:opacity-95 transition-opacity cursor-pointer shrink-0">
+                <span>Send</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="flex-1 flex flex-col items-center justify-center p-8 text-center text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mb-2 text-gray-300">
+          <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+        </svg>
+        <p class="text-xs">Select a conversation or start a new message to an instructor.</p>
+      </div>
+    }
+  </div>
+
+  <!-- "Compose New Message" Modal -->
+  @if (isNewMessageModalOpen()) {
+    <div class="fixed inset-0 z-50 bg-black/30 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="bg-white border border-gray-100 rounded-2xl w-full max-w-lg p-6 flex flex-col gap-5">
+        <!-- Header -->
+        <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+          <div>
+            <h3 class="text-base font-bold text-gray-900">New Direct Message</h3>
+            <p class="text-xs text-gray-500 mt-0.5">Send a private inquiry to your course instructors or teaching assistants.</p>
+          </div>
+          <button 
+            (click)="closeNewMessageModal()"
+            class="p-1 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Form -->
+        <div class="flex flex-col gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Recipient Faculty / TA</label>
+            <select 
+              [ngModel]="newRecipientPerson()"
+              (ngModelChange)="newRecipientPerson.set($event)"
+              class="form-control !h-9 text-xs !rounded-xl border-gray-200 bg-white w-full">
+              @for (entry of instructorDirectory(); track entry.name) {
+                <option [value]="entry.name">{{ entry.name }} ({{ entry.course }})</option>
+              }
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Course Code</label>
+            <select 
+              [ngModel]="newRecipientCourse()"
+              (ngModelChange)="newRecipientCourse.set($event)"
+              class="form-control !h-9 text-xs !rounded-xl border-gray-200 bg-white w-full">
+              <option value="MATH-301">MATH-301 · Multivariable Calculus</option>
+              <option value="PHYS-201">PHYS-201 · General Physics & Electromagnetism</option>
+              <option value="CS-210">CS-210 · Data Structures & Algorithms</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Subject / Context</label>
+            <input 
+              type="text" 
+              [ngModel]="newTopicSubject()"
+              (ngModelChange)="newTopicSubject.set($event)"
+              placeholder="e.g. Midterm Clarification, Homework Problem 4" 
+              class="form-control !h-9 text-xs !rounded-xl border-gray-200 w-full"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Message</label>
+            <textarea 
+              [ngModel]="newInitialMessage()"
+              (ngModelChange)="newInitialMessage.set($event)"
+              rows="4"
+              placeholder="Write your private message here..." 
+              class="form-control text-xs !rounded-xl border-gray-200 w-full p-3 resize-none leading-relaxed"></textarea>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-gray-100">
+          <button 
+            (click)="closeNewMessageModal()"
+            class="btn outline !h-9 !px-4 text-xs !rounded-xl">
+            Cancel
+          </button>
+          <button 
+            (click)="startNewConversation()"
+            [disabled]="!newInitialMessage().trim()"
+            class="btn bg-primary text-white !h-9 !px-5 text-xs !rounded-xl disabled:opacity-50">
+            Send Message
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

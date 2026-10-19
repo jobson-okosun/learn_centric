@@ -66,15 +66,18 @@
   <!-- Routed Tab Bar (Modeled exactly after features/courses/pages/details/details.html) -->
   <div class="bg-white p-1.5 pb-1 rounded-2xl border border-gray-200">
     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+      <!-- Hidden trackers for material child routes so parent tabs remain highlighted -->
+      <a routerLink="materials/pages" routerLinkActive #rlaMaterialsPages="routerLinkActive" class="hidden"></a>
+      <a routerLink="pages" routerLinkActive #rlaPages="routerLinkActive" class="hidden"></a>
+      <a routerLink="materials/assignments" routerLinkActive #rlaMaterialsAssignments="routerLinkActive" class="hidden"></a>
+
       <!-- Overview / Syllabus Tab -->
       <a 
         routerLink="overview"
-        routerLinkActive="bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20"
+        routerLinkActive
         #rlaOverview="routerLinkActive"
-        [class.text-gray-600]="!rlaOverview.isActive"
-        [class.hover:text-gray-900]="!rlaOverview.isActive"
-        [class.hover:bg-gray-100]="!rlaOverview.isActive"
-        class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer text-sm">
+        [class]="(rlaOverview.isActive || rlaMaterialsPages.isActive || rlaPages.isActive) ? 'bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20 font-semibold' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 font-medium'"
+        class="flex items-center gap-2 rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer text-sm">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
           <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
@@ -85,12 +88,10 @@
       <!-- Assignments Tab -->
       <a 
         routerLink="assignments"
-        routerLinkActive="bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20"
+        routerLinkActive
         #rlaAssignments="routerLinkActive"
-        [class.text-gray-600]="!rlaAssignments.isActive"
-        [class.hover:text-gray-900]="!rlaAssignments.isActive"
-        [class.hover:bg-gray-100]="!rlaAssignments.isActive"
-        class="flex items-center gap-2 font-medium rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer text-sm">
+        [class]="(rlaAssignments.isActive || rlaMaterialsAssignments.isActive) ? 'bg-primary/10 text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[3px] after:w-3/5 after:bg-primary after:rounded-t-full hover:bg-primary/20 font-semibold' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 font-medium'"
+        class="flex items-center gap-2 rounded-2xl px-4 py-2 relative overflow-hidden transition-colors cursor-pointer text-sm">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
           <polyline points="14 2 14 8 20 8"></polyline>

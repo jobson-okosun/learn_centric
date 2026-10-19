@@ -37,6 +37,7 @@ export const routes: Routes = [
                { path: 'communication', loadChildren: () => import('./features/communication/communication.route') },
                { path: 'content', loadChildren: () => import('./features/content/content.route') },
                { path: 'insights', loadChildren: () => import('./features/insights/insights.route') },
+               { path: 'settings', loadChildren: () => import('./features/settings/settings.route') },
                { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
           ]
      },
@@ -46,5 +47,12 @@ export const routes: Routes = [
           children: [
                { path: '', loadChildren: () => import('./learner/learner.route') }
           ]
+     },
+     {
+          path: 'admin',
+          loadComponent: () => import('./layout/layout/layout'),
+          children: [
+               { path: '', loadChildren: () => import('./admin/admin.route') } 
+          ]
      }
-];
+];

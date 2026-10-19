@@ -1,0 +1,509 @@
+<div class="flex flex-col gap-6 h-full mx-auto w-full pb-8">
+  <!-- Header Bar -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">Discussions</h1>
+      <p class="text-sm text-gray-500 mt-1">Engage with your class, instructors, and peers on topics and questions.</p>
+    </div>
+    <button 
+      (click)="openAskModal()" 
+      class="btn primary flex items-center gap-2 cursor-pointer self-start sm:self-auto">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      <span>New Discussion</span>
+    </button>
+  </div>
+
+  <!-- Toolbar: Search & Filter (matches tutor / discussion style) -->
+  <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
+    <!-- Search Input -->
+    <div class="relative w-full lg:w-96">
+      <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input 
+        type="text" 
+        [ngModel]="searchQuery()" 
+        (ngModelChange)="searchQuery.set($event)"
+        placeholder="Search discussions..." 
+        class="form-control !pl-10 h-10 w-full rounded-full">
+    </div>
+    
+    <!-- Filter Controls -->
+    <div class="flex items-center gap-3 w-full lg:w-auto flex-wrap sm:flex-nowrap">
+      <!-- Course Selector Dropdown -->
+      <select 
+        [ngModel]="selectedCourse()"
+        (ngModelChange)="selectedCourse.set($event)"
+        class="form-control h-10 w-full sm:w-52 text-sm rounded-full">
+        <option value="all">All Enrolled Courses</option>
+        @for (c of coursesList(); track c.code) {
+          <option [value]="c.code">{{ c.code }} · {{ c.name }}</option>
+        }
+      </select>
+
+      <!-- Status Dropdown -->
+      <select 
+        [ngModel]="filterStatus()"
+        (ngModelChange)="filterStatus.set($event)"
+        class="form-control h-10 w-full sm:w-48 text-sm rounded-full">
+        <option value="all">All Discussions</option>
+        <option value="answered">Instructor Answered</option>
+        <option value="open">Needs Answers / Open</option>
+        <option value="my">My Questions</option>
+        <option value="bookmarked">Bookmarked</option>
+      </select>
+
+      <!-- Unread Only Checkbox -->
+      <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer shrink-0">
+        <input 
+          type="checkbox" 
+          [ngModel]="unreadOnly()" 
+          (ngModelChange)="unreadOnly.set($event)"
+          class="rounded text-primary focus:ring-0 h-4 w-4">
+        <span>Unread only</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Feed sections -->
+  <div class="flex flex-col gap-8 pb-8">
+    <!-- Pinned Discussions Section -->
+    @if (pinnedThreads().length > 0) {
+      <div>
+        <h2 class="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <svg class="text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="17" x2="12" y2="22"></line>
+            <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.6V6a3 3 0 0 0-3-3h-0a3 3 0 0 0-3 3v4.6a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path>
+          </svg>
+          Pinned Discussions
+        </h2>
+        <div class="flex flex-col gap-3">
+          @for (thread of pinnedThreads(); track thread.id) {
+            <div 
+              (click)="openThreadDetail(thread)"
+              class="block bg-white p-5 rounded-2xl border border-gray-100 hover:border-primary/50 transition-colors group cursor-pointer">
+              <div class="flex justify-between gap-4">
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                    @if (thread.courseCode) {
+                      <span class="text-[11px] font-semibold text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full">{{ thread.courseCode }}</span>
+                    }
+                    @if (thread.topic) {
+                      <span class="text-[11px] font-semibold text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full">{{ thread.topic }}</span>
+                    }
+                    @if (thread.isInstructorAnswered) {
+                      <span class="text-[11px] font-semibold bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200/60 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Instructor Answered
+                      </span>
+                    }
+                  </div>
+
+                  <h3 class="font-bold text-gray-900 text-base group-hover:text-primary transition-colors cursor-pointer">
+                    {{ thread.title }}
+                  </h3>
+
+                  <p class="text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
+                    {{ thread.content }}
+                  </p>
+
+                  <div class="flex items-center gap-4 mt-3">
+                    <div class="flex items-center gap-2 text-xs text-gray-600">
+                      <div class="size-5 rounded-full bg-gray-100 text-gray-700 font-bold flex items-center justify-center text-[9px] uppercase border border-gray-200">
+                        {{ thread.authorInitials }}
+                      </div>
+                      <span class="font-medium">{{ thread.authorName }}</span>
+                      @if (thread.authorRole === 'instructor') {
+                        <span class="text-[10px] font-semibold text-primary uppercase">Instructor</span>
+                      } @else if (thread.authorRole === 'ta') {
+                        <span class="text-[10px] font-semibold text-amber-600 uppercase">TA</span>
+                      }
+                    </div>
+                    <div class="text-xs text-gray-400">{{ thread.timestamp }}</div>
+                  </div>
+                </div>
+
+                <div class="flex flex-col items-end justify-between shrink-0">
+                  <div class="flex items-center gap-3">
+                    <!-- Upvote Counter Pill -->
+                    <button 
+                      (click)="toggleUpvote(thread.id, $event)" 
+                      class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border transition-colors cursor-pointer" 
+                      [class]="thread.isUpvoted ? 'border-primary text-primary bg-primary/5' : 'border-gray-200 text-gray-600 hover:bg-gray-50'">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                      </svg>
+                      <span>{{ thread.upvotes }}</span>
+                    </button>
+
+                    <!-- Replies Counter -->
+                    <div class="flex items-center gap-1 text-sm font-semibold text-gray-700">
+                      <svg class="text-gray-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                      <span>{{ thread.repliesCount }}</span>
+                    </div>
+
+                    <!-- Bookmark Button -->
+                    <button 
+                      (click)="toggleBookmark(thread.id, $event)" 
+                      class="text-gray-400 hover:text-primary transition-colors cursor-pointer"
+                      [title]="thread.isBookmarked ? 'Remove Bookmark' : 'Bookmark Discussion'">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" [attr.fill]="thread.isBookmarked ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [class.text-primary]="thread.isBookmarked">
+                        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <button 
+                    (click)="openThreadDetail(thread)" 
+                    class="text-xs font-semibold text-primary hover:underline flex items-center gap-1 cursor-pointer mt-4">
+                    <span>View discussion</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Recent Discussions Section -->
+    <div>
+      <h2 class="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+        <svg class="text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        Recent Discussions
+      </h2>
+
+      @if (recentThreads().length === 0) {
+        <div class="bg-white rounded-2xl border border-gray-100 p-8 text-center">
+          <p class="text-sm text-gray-500">No discussions match your current search or filter criteria.</p>
+        </div>
+      } @else {
+        <div class="flex flex-col gap-3">
+          @for (thread of recentThreads(); track thread.id) {
+            <div 
+              (click)="openThreadDetail(thread)"
+              class="block bg-white p-5 rounded-2xl border border-gray-100 hover:border-primary/50 transition-colors group cursor-pointer">
+              <div class="flex justify-between gap-4">
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                    @if (thread.courseCode) {
+                      <span class="text-[11px] font-semibold text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full">{{ thread.courseCode }}</span>
+                    }
+                    @if (thread.topic) {
+                      <span class="text-[11px] font-semibold text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full">{{ thread.topic }}</span>
+                    }
+                    @if (thread.isInstructorAnswered) {
+                      <span class="text-[11px] font-semibold bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200/60 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Instructor Answered
+                      </span>
+                    }
+                  </div>
+
+                  <h3 class="font-bold text-gray-900 text-base group-hover:text-primary transition-colors cursor-pointer">
+                    {{ thread.title }}
+                  </h3>
+
+                  <p class="text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
+                    {{ thread.content }}
+                  </p>
+
+                  <div class="flex items-center gap-4 mt-3">
+                    <div class="flex items-center gap-2 text-xs text-gray-600">
+                      <div class="size-5 rounded-full bg-gray-100 text-gray-700 font-bold flex items-center justify-center text-[9px] uppercase border border-gray-200">
+                        {{ thread.authorInitials }}
+                      </div>
+                      <span class="font-medium">{{ thread.authorName }}</span>
+                      @if (thread.authorRole === 'instructor') {
+                        <span class="text-[10px] font-semibold text-primary uppercase">Instructor</span>
+                      } @else if (thread.authorRole === 'ta') {
+                        <span class="text-[10px] font-semibold text-amber-600 uppercase">TA</span>
+                      }
+                    </div>
+                    <div class="text-xs text-gray-400">{{ thread.timestamp }}</div>
+                  </div>
+                </div>
+
+                <div class="flex flex-col items-end justify-between shrink-0">
+                  <div class="flex items-center gap-3">
+                    <!-- Upvote Counter Pill -->
+                    <button 
+                      (click)="toggleUpvote(thread.id, $event)" 
+                      class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border transition-colors cursor-pointer" 
+                      [class]="thread.isUpvoted ? 'border-primary text-primary bg-primary/5' : 'border-gray-200 text-gray-600 hover:bg-gray-50'">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                      </svg>
+                      <span>{{ thread.upvotes }}</span>
+                    </button>
+
+                    <!-- Replies Counter -->
+                    <div class="flex items-center gap-1 text-sm font-semibold text-gray-700">
+                      <svg class="text-gray-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                      <span>{{ thread.repliesCount }}</span>
+                    </div>
+
+                    <!-- Bookmark Button -->
+                    <button 
+                      (click)="toggleBookmark(thread.id, $event)" 
+                      class="text-gray-400 hover:text-primary transition-colors cursor-pointer"
+                      [title]="thread.isBookmarked ? 'Remove Bookmark' : 'Bookmark Discussion'">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" [attr.fill]="thread.isBookmarked ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [class.text-primary]="thread.isBookmarked">
+                        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <button 
+                    (click)="openThreadDetail(thread)" 
+                    class="text-xs font-semibold text-primary hover:underline flex items-center gap-1 cursor-pointer mt-4">
+                    <span>View discussion</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- "Ask a Question" Modal Dialog (Matches clean discussion form) -->
+  @if (isAskModalOpen()) {
+    <div class="fixed inset-0 z-50 bg-black/30 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="bg-white border border-gray-100 rounded-2xl w-full max-w-xl p-6 flex flex-col gap-4">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+          <div>
+            <h3 class="text-base font-bold text-gray-900">New Discussion</h3>
+            <p class="text-xs text-gray-500 mt-0.5">Start a new discussion topic for your class, instructors, and peers.</p>
+          </div>
+          <button 
+            (click)="closeAskModal()"
+            class="p-1 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Form Fields -->
+        <div class="flex flex-col gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Topic / Discussion Title</label>
+            <input 
+              type="text" 
+              class="form-control w-full" 
+              placeholder="What is your discussion about?"
+              [ngModel]="newTitle()"
+              (ngModelChange)="newTitle.set($event)">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-1.5">Course</label>
+              <select 
+                class="form-control w-full"
+                [ngModel]="newCourseCode()"
+                (ngModelChange)="newCourseCode.set($event)">
+                @for (c of coursesList(); track c.code) {
+                  <option [value]="c.code">{{ c.code }} · {{ c.name }}</option>
+                }
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-1.5">Related Module / Topic</label>
+              <input 
+                type="text" 
+                class="form-control w-full" 
+                placeholder="e.g. Vector Fields, Week 4"
+                [ngModel]="newTopic()"
+                (ngModelChange)="newTopic.set($event)">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Discussion Details</label>
+            <textarea 
+              class="form-control w-full min-h-[140px] resize-none" 
+              placeholder="Provide context, problem references, formulas, or specific areas you need help with..."
+              [ngModel]="newContent()"
+              (ngModelChange)="newContent.set($event)"></textarea>
+          </div>
+
+          <div class="flex items-center gap-2 mt-1">
+            <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+              <input 
+                type="checkbox" 
+                [ngModel]="notifyReplies()"
+                (ngModelChange)="notifyReplies.set($event)"
+                class="rounded text-primary focus:ring-0 h-4 w-4">
+              <span>Notify me when the instructor or classmates reply</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-end gap-3 mt-2 pt-4 border-t border-gray-100">
+          <button class="btn outline" (click)="closeAskModal()">Cancel</button>
+          <button class="btn primary" (click)="submitQuestion()" [disabled]="!newTitle().trim() || !newContent().trim()">Post Discussion</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Thread Detail Modal / Drawer -->
+  @if (selectedThread(); as currentThread) {
+    <div class="fixed inset-0 z-50 bg-black/30 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="bg-white border border-gray-100 rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
+        <!-- Detail Header -->
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between shrink-0">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-primary">{{ currentThread.courseCode }}</span>
+            <span class="text-gray-300">·</span>
+            <span class="text-xs text-gray-500">{{ currentThread.topic }}</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button 
+              (click)="toggleBookmark(currentThread.id, $event)"
+              class="p-1.5 rounded-lg text-gray-400 hover:text-primary hover:bg-gray-50 transition-colors"
+              title="Bookmark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" [attr.fill]="currentThread.isBookmarked ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [class.text-primary]="currentThread.isBookmarked">
+                <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+              </svg>
+            </button>
+            <button 
+              (click)="closeThreadDetail()"
+              class="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Scrollable Thread Content & Discussion Stream -->
+        <div class="flex-1 overflow-y-auto no-scrollbar p-6 flex flex-col gap-6">
+          <!-- Question Post -->
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 mb-3 leading-snug">
+              {{ currentThread.title }}
+            </h2>
+
+            <div class="flex items-center gap-3 mb-4 text-xs">
+              <div class="w-7 h-7 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-[10px] uppercase">
+                {{ currentThread.authorInitials }}
+              </div>
+              <div>
+                <span class="text-gray-900 font-semibold">{{ currentThread.authorName }}</span>
+                @if (currentThread.authorRole === 'instructor') {
+                  <span class="text-[10px] font-semibold text-primary uppercase ml-1.5">Instructor</span>
+                }
+                <span class="text-gray-400 ml-2">{{ currentThread.timestamp }}</span>
+              </div>
+            </div>
+
+            <div class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap bg-gray-50/50 p-4 rounded-xl border border-gray-100">
+              {{ currentThread.content }}
+            </div>
+          </div>
+
+          <!-- Divider & Replies Count -->
+          <div class="flex items-center justify-between border-t border-gray-100 pt-4">
+            <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <span>Replies & Answers</span>
+              <span class="text-xs font-normal text-gray-400">({{ currentThread.replies?.length || 0 }})</span>
+            </h3>
+          </div>
+
+          <!-- Replies Stream -->
+          <div class="flex flex-col gap-4">
+            @for (reply of currentThread.replies; track reply.id) {
+              <div 
+                class="rounded-xl p-4 border transition-all"
+                [class]="reply.isVerifiedAnswer ? 'bg-emerald-50/20 border-emerald-200' : 'bg-white border-gray-100'">
+                
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-6 h-6 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-[10px] uppercase">
+                      {{ reply.authorInitials }}
+                    </div>
+                    <span class="text-xs font-semibold text-gray-900">{{ reply.authorName }}</span>
+                    @if (reply.authorRole === 'instructor') {
+                      <span class="text-[10px] font-semibold text-primary uppercase">Instructor</span>
+                    } @else if (reply.authorRole === 'ta') {
+                      <span class="text-[10px] font-semibold text-amber-600 uppercase">Teaching Assistant</span>
+                    }
+                    <span class="text-gray-300">·</span>
+                    <span class="text-[11px] text-gray-400">{{ reply.timestamp }}</span>
+                  </div>
+
+                  @if (reply.isVerifiedAnswer) {
+                    <span class="flex items-center gap-1 text-emerald-700 text-xs font-semibold">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                      <span>Verified Answer</span>
+                    </span>
+                  }
+                </div>
+
+                <p class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap pl-8">
+                  {{ reply.content }}
+                </p>
+              </div>
+            } @empty {
+              <div class="text-center py-6 text-xs text-gray-400">
+                No replies yet. Be the first to answer!
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Sticky Reply Composer at Bottom -->
+        <div class="p-4 border-t border-gray-100 bg-gray-50/50 flex flex-col gap-2 shrink-0">
+          <div class="flex gap-2">
+            <textarea 
+              [ngModel]="newReplyContent()"
+              (ngModelChange)="newReplyContent.set($event)"
+              rows="2"
+              placeholder="Write a clear, helpful reply..." 
+              class="form-control text-xs !rounded-xl border-gray-200 bg-white flex-1 p-2.5 resize-none leading-relaxed"></textarea>
+            <button 
+              (click)="postReply()"
+              [disabled]="!newReplyContent().trim()"
+              class="btn bg-primary text-white !h-auto !px-4 text-xs !rounded-xl self-end disabled:opacity-50">
+              Reply
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

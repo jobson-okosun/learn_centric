@@ -1,0 +1,204 @@
+<!-- Breadcrumb & Back Navigation -->
+<div class="flex items-center justify-between gap-2 text-xs text-gray-500 mb-3 shrink-0">
+  <div class="flex items-center gap-2 font-medium">
+    <button type="button" (click)="goBack()" class="hover:text-primary transition-colors flex items-center gap-1 cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      Submissions
+    </button>
+    <span class="text-gray-300">/</span>
+    <span class="text-gray-900 font-semibold">{{ assignmentTitle() }} &middot; Grading</span>
+  </div>
+
+  @if (statusMessage()) {
+    <div class="text-xs text-emerald-800 font-medium px-3 py-1 bg-emerald-50 rounded-lg border border-emerald-200 animate-fade-in">
+      {{ statusMessage() }}
+    </div>
+  }
+</div>
+
+<!-- Main Split Container (Direct Parity with assessment/pages/grading/grading.html) -->
+<div class="flex flex-col overflow-hidden h-[calc(100vh-140px)] min-h-[600px]">
+  
+  <!-- Header Bar -->
+  <div class="flex items-center justify-between pb-3 shrink-0">
+    <div class="flex items-center gap-3">
+      <img [src]="currentStudent().avatar" [alt]="currentStudent().studentName" class="size-10 rounded-full object-cover shrink-0 border border-gray-200" />
+      <div>
+        <h1 class="text-base sm:text-lg font-bold text-gray-900 leading-tight">{{ currentStudent().studentName }}</h1>
+        <div class="text-xs text-gray-500">{{ currentStudent().studentId }} &middot; Submitted {{ currentStudent().submittedAt }}</div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-6">
+      <div class="hidden sm:block">
+        <div class="text-xs text-gray-500 mb-1 text-right">Student {{ currentStudentIndex() + 1 }} of {{ students().length }}</div>
+        <div class="w-32 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+          <div 
+            class="bg-primary h-full rounded-full transition-all duration-300" 
+            [style.width.%]="((currentStudentIndex() + 1) / students().length) * 100">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button 
+          (click)="prevStudent()"
+          [disabled]="currentStudentIndex() === 0"
+          class="btn outline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Prev
+        </button>
+
+        <button 
+          (click)="saveAndNext()"
+          class="btn primary">
+          Save & Next
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2-Pane Split Workspace -->
+  <div class="flex gap-5 flex-1 overflow-hidden py-3">
+    
+    <!-- LEFT PANE: Prompt & Student Deliverables Viewer -->
+    <div class="flex-1 overflow-auto no-scrollbar flex flex-col gap-5 rounded-2xl bg-white p-5 border border-gray-200">
+      
+      <!-- Assignment Prompt Summary -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-sm font-bold text-gray-900">{{ assignmentTitle() }}</h2>
+          <span class="text-xs text-gray-400">Assignment Brief</span>
+        </div>
+        <p class="text-xs text-gray-600 leading-relaxed mb-3">{{ assignmentPrompt() }}</p>
+      </div>
+
+      <!-- Deliverable File Switcher Tabs -->
+      <div class="border-t border-gray-100 pt-4">
+        <div class="flex items-center justify-between mb-2.5">
+          <span class="text-xs font-bold uppercase tracking-wider text-gray-500">Submitted Deliverables</span>
+          <span class="text-xs text-gray-400">Hash: {{ currentStudent().receiptHash }}</span>
+        </div>
+
+        <div class="flex items-center gap-1.5 mb-3 overflow-x-auto no-scrollbar">
+          @for (file of currentStudent().deliverables; track file.name; let i = $index) {
+            <button 
+              type="button"
+              (click)="activeFileTab.set(i)"
+              [class]="activeFileTab() === i ? 'bg-gray-100 text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-800 hover:bg-gray-50 font-medium'"
+              class="px-3 py-1.5 rounded-lg text-xs transition-colors flex items-center gap-2 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+              <span>{{ file.name }}</span>
+              <span class="text-[10px] text-gray-400">({{ file.size }})</span>
+            </button>
+          }
+        </div>
+
+        <!-- Document Viewer Canvas -->
+        <div class="border border-gray-200 rounded-xl p-5 bg-gray-50 text-xs text-gray-800 leading-relaxed font-sans min-h-[220px]">
+          <p class="whitespace-pre-wrap">{{ currentStudent().deliverables[activeFileTab()]?.content }}</p>
+        </div>
+      </div>
+
+      <!-- AI Suggested Score Callout (Exact parity with assessment/pages/grading/grading.html) -->
+      <div class="bg-blue-50/50 border border-blue-100 rounded-xl p-4 flex gap-4 shrink-0">
+        <div class="text-blue-500 mt-0.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+            <path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path>
+          </svg>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold text-blue-900 mb-1">AI Suggested Score: {{ currentStudent().aiSuggestedScore }} / 100</h4>
+          <p class="text-xs text-blue-800/80 leading-relaxed">{{ currentStudent().aiCommentary }}</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANE: Grading Rubric & Feedback Workspace -->
+    <div class="w-96 flex flex-col shrink-0 rounded-2xl bg-white p-5 border border-gray-200">
+      
+      <!-- Rubric Header -->
+      <div class="mb-4 flex justify-between items-start pb-3 border-b border-gray-100">
+        <div>
+          <h2 class="text-base font-bold text-gray-900">Grading Rubric</h2>
+          <p class="text-xs text-gray-500 mt-0.5">Standard Academic Rubric</p>
+        </div>
+        <div class="text-right">
+          <div class="text-2xl font-black text-gray-900">{{ totalScore() }}<span class="text-sm opacity-50 font-bold ml-0.5">/ 100</span></div>
+          <div class="text-[10px] font-bold text-gray-400 uppercase mt-0.5 tracking-wider">Total Score</div>
+        </div>
+      </div>
+
+      <!-- Criteria List (Modeled after assessment/pages/grading/grading.html) -->
+      <div class="flex-1 overflow-auto no-scrollbar space-y-4 pr-0.5">
+        @for (criterion of criteria(); track criterion.id) {
+          <div class="bg-white border border-gray-200 rounded-xl p-3.5 space-y-2.5">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-xs font-bold text-gray-900">{{ criterion.name }}</h3>
+                <div class="text-[11px] text-gray-500 mt-0.5">{{ criterion.description }}</div>
+              </div>
+              <span class="text-xs font-bold px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md shrink-0">
+                {{ selectedScores()[criterion.id] || 0 }} / 25 pts
+              </span>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              @for (level of criterion.levels; track level.points) {
+                <button 
+                  type="button"
+                  (click)="selectLevel(criterion.id, level.points)"
+                  class="text-left w-full p-2 rounded-lg border text-xs transition-colors flex justify-between items-center cursor-pointer"
+                  [class]="selectedScores()[criterion.id] === level.points 
+                    ? 'border-primary bg-primary/5 font-semibold text-primary' 
+                    : 'border-gray-100 hover:border-gray-300 text-gray-700'">
+                  <div>
+                    <div class="font-bold">{{ level.name }}</div>
+                    <div class="text-[10px] opacity-80 leading-tight">{{ level.description }}</div>
+                  </div>
+                  <div class="font-bold shrink-0 ml-2 text-xs">{{ level.points }} pts</div>
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Comments & Final Actions -->
+      <div class="pt-4 mt-2 border-t border-gray-100 shrink-0 space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Constructive Feedback</label>
+          <textarea 
+            rows="2" 
+            [(ngModel)]="feedbackText"
+            class="form-control w-full resize-none text-xs bg-gray-50" 
+            placeholder="Feedback for student gradebook..."></textarea>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button (click)="saveGrade()" class="btn outline flex-1 justify-center text-xs">
+            Save Draft
+          </button>
+          <button (click)="publishGrade()" class="btn primary flex-1 justify-center text-xs">
+            Publish Grade
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

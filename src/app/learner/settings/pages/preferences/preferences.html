@@ -1,0 +1,290 @@
+<div class="flex flex-col gap-6">
+  <!-- Section Title & Description -->
+  <div class="border-b border-gray-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div>
+      <h2 class="text-base font-bold text-gray-900">Study AI Tutor Preferences</h2>
+      <p class="text-xs text-gray-500 mt-0.5">
+        Customize your pedagogical learning mode, progressive hint delivery, and media playback defaults.
+      </p>
+    </div>
+
+    @if (saveSuccess()) {
+      <div class="px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-1.5 animate-fadeIn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>Learning preferences saved!</span>
+      </div>
+    }
+  </div>
+
+  <form (submit)="savePreferences(); $event.preventDefault()" class="flex flex-col gap-6">
+    <!-- 1. AI Tutor Default Mode -->
+    <div class="flex flex-col gap-3">
+      <div>
+        <h3 class="text-sm font-bold text-gray-900">Default Socratic Reasoning Mode</h3>
+        <p class="text-xs text-gray-500 mt-0.5">Choose how the AI Tutor approaches new problem-solving questions by default.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Socratic Guide -->
+        <button 
+          type="button"
+          (click)="defaultTutorMode.set('socratic')"
+          class="p-4 rounded-xl border text-left flex flex-col gap-1.5 transition-all cursor-pointer"
+          [class]="defaultTutorMode() === 'socratic' ? 'bg-primary/5 border-primary text-gray-900' : 'bg-white border-gray-200 hover:border-gray-300 text-gray-700'">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold" [class.text-primary]="defaultTutorMode() === 'socratic'">Socratic Guide</span>
+            <div class="size-4 rounded-full border flex items-center justify-center" [class]="defaultTutorMode() === 'socratic' ? 'border-primary bg-primary' : 'border-gray-300'">
+              @if (defaultTutorMode() === 'socratic') {
+                <div class="size-1.5 rounded-full bg-white"></div>
+              }
+            </div>
+          </div>
+          <p class="text-[11px] text-gray-500 leading-relaxed">
+            Asks progressive guiding questions and probes intuition without giving away direct answers.
+          </p>
+        </button>
+
+        <!-- Mental Model -->
+        <button 
+          type="button"
+          (click)="defaultTutorMode.set('breakdown')"
+          class="p-4 rounded-xl border text-left flex flex-col gap-1.5 transition-all cursor-pointer"
+          [class]="defaultTutorMode() === 'breakdown' ? 'bg-primary/5 border-primary text-gray-900' : 'bg-white border-gray-200 hover:border-gray-300 text-gray-700'">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold" [class.text-primary]="defaultTutorMode() === 'breakdown'">Mental Model</span>
+            <div class="size-4 rounded-full border flex items-center justify-center" [class]="defaultTutorMode() === 'breakdown' ? 'border-primary bg-primary' : 'border-gray-300'">
+              @if (defaultTutorMode() === 'breakdown') {
+                <div class="size-1.5 rounded-full bg-white"></div>
+              }
+            </div>
+          </div>
+          <p class="text-[11px] text-gray-500 leading-relaxed">
+            Explains abstract mathematical and engineering concepts using visual and physical analogies.
+          </p>
+        </button>
+
+        <!-- Diagnostic Drill -->
+        <button 
+          type="button"
+          (click)="defaultTutorMode.set('diagnostic')"
+          class="p-4 rounded-xl border text-left flex flex-col gap-1.5 transition-all cursor-pointer"
+          [class]="defaultTutorMode() === 'diagnostic' ? 'bg-primary/5 border-primary text-gray-900' : 'bg-white border-gray-200 hover:border-gray-300 text-gray-700'">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold" [class.text-primary]="defaultTutorMode() === 'diagnostic'">Diagnostic Drill</span>
+            <div class="size-4 rounded-full border flex items-center justify-center" [class]="defaultTutorMode() === 'diagnostic' ? 'border-primary bg-primary' : 'border-gray-300'">
+              @if (defaultTutorMode() === 'diagnostic') {
+                <div class="size-1.5 rounded-full bg-white"></div>
+              }
+            </div>
+          </div>
+          <p class="text-[11px] text-gray-500 leading-relaxed">
+            Tests retention with quick conceptual check questions to identify prerequisite knowledge gaps.
+          </p>
+        </button>
+
+        <!-- Misconception Check -->
+        <button 
+          type="button"
+          (click)="defaultTutorMode.set('misconception')"
+          class="p-4 rounded-xl border text-left flex flex-col gap-1.5 transition-all cursor-pointer"
+          [class]="defaultTutorMode() === 'misconception' ? 'bg-primary/5 border-primary text-gray-900' : 'bg-white border-gray-200 hover:border-gray-300 text-gray-700'">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold" [class.text-primary]="defaultTutorMode() === 'misconception'">Misconception Check</span>
+            <div class="size-4 rounded-full border flex items-center justify-center" [class]="defaultTutorMode() === 'misconception' ? 'border-primary bg-primary' : 'border-gray-300'">
+              @if (defaultTutorMode() === 'misconception') {
+                <div class="size-1.5 rounded-full bg-white"></div>
+              }
+            </div>
+          </div>
+          <p class="text-[11px] text-gray-500 leading-relaxed">
+            Analyzes unexpected results to detect subtle sign errors, coordinate jacobians, or boundary slips.
+          </p>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. Progressive Hint Depth -->
+    <div class="p-5 rounded-2xl bg-gray-50/70 border border-gray-100 flex flex-col gap-4">
+      <div>
+        <h3 class="text-sm font-bold text-gray-900">Progressive Hint Depth</h3>
+        <p class="text-xs text-gray-500 mt-0.5">Control how many hint tiers the tutor generates before revealing full working.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <label class="flex items-start gap-2.5 p-3 rounded-xl bg-white border border-gray-200 cursor-pointer">
+          <input 
+            type="radio" 
+            name="hintPace" 
+            value="3-step" 
+            [checked]="hintPace() === '3-step'"
+            (change)="hintPace.set('3-step')"
+            class="mt-0.5 text-primary">
+          <div>
+            <div class="font-bold text-gray-900">3-Tier Progressive (Recommended)</div>
+            <div class="text-[11px] text-gray-500 mt-0.5">Nudge → Intermediate Step → Solution Strategy</div>
+          </div>
+        </label>
+
+        <label class="flex items-start gap-2.5 p-3 rounded-xl bg-white border border-gray-200 cursor-pointer">
+          <input 
+            type="radio" 
+            name="hintPace" 
+            value="2-step" 
+            [checked]="hintPace() === '2-step'"
+            (change)="hintPace.set('2-step')"
+            class="mt-0.5 text-primary">
+          <div>
+            <div class="font-bold text-gray-900">2-Tier Balanced</div>
+            <div class="text-[11px] text-gray-500 mt-0.5">Governing formula → Algebraic hint</div>
+          </div>
+        </label>
+
+        <label class="flex items-start gap-2.5 p-3 rounded-xl bg-white border border-gray-200 cursor-pointer">
+          <input 
+            type="radio" 
+            name="hintPace" 
+            value="direct" 
+            [checked]="hintPace() === 'direct'"
+            (change)="hintPace.set('direct')"
+            class="mt-0.5 text-primary">
+          <div>
+            <div class="font-bold text-gray-900">Direct Breakdown</div>
+            <div class="text-[11px] text-gray-500 mt-0.5">Single comprehensive explanation</div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- 3. Math & Code Rendering Options -->
+    <div class="flex flex-col gap-3">
+      <h3 class="text-sm font-bold text-gray-900">Formulas & Code Display</h3>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+        <!-- Render LaTeX Formulas -->
+        <div class="p-4 rounded-xl border border-gray-200 bg-white flex items-center justify-between">
+          <div>
+            <div class="font-bold text-gray-900">Render LaTeX Formulas</div>
+            <div class="text-[11px] text-gray-500 mt-0.5">Format mathematical expressions as clean typographic notation</div>
+          </div>
+          <button 
+            type="button"
+            (click)="renderLatex.set(!renderLatex())"
+            class="w-10 h-6 rounded-full border transition-colors relative cursor-pointer"
+            [class]="renderLatex() ? 'bg-primary border-primary' : 'bg-gray-200 border-gray-200'">
+            <div class="size-4 rounded-full bg-white transition-transform" [class]="renderLatex() ? 'translate-x-4.5' : 'translate-x-0.5'"></div>
+          </button>
+        </div>
+
+        <!-- Show Intermediate Derivations -->
+        <div class="p-4 rounded-xl border border-gray-200 bg-white flex items-center justify-between">
+          <div>
+            <div class="font-bold text-gray-900">Show Full Derivations</div>
+            <div class="text-[11px] text-gray-500 mt-0.5">Include step-by-step calculus proofs in tutor replies</div>
+          </div>
+          <button 
+            type="button"
+            (click)="showDerivations.set(!showDerivations())"
+            class="w-10 h-6 rounded-full border transition-colors relative cursor-pointer"
+            [class]="showDerivations() ? 'bg-primary border-primary' : 'bg-gray-200 border-gray-200'">
+            <div class="size-4 rounded-full bg-white transition-transform" [class]="showDerivations() ? 'translate-x-4.5' : 'translate-x-0.5'"></div>
+          </button>
+        </div>
+
+        <!-- Code Snippet Line Numbers -->
+        <div class="p-4 rounded-xl border border-gray-200 bg-white flex items-center justify-between">
+          <div>
+            <div class="font-bold text-gray-900">Code Snippet Line Numbers</div>
+            <div class="text-[11px] text-gray-500 mt-0.5">Display gutter line numbers in algorithm code blocks</div>
+          </div>
+          <button 
+            type="button"
+            (click)="codeLineNumbers.set(!codeLineNumbers())"
+            class="w-10 h-6 rounded-full border transition-colors relative cursor-pointer"
+            [class]="codeLineNumbers() ? 'bg-primary border-primary' : 'bg-gray-200 border-gray-200'">
+            <div class="size-4 rounded-full bg-white transition-transform" [class]="codeLineNumbers() ? 'translate-x-4.5' : 'translate-x-0.5'"></div>
+          </button>
+        </div>
+
+        <!-- Preferred Programming Language -->
+        <div class="p-4 rounded-xl border border-gray-200 bg-white flex items-center justify-between gap-3">
+          <div>
+            <div class="font-bold text-gray-900">Default Code Language</div>
+            <div class="text-[11px] text-gray-500 mt-0.5">Used for data structures & algorithm examples</div>
+          </div>
+          <select 
+            [ngModel]="preferredCodeLang()"
+            (ngModelChange)="preferredCodeLang.set($event)"
+            name="preferredCodeLang"
+            class="form-control text-xs !rounded-lg border-gray-200 bg-white">
+            <option value="python">Python 3</option>
+            <option value="typescript">TypeScript</option>
+            <option value="cpp">C++ (Modern)</option>
+            <option value="java">Java 21</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Media & Stage Playback Defaults -->
+    <div class="p-5 rounded-2xl bg-gray-50/70 border border-gray-100 flex flex-col gap-4">
+      <div>
+        <h3 class="text-sm font-bold text-gray-900">Media & Lecture Stage Playback</h3>
+        <p class="text-xs text-gray-500 mt-0.5">Default playback behaviors for virtual classrooms and video materials.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1.5">Default Playback Speed</label>
+          <div class="flex items-center gap-1 bg-white p-1 rounded-xl border border-gray-200">
+            @for (spd of ['1.0', '1.25', '1.5', '2.0']; track spd) {
+              <button 
+                type="button"
+                (click)="defaultPlaybackSpeed.set(spd)"
+                class="flex-1 py-1 rounded-lg font-medium transition-colors cursor-pointer text-center"
+                [class]="defaultPlaybackSpeed() === spd ? 'bg-primary text-white font-bold' : 'text-gray-600 hover:text-gray-900'">
+                {{ spd }}x
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-gray-200">
+          <div>
+            <div class="font-bold text-gray-900">Auto-Play Next Lesson</div>
+            <div class="text-[11px] text-gray-500">Continue next syllabus module</div>
+          </div>
+          <button 
+            type="button"
+            (click)="autoPlayNextLesson.set(!autoPlayNextLesson())"
+            class="w-10 h-6 rounded-full border transition-colors relative cursor-pointer shrink-0"
+            [class]="autoPlayNextLesson() ? 'bg-primary border-primary' : 'bg-gray-200 border-gray-200'">
+            <div class="size-4 rounded-full bg-white transition-transform" [class]="autoPlayNextLesson() ? 'translate-x-4.5' : 'translate-x-0.5'"></div>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-gray-200">
+          <div>
+            <div class="font-bold text-gray-900">Auto-Advance Drills</div>
+            <div class="text-[11px] text-gray-500">Next question on correct check</div>
+          </div>
+          <button 
+            type="button"
+            (click)="autoAdvanceDrills.set(!autoAdvanceDrills())"
+            class="w-10 h-6 rounded-full border transition-colors relative cursor-pointer shrink-0"
+            [class]="autoAdvanceDrills() ? 'bg-primary border-primary' : 'bg-gray-200 border-gray-200'">
+            <div class="size-4 rounded-full bg-white transition-transform" [class]="autoAdvanceDrills() ? 'translate-x-4.5' : 'translate-x-0.5'"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Dock -->
+    <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+      <button type="submit" class="btn bg-primary text-white text-xs !h-9 !px-5 flex items-center gap-1.5 hover:opacity-95 transition-opacity cursor-pointer">
+        <span>Save Study Preferences</span>
+      </button>
+    </div>
+  </form>
+</div>

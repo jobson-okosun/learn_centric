@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal, TemplateRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ZardDialogImports, ZardDialogRef, ZardDialogService } from '@/shared/components/dialog';
+import { LiveStageModal } from '../../components/live-stage/live-stage';
 
 export interface ClassSessionItem {
   id: string;
@@ -248,20 +249,25 @@ export default class Sessions {
     this.activeTab.set(tab);
   }
 
-  enterLiveSession(session: ClassSessionItem, template: TemplateRef<any>) {
-    this.activeLiveSession.set(session);
-    this.dialogRef = this.dialogService.create({
-      zTitle: session.title,
-      zContent: template,
+  openLiveStage(session?: ClassSessionItem) {
+    this.dialogService.create({
+      zContent: LiveStageModal,
+      zHideHeader: true,
       zHideFooter: true,
-      zWidth: '6xl',
+      zMaskClosable: false,
+      zData: session
+        ? {
+            title: session.title,
+            courseCode: session.courseCode,
+            courseTitle: session.courseTitle,
+            classCohort: session.classCohort,
+            instructor: session.instructor,
+            room: session.room,
+            attendeesCount: session.attendeesCount,
+          }
+        : undefined,
+      zCustomClasses: 'h-[98vh] min-w-[calc(100vw-1rem)] !p-0 overflow-hidden rounded-2xl flex flex-col bg-white',
     });
-  }
-
-  closeClassroomModal() {
-    this.dialogRef?.close();
-    this.dialogRef = null;
-    this.activeLiveSession.set(null);
   }
 
   openRecordingModal(recording: SessionRecordingItem, template: TemplateRef<any>) {

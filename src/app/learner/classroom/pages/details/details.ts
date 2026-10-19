@@ -2,6 +2,7 @@ import { Component, inject, signal, TemplateRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ZardDialogImports, ZardDialogRef, ZardDialogService } from '@/shared/components/dialog';
+import { LiveStageModal } from '../../components/live-stage/live-stage';
 
 export interface ClassSession {
   id: string;
@@ -59,17 +60,6 @@ export default class Details {
 
   // Active video player state
   readonly activeRecording = signal<ClassRecording | null>(null);
-
-  // Classroom modal state
-  readonly isMuted = signal(true);
-  readonly isVideoOn = signal(false);
-  readonly isHandRaised = signal(false);
-  readonly chatMessageInput = signal('');
-  readonly chatMessages = signal<{ sender: string; time: string; text: string; isMe?: boolean }[]>([
-    { sender: 'Dr. Sarah Johnson', time: '2:02 PM', text: 'Welcome everyone! Today we will verify Stokes’ theorem on boundary contours.' },
-    { sender: 'Sam Smith', time: '2:05 PM', text: 'Does the normal vector always follow the right-hand rule?' },
-    { sender: 'Dr. Sarah Johnson', time: '2:07 PM', text: 'Yes, counterclockwise boundary traversal defines the positive normal.' },
-  ]);
 
   readonly classInfo = signal({
     id: 'math-204-a',
@@ -197,18 +187,21 @@ export default class Details {
     this.calendarView.set(v);
   }
 
-  enterLiveStage(template: TemplateRef<any>) {
-    this.dialogRef = this.dialogService.create({
-      zTitle: this.classInfo().title,
-      zContent: template,
+  enterLiveStage(session?: Partial<ClassSession>) {
+    this.dialogService.create({
+      zContent: LiveStageModal,
+      zData: {
+        sessionTitle: session?.title || this.classInfo().title,
+        courseTitle: this.classInfo().courseName,
+        cohortName: this.classInfo().cohort,
+        instructorName: session?.instructor || this.classInfo().instructor,
+        instructorAvatar: this.classInfo().instructorAvatar,
+      },
+      zHideHeader: true,
       zHideFooter: true,
-      zWidth: '6xl',
+      zMaskClosable: false,
+      zCustomClasses: 'h-[98vh] min-w-[calc(100vw-1rem)] !p-0 overflow-hidden rounded-2xl flex flex-col bg-white',
     });
-  }
-
-  closeStageModal() {
-    this.dialogRef?.close();
-    this.dialogRef = null;
   }
 
   openRecordingPlayer(rec: ClassRecording, template: TemplateRef<any>) {
@@ -225,33 +218,5 @@ export default class Details {
     this.dialogRef?.close();
     this.dialogRef = null;
     this.activeRecording.set(null);
-  }
-
-  toggleHandRaise() {
-    this.isHandRaised.update((v) => !v);
-  }
-
-  toggleMute() {
-    this.isMuted.update((v) => !v);
-  }
-
-  toggleVideo() {
-    this.isVideoOn.update((v) => !v);
-  }
-
-  sendChatMessage() {
-    const text = this.chatMessageInput().trim();
-    if (!text) return;
-
-    this.chatMessages.update((msgs) => [
-      ...msgs,
-      {
-        sender: 'Alex Morgan (You)',
-        time: 'Just now',
-        text,
-        isMe: true,
-      },
-    ]);
-    this.chatMessageInput.set('');
   }
 }

@@ -1,0 +1,177 @@
+<div class="flex flex-col gap-6">
+  <!-- Section Title & Description -->
+  <div class="border-b border-gray-100 pb-4 flex items-center justify-between">
+    <div>
+      <h2 class="text-base font-bold text-gray-900">Security & Institutional Access</h2>
+      <p class="text-xs text-gray-500 mt-0.5">
+        Protect your faculty account, manage two-factor authentication, generate assessment access keys, and review active sessions.
+      </p>
+    </div>
+  </div>
+
+  <!-- Password Update Form -->
+  <div class="border-t border-gray-100 pt-5 flex flex-col gap-4">
+    <div class="flex flex-col">
+      <h3 class="text-xs font-bold text-gray-900 uppercase tracking-wider">Account Password</h3>
+      <p class="text-[11px] text-gray-400 mt-0.5">
+        Set a standalone fallback password for offline exam grading or external tool API access.
+      </p>
+    </div>
+
+    @if (passwordUpdated()) {
+      <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>Your faculty password has been successfully updated.</span>
+      </div>
+    }
+
+    @if (passwordError()) {
+      <div class="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ passwordError() }}</span>
+      </div>
+    }
+
+    <form (submit)="updatePassword(); $event.preventDefault()" class="flex flex-col gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Current Password</label>
+          <input 
+            type="password" 
+            [ngModel]="currentPassword()" 
+            (ngModelChange)="currentPassword.set($event)"
+            name="currentPassword" 
+            class="form-control text-xs w-full" 
+            placeholder="••••••••••••">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">New Password</label>
+          <input 
+            type="password" 
+            [ngModel]="newPassword()" 
+            (ngModelChange)="newPassword.set($event)"
+            name="newPassword" 
+            class="form-control text-xs w-full" 
+            placeholder="At least 8 characters">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Confirm New Password</label>
+          <input 
+            type="password" 
+            [ngModel]="confirmPassword()" 
+            (ngModelChange)="confirmPassword.set($event)"
+            name="confirmPassword" 
+            class="form-control text-xs w-full" 
+            placeholder="Repeat new password">
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end">
+        <button type="submit" class="btn primary text-xs !h-9 !px-4 hover:border-gray-400 cursor-pointer">
+          Update Password
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Two-Factor Authentication (2FA) & Grade Publishing Gate -->
+  <div class="border-t border-gray-100 pt-5 flex flex-col gap-4">
+    <span class="text-xs font-bold text-gray-900 uppercase tracking-wider">Multi-Factor Authentication (MFA)</span>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="p-4 rounded-xl border border-gray-200 bg-white flex flex-col justify-between gap-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-gray-900">Authenticator App (TOTP)</span>
+            <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-semibold">
+              Enforced
+            </span>
+          </div>
+          <input 
+            type="checkbox" 
+            [ngModel]="twoFactorEnabled()" 
+            (ngModelChange)="twoFactorEnabled.set($event)"
+            class="rounded border-gray-300 text-primary focus:ring-0">
+        </div>
+        <p class="text-[11px] text-gray-400">
+          Requires a 6-digit one-time code from Duo Security, Google Authenticator, or institutional mobile token.
+        </p>
+      </div>
+
+      <div class="p-4 rounded-xl border border-gray-200 bg-white flex flex-col justify-between gap-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-gray-900">MFA for Final Grade Dispatch</span>
+          <input 
+            type="checkbox" 
+            [ngModel]="requireMfaForGradePublish()" 
+            (ngModelChange)="requireMfaForGradePublish.set($event)"
+            class="rounded border-gray-300 text-primary focus:ring-0">
+        </div>
+        <p class="text-[11px] text-gray-400">
+          Require biometric or TOTP confirmation before publishing final term grades to university registrar.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active Faculty Sessions -->
+  <div class="border-t border-gray-100 pt-5 flex flex-col gap-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <h3 class="text-xs font-bold text-gray-900 uppercase tracking-wider">Active Faculty Workstations</h3>
+        <p class="text-[11px] text-gray-400 mt-0.5">Devices currently authenticated to your faculty dashboard.</p>
+      </div>
+
+      @if (activeSessions().length > 1) {
+        <button 
+          type="button" 
+          (click)="terminateOtherSessions()" 
+          class="text-xs font-semibold text-red-600 hover:text-red-700 cursor-pointer">
+          Revoke Other Sessions
+        </button>
+      }
+    </div>
+
+    <div class="flex flex-col gap-2.5">
+      @for (session of activeSessions(); track session.id) {
+        <div class="p-3.5 rounded-xl border border-gray-100 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="size-8 rounded-lg bg-gray-100 text-gray-500 flex items-center justify-center shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+
+            <div class="flex flex-col min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs font-bold text-gray-900">{{ session.device }}</span>
+                @if (session.isCurrent) {
+                  <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                    This Workstation
+                  </span>
+                }
+              </div>
+              <span class="text-[11px] text-gray-500 mt-0.5 truncate">
+                {{ session.browser }} · {{ session.location }} (IP: {{ session.ip }})
+              </span>
+            </div>
+          </div>
+
+          <div class="text-right shrink-0">
+            <span class="text-[11px] text-gray-400">{{ session.lastActive }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

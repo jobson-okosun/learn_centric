@@ -19,7 +19,51 @@ interface Menu {
 export class Navigation {
   private router = inject(Router);
 
+  readonly isAdmin = signal<boolean>(typeof window !== 'undefined' ? window.location.pathname.startsWith('/admin') : false);
   readonly isLearner = signal<boolean>(typeof window !== 'undefined' ? window.location.pathname.startsWith('/learn') : false);
+
+  readonly adminMenus: Menu[] = [
+    { label: 'dashboard', routerLink: '/admin/dashboard', children: [] },
+    {
+      label: 'people',
+      children: [
+        { label: 'directory', routerLink: '/admin/people/directory', children: [] },
+        { label: 'roles & permissions', routerLink: '/admin/people/roles', children: [] },
+        { label: 'invitations', routerLink: '/admin/people/invitations', children: [] },
+      ],
+    },
+    {
+      label: 'structure',
+      children: [
+        { label: 'org units', routerLink: '/admin/structure/units', children: [] },
+        { label: 'campuses', routerLink: '/admin/structure/campuses', children: [] },
+      ],
+    },
+    {
+      label: 'academics',
+      children: [
+        { label: 'academic calendar', routerLink: '/admin/academics/calendar', children: [] },
+        { label: 'sessions & terms', routerLink: '/admin/academics/sessions', children: [] },
+        { label: 'programmes', routerLink: '/admin/academics/programmes', children: [] },
+      ],
+    },
+    {
+      label: 'enrolments',
+      children: [
+        { label: 'classes & cohorts', routerLink: '/admin/enrolments/classes', children: [] },
+        { label: 'bulk enrolments', routerLink: '/admin/enrolments/batches', children: [] },
+      ],
+    },
+    {
+      label: 'reports',
+      children: [
+        { label: 'overview', routerLink: '/admin/reports/overview', children: [] },
+        { label: 'broadsheet', routerLink: '/admin/reports/broadsheet', children: [] },
+        { label: 'compliance', routerLink: '/admin/reports/compliance', children: [] },
+      ],
+    },
+    { label: 'audit log', routerLink: '/admin/audit/log', children: [] },
+  ];
 
   readonly instructorMenus: Menu[] = [
     { label: 'dashboard', routerLink: '/app/dashboard', children: [] },
@@ -89,12 +133,30 @@ export class Navigation {
     },
     { label: 'practice', routerLink: '/learn/practice', children: [] },
     { label: 'assessments', routerLink: '/learn/assessments', children: [] },
-    { label: 'discussions', routerLink: '/learn/discussions', children: [] },
-    { label: 'AI tutor', routerLink: '/learn/tutor', children: [] },
+    {
+      label: 'discussions',
+      children: [
+        { label: 'discussions', routerLink: '/learn/discussions/discussions', children: [] },
+        { label: 'announcements', routerLink: '/learn/discussions/announcements', children: [] },
+        { label: 'messages', routerLink: '/learn/discussions/messages', children: [] },
+      ],
+    },
+    {
+      label: 'insights',
+      children: [
+        { label: 'overview', routerLink: '/learn/insights/overview', children: [] },
+        { label: 'assessments', routerLink: '/learn/insights/assessments', children: [] },
+        { label: 'mastery', routerLink: '/learn/insights/mastery', children: [] },
+        { label: 'Insights', routerLink: '/learn/insights/ai-insights', children: [] },
+      ],
+    },
+    // { label: 'AI tutor', routerLink: '/learn/tutor', children: [] },
   ];
 
   readonly menus = computed<Menu[]>(() => {
-    return this.isLearner() ? this.learnerMenus : this.instructorMenus;
+    if (this.isAdmin()) return this.adminMenus;
+    if (this.isLearner()) return this.learnerMenus;
+    return this.instructorMenus;
   });
 
   expandedMenus = signal<string[]>([]);
@@ -106,6 +168,7 @@ export class Navigation {
       takeUntilDestroyed()
     ).subscribe((event: any) => {
       const url = event.urlAfterRedirects || this.router.url;
+      this.isAdmin.set(url.startsWith('/admin'));
       this.isLearner.set(url.startsWith('/learn'));
       this.expandActiveMenu();
     });

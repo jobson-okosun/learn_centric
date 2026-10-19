@@ -1,0 +1,245 @@
+<div class="flex flex-col gap-6 h-full pb-8">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Quiz & Test Results</h1>
+      <p class="text-sm text-gray-500 mt-1">
+        Your scores, grades, and feedback across all quizzes and exams.
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <a routerLink="/learn/assessments" class="btn outline flex items-center gap-1.5 text-xs">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        View All Assessments
+      </a>
+    </div>
+  </div>
+
+  <!-- Metric / Stat Overview Cards (Matching Dashboard design) -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <!-- Total Completed -->
+    <div class="rounded-2xl bg-white p-4">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="rounded-full size-10 flex items-center justify-center shrink-0 bg-violet-50">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="text-violet-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </span>
+        <div>
+          <span class="text-gray-800 text-xs font-semibold block leading-tight">Completed</span>
+          <span class="text-[11px] text-gray-500 font-medium">Quizzes & tests graded</span>
+        </div>
+      </div>
+      <div class="font-bold text-3xl text-gray-900">{{ totalCompleted() }}</div>
+    </div>
+
+    <!-- Average Score -->
+    <div class="rounded-2xl bg-white p-4">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="rounded-full size-10 flex items-center justify-center shrink-0 bg-emerald-50">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </span>
+        <div>
+          <span class="text-gray-800 text-xs font-semibold block leading-tight">Average Score</span>
+          <span class="text-[11px] text-emerald-700 font-bold">+12.4% vs class</span>
+        </div>
+      </div>
+      <div class="font-bold text-3xl text-gray-900">{{ meanScore() }}%</div>
+    </div>
+
+    <!-- Top Score -->
+    <div class="rounded-2xl bg-white p-4">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="rounded-full size-10 flex items-center justify-center shrink-0 bg-blue-50">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="text-blue-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        </span>
+        <div>
+          <span class="text-gray-800 text-xs font-semibold block leading-tight">Best Score</span>
+          <span class="text-[11px] text-gray-500 font-medium">CS-210 Quiz 1</span>
+        </div>
+      </div>
+      <div class="font-bold text-3xl text-gray-900">{{ highestScorePercent() }}%</div>
+    </div>
+
+    <!-- Class Standing -->
+    <div class="rounded-2xl bg-white p-4">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="rounded-full size-10 flex items-center justify-center shrink-0 bg-amber-50">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="text-amber-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </span>
+        <div>
+          <span class="text-gray-800 text-xs font-semibold block leading-tight">Class Standing</span>
+          <span class="text-[11px] text-gray-500 font-medium">94th Percentile</span>
+        </div>
+      </div>
+      <div class="font-bold text-3xl text-gray-900">Top 6%</div>
+    </div>
+  </div>
+
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <!-- Filter Tabs (Clean text buttons, NO pill spam) -->
+    <div class="flex items-center gap-1 p-1 bg-gray-100 rounded-xl w-fit">
+      <button 
+        type="button" 
+        (click)="setFilter('all')"
+        [class]="activeFilter() === 'all' ? 'bg-white text-gray-900 font-bold' : 'text-gray-500 hover:text-gray-900'"
+        class="px-3.5 py-1.5 text-xs rounded-lg transition-all cursor-pointer">
+        All ({{ assessments().length }})
+      </button>
+      <button 
+        type="button" 
+        (click)="setFilter('exams')"
+        [class]="activeFilter() === 'exams' ? 'bg-white text-gray-900 font-bold' : 'text-gray-500 hover:text-gray-900'"
+        class="px-3.5 py-1.5 text-xs rounded-lg transition-all cursor-pointer">
+        Exams
+      </button>
+      <button 
+        type="button" 
+        (click)="setFilter('quizzes')"
+        [class]="activeFilter() === 'quizzes' ? 'bg-white text-gray-900 font-bold' : 'text-gray-500 hover:text-gray-900'"
+        class="px-3.5 py-1.5 text-xs rounded-lg transition-all cursor-pointer">
+        Quizzes
+      </button>
+      <button 
+        type="button" 
+        (click)="setFilter('high-score')"
+        [class]="activeFilter() === 'high-score' ? 'bg-white text-gray-900 font-bold' : 'text-gray-500 hover:text-gray-900'"
+        class="px-3.5 py-1.5 text-xs rounded-lg transition-all cursor-pointer">
+        Top Scores (90%+)
+      </button>
+    </div>
+
+    <!-- Search & Course Selector -->
+    <div class="flex items-center gap-3">
+      <div class="relative w-full sm:w-64">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input 
+          type="text" 
+          [ngModel]="searchQuery()" 
+          (ngModelChange)="searchQuery.set($event)"
+          placeholder="Search quiz or exam..." 
+          class="form-control pl-9! h-9 text-xs w-full bg-white border-gray-200">
+      </div>
+
+      <select 
+        [ngModel]="selectedCourse()"
+        (ngModelChange)="selectedCourse.set($event)"
+        class="form-control h-9 text-xs px-3 bg-white border-gray-200 text-gray-700 cursor-pointer">
+        <option value="all">All Courses</option>
+        <option value="MATH-301">MATH-301</option>
+        <option value="PHYS-201">PHYS-201</option>
+        <option value="CS-210">CS-210</option>
+        <option value="CHEM-110">CHEM-110</option>
+        <option value="BIO-105">BIO-105</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-base font-bold text-gray-900 tracking-tight">All Past Results</h2>
+      <p class="text-xs text-gray-500 mt-0.5">Scores, grades, and class averages for every quiz and exam</p>
+    </div>
+    <span class="text-xs text-gray-500 font-medium">Showing {{ filteredAssessments().length }} results</span>
+  </div>
+
+  <!-- Table Container (Double Border Wrapper identical to attendance.html) -->
+  <div class="bg-white border border-gray-100 rounded-2xl  p-1 flex flex-col">
+    <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col">
+      <div class="overflow-x-auto flex-1">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-gray-100 bg-gray-100">
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Assessment</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Course</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase">Date Completed</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-center">Score</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-center">Grade</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-center">Class Rank</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-center">Class Average</th>
+              <th class="p-4 text-xs font-semibold text-gray-700 uppercase text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            @for (item of filteredAssessments(); track item.id) {
+              <tr class="hover:bg-gray-50/50 transition-colors group">
+                <!-- Assessment Title & Icon -->
+                <td class="p-4">
+                  <div class="flex items-center gap-3">
+                    <div class="size-9 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      @if (item.type === 'Exam') {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                      } @else {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                      }
+                    </div>
+                    <div>
+                      <div class="font-medium text-gray-900 group-hover:text-primary transition-colors cursor-pointer">
+                        {{ item.title }}
+                      </div>
+                      <div class="text-xs text-gray-500">
+                        {{ item.type }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Course -->
+                <td class="p-4 text-sm font-semibold text-gray-800">
+                  {{ item.courseCode }}
+                </td>
+
+                <!-- Completed Date -->
+                <td class="p-4 text-sm text-gray-500">
+                  {{ item.completedDate }}
+                </td>
+
+                <!-- Raw Score -->
+                <td class="p-4 text-sm text-center">
+                  <span class="font-bold text-gray-900">{{ item.score }}</span>
+                  <span class="text-gray-400 text-xs"> / {{ item.maxScore }}</span>
+                </td>
+
+                <!-- Grade -->
+                <td class="p-4 text-center">
+                  <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-semibold">
+                    {{ item.grade }} ({{ ((item.score / item.maxScore) * 100) | number:'1.0-0' }}%)
+                  </span>
+                </td>
+
+                <!-- Class Rank / Percentile -->
+                <td class="p-4 text-sm text-center font-semibold text-gray-800">
+                  {{ item.percentile }}th
+                </td>
+
+                <!-- Class Avg -->
+                <td class="p-4 text-sm text-center text-gray-500">
+                  {{ item.cohortAvg }}%
+                </td>
+
+                <!-- Action -->
+                <td class="p-4 text-right">
+                  <a [routerLink]="['/learn/assessments', item.id, 'result']" class="btn outline text-xs !py-1 !px-3">
+                    Review
+                  </a>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="8" class="p-8 text-center text-gray-400 text-sm">
+                  No quiz or test results found matching your filters.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

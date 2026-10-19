@@ -1,7 +1,9 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ZardDrawerComponent, ZardDrawerHeaderComponent, ZardDrawerImports } from '@/shared/components/drawer';
+import { ZardDrawerImports } from '@/shared/components/drawer';
+import { ZardDialogService } from '@/shared/components/dialog';
+import { LiveStageModal } from '../../components/live-stage/live-stage';
 
 export interface EnrolledClass {
   id: string;
@@ -30,12 +32,14 @@ export interface EnrolledClass {
 }
 
 @Component({
-  imports: [RouterLink, FormsModule, ZardDrawerComponent, ZardDrawerHeaderComponent, ZardDrawerImports],
+  imports: [RouterLink, FormsModule, ZardDrawerImports],
   selector: 'app-classes',
   styleUrl: './classes.css',
   templateUrl: './classes.html',
 })
 export default class Classes {
+  private readonly dialogService = inject(ZardDialogService);
+
   readonly currentFilter = signal<'current' | 'upcoming' | 'completed'>('current');
   readonly searchQuery = signal('');
   readonly joinClassVisible = signal(false);
@@ -188,5 +192,22 @@ export default class Classes {
       this.joinCodeInput.set('');
       this.joinClassVisible.set(false);
     }, 1500);
+  }
+
+  openLiveStage(item: EnrolledClass) {
+    this.dialogService.create({
+      zContent: LiveStageModal,
+      zData: {
+        sessionTitle: item.nextSession?.title || item.title,
+        courseTitle: item.courseName,
+        cohortName: item.cohort,
+        instructorName: item.instructor.name,
+        instructorAvatar: item.instructor.avatar,
+      },
+      zHideHeader: true,
+      zHideFooter: true,
+      zMaskClosable: false,
+      zCustomClasses: 'h-[98vh] min-w-[calc(100vw-1rem)] !p-0 overflow-hidden rounded-2xl flex flex-col bg-white',
+    });
   }
 }

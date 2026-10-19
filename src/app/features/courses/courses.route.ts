@@ -21,6 +21,9 @@ const COURSES_ROUTES: Routes = [
             path: 'materials',
             children: [
               { path: 'assignments/:assignmentId', loadComponent: () => import('./pages/materials/assignment/assignment') },
+              { path: 'assignments/:assignmentId/submissions', loadComponent: () => import('./pages/materials/assignment-submissions/assignment-submissions') },
+              { path: 'assignments/:assignmentId/grading/:submissionId', loadComponent: () => import('./pages/materials/assignment-grading/assignment-grading') },
+              { path: 'assignments/:assignmentId/grading', loadComponent: () => import('./pages/materials/assignment-grading/assignment-grading') },
               { path: 'quizzes/:quizId', loadComponent: () => import('./pages/materials/quiz/quiz') },
               { path: 'pages/:pageId', loadComponent: () => import('./pages/materials/page/page') },
               { path: 'discussions/:discussionId', loadComponent: () => import('./pages/materials/discussion/discussion') },

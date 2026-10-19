@@ -1,5 +1,5 @@
 import { Component, signal, computed, inject, OnInit, OnDestroy } from '@angular/core';
-import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 export interface ExamOption {
   id: string;
@@ -16,7 +16,6 @@ export interface ExamQuestion {
 }
 
 @Component({
-  imports: [RouterLink],
   templateUrl: './runner.html',
   styleUrl: './runner.css',
 })

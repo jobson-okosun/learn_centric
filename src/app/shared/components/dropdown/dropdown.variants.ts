@@ -2,7 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 export const dropdownContentVariants = cva([
   'z-50 min-w-32 max-h-96 overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground',
-  'outline-none animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+  'shadow-md outline-none animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
 ]);
 
 export const dropdownItemVariants = cva(
@@ -28,7 +28,7 @@ export const dropdownItemVariants = cva(
 
 export const dropdownSubContentVariants = cva([
   'z-50 min-w-32 max-h-96 overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground',
-  'outline-none animate-in fade-in-0 zoom-in-95',
+  'shadow-lg outline-none animate-in fade-in-0 zoom-in-95',
 ]);
 
 export const dropdownSubTriggerVariants = cva(

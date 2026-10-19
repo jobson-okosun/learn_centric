@@ -35,13 +35,13 @@
       @if (classInfo().isLiveNow) {
         <button
           type="button"
-          (click)="enterLiveStage(liveStageTpl)"
+          (click)="enterLiveStage()"
           class="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-xl transition-colors cursor-pointer"
         >
           <svg class="w-4 h-4 animate-spin text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" stroke-linecap="round"/>
           </svg>
-          Join Live Stage
+          Join Live Class
         </button>
       }
     </div>
@@ -132,7 +132,7 @@
           <div class="flex items-center gap-3">
             <button
               type="button"
-              (click)="enterLiveStage(liveStageTpl)"
+              (click)="enterLiveStage()"
               class="px-5 py-3 text-xs font-bold text-rose-900 bg-white hover:bg-rose-50 rounded-xl transition-colors cursor-pointer flex items-center gap-2"
             >
               <svg class="w-4 h-4 text-rose-600" viewBox="0 0 24 24" fill="currentColor">
@@ -244,7 +244,7 @@
                     @if (session.isLiveNow) {
                       <button
                         type="button"
-                        (click)="enterLiveStage(liveStageTpl)"
+                        (click)="enterLiveStage(session)"
                         class="px-3.5 py-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors cursor-pointer"
                       >
                         Join
@@ -436,7 +436,7 @@
                 @if (session.isLiveNow) {
                   <button
                     type="button"
-                    (click)="enterLiveStage(liveStageTpl)"
+                    (click)="enterLiveStage(session)"
                     class="px-3 py-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors cursor-pointer"
                   >
                     Join Live
@@ -569,120 +569,7 @@
   }
 </div>
 
-<!-- ========================================== -->
-<!-- MODAL 1: LIVE STAGE SIMULATOR DIALOG -->
-<!-- ========================================== -->
-<ng-template #liveStageTpl>
-  <div class="space-y-4">
-    <!-- Stage Viewport (Instructor Broadcast + Whiteboard) -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <div class="lg:col-span-2 bg-slate-950 rounded-2xl overflow-hidden aspect-video relative flex flex-col justify-between p-4 text-white">
-        <!-- Stage Top Bar -->
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="px-2 py-0.5 rounded bg-rose-600 text-white font-bold text-[10px] uppercase">
-              LIVE
-            </span>
-            <span class="text-xs font-semibold text-slate-200">{{ classInfo().room }}</span>
-          </div>
-          <span class="text-xs font-medium text-slate-400">Dr. Sarah Johnson (Instructor)</span>
-        </div>
 
-        <!-- Instructor Blackboard Content -->
-        <div class="flex flex-col items-center justify-center text-center space-y-3 py-6">
-          <div class="w-16 h-16 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary-200">
-            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <polygon points="23 7 16 12 23 17 23 7"></polygon>
-              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-            </svg>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold text-white tracking-wide">Live Blackboard Feed: Stokes’ Theorem</h4>
-            <p class="text-xs text-slate-400 font-mono mt-1">
-              &#x222E;&#x2202;S F · dr = &#x222C;S (&#x2207; × F) · dS
-            </p>
-          </div>
-        </div>
-
-        <!-- Stage Bottom Control Strip -->
-        <div class="flex items-center justify-between pt-2 border-t border-slate-800">
-          <div class="flex items-center gap-2">
-            <button
-              type="button"
-              (click)="toggleMute()"
-              [class]="isMuted() ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : 'bg-slate-800 text-white border-slate-700'"
-              class="px-3 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer"
-            >
-              {{ isMuted() ? 'Unmute Mic' : 'Mute Mic' }}
-            </button>
-            <button
-              type="button"
-              (click)="toggleVideo()"
-              [class]="!isVideoOn() ? 'bg-slate-800 text-slate-300 border-slate-700' : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'"
-              class="px-3 py-1.5 rounded-lg border text-xs font-semibold cursor-pointer"
-            >
-              {{ isVideoOn() ? 'Stop Video' : 'Start Video' }}
-            </button>
-            <button
-              type="button"
-              (click)="toggleHandRaise()"
-              [class]="isHandRaised() ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-800 text-white border-slate-700'"
-              class="px-3 py-1.5 rounded-lg border text-xs cursor-pointer"
-            >
-              ✋ {{ isHandRaised() ? 'Hand Raised' : 'Raise Hand' }}
-            </button>
-          </div>
-          <button
-            type="button"
-            (click)="closeStageModal()"
-            class="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold cursor-pointer"
-          >
-            Leave Stage
-          </button>
-        </div>
-      </div>
-
-      <!-- Live Chat & Participant Feed -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl flex flex-col justify-between p-4 h-[340px] text-xs">
-        <div>
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <span class="font-bold text-white">Live Discussion</span>
-            <span class="text-slate-400">{{ classInfo().classmatesCount }} Online</span>
-          </div>
-
-          <div class="space-y-3 py-3 overflow-y-auto max-h-[200px] no-scrollbar">
-            @for (msg of chatMessages(); track msg.text + msg.time) {
-              <div class="space-y-1">
-                <div class="flex items-center gap-1.5">
-                  <span class="font-semibold text-slate-200" [class.text-primary-300]="msg.isMe">{{ msg.sender }}</span>
-                  <span class="text-[10px] text-slate-500">{{ msg.time }}</span>
-                </div>
-                <p class="text-slate-300 bg-slate-800/60 p-2 rounded-lg leading-relaxed">{{ msg.text }}</p>
-              </div>
-            }
-          </div>
-        </div>
-
-        <form (ngSubmit)="sendChatMessage()" class="flex items-center gap-2 pt-2 border-t border-slate-800">
-          <input
-            type="text"
-            [ngModel]="chatMessageInput()"
-            (ngModelChange)="chatMessageInput.set($event)"
-            name="chatMsg"
-            placeholder="Ask question in live chat..."
-            class="flex-1 bg-slate-800 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 outline-none focus:border-primary"
-          />
-          <button
-            type="submit"
-            class="px-3 py-2 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg text-xs cursor-pointer"
-          >
-            Send
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-</ng-template>
 
 <!-- ========================================== -->
 <!-- MODAL 2: RECORDING PLAYER DIALOG -->

@@ -2,6 +2,8 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ZardDropdownImports } from '@/shared/components/dropdown';
+import { ZardDialogService } from '@/shared/components/dialog';
+import { LiveStageModal } from '../../components/live-stage/live-stage';
 
 export type CalendarView = 'month' | 'week' | 'day' | 'agenda';
 
@@ -31,6 +33,7 @@ export interface CalendarEvent {
 })
 export default class Calendar {
   private readonly router = inject(Router);
+  private readonly dialogService = inject(ZardDialogService);
 
   readonly view = signal<CalendarView>('agenda');
   readonly selectedCourse = signal('all');
@@ -177,6 +180,21 @@ export default class Calendar {
   }
 
   joinLive(event: CalendarEvent | null) {
-    this.router.navigate(['/learn/classroom/sessions']);
+    this.dialogService.create({
+      zContent: LiveStageModal,
+      zHideHeader: true,
+      zHideFooter: true,
+      zMaskClosable: false,
+      zData: event
+        ? {
+            title: event.title,
+            courseCode: event.courseCode,
+            courseTitle: event.courseName,
+            classCohort: event.cohort,
+            instructor: event.instructor || 'Dr. Marcus Vance',
+          }
+        : undefined,
+      zCustomClasses: 'h-[98vh] min-w-[calc(100vw-1rem)] !p-0 overflow-hidden rounded-2xl flex flex-col bg-white',
+    });
   }
 }

@@ -17,9 +17,11 @@ const COURSES_ROUTES: Routes = [
           { path: 'mastery', loadComponent: () => import('./pages/mastery/mastery') },
           { path: 'badges', loadComponent: () => import('./pages/badges/badges') },
           { path: 'pages/:pageId', loadComponent: () => import('./pages/materials/page/page') },
+          { path: 'assignments/:assignmentId', loadComponent: () => import('./pages/materials/assignment/assignment') },
           {
             path: 'materials',
             children: [
+              { path: 'assignments/:assignmentId', loadComponent: () => import('./pages/materials/assignment/assignment') },
               { path: 'pages/:pageId', loadComponent: () => import('./pages/materials/page/page') },
             ]
           }

@@ -1,4 +1,6 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { AssignmentSubmissionDrawer, SubmissionReceiptData } from '../../components/assignment-submission-drawer/assignment-submission-drawer';
 
 export interface AssignmentItem {
   id: string;
@@ -13,13 +15,26 @@ export interface AssignmentItem {
 }
 
 @Component({
-  imports: [],
+  imports: [RouterLink, AssignmentSubmissionDrawer],
   selector: 'app-assignments',
   styleUrl: './assignments.css',
   templateUrl: './assignments.html',
 })
 export default class Assignments {
+  private readonly route = inject(ActivatedRoute);
+  readonly courseId = signal<string>('c1');
+
   readonly assignmentFilter = signal<'all' | 'pending' | 'completed'>('all');
+  readonly isSubmissionDrawerOpen = signal<boolean>(false);
+  readonly activeSubmissionItem = signal<AssignmentItem | null>(null);
+
+  constructor() {
+    this.route.parent?.params.subscribe((params) => {
+      if (params['id']) {
+        this.courseId.set(params['id']);
+      }
+    });
+  }
 
   readonly filterTabs = signal<{ id: 'all' | 'pending' | 'completed'; label: string }[]>([
     { id: 'all', label: 'All' },
@@ -115,5 +130,28 @@ export default class Assignments {
 
   setFilter(filter: 'all' | 'pending' | 'completed') {
     this.assignmentFilter.set(filter);
+  }
+
+  openSubmitDrawer(item: AssignmentItem) {
+    this.activeSubmissionItem.set(item);
+    this.isSubmissionDrawerOpen.set(true);
+  }
+
+  onSubmissionCompleted(receipt: SubmissionReceiptData) {
+    const item = this.activeSubmissionItem();
+    if (item) {
+      this.assignments.update((list) =>
+        list.map((a) =>
+          a.id === item.id
+            ? {
+                ...a,
+                status: 'completed',
+                score: 'Submitted (v' + receipt.version + ')',
+                feedback: 'Sealed with verification hash ' + receipt.hash,
+              }
+            : a
+        )
+      );
+    }
   }
 }

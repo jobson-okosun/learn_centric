@@ -1,0 +1,160 @@
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-1.5 text-xs text-gray-500 mb-6">
+  <a routerLink="../../.." class="hover:text-primary transition-colors flex items-center gap-1 font-medium">
+    Materials
+  </a>
+  <span class="text-gray-300">/</span>
+  <a [routerLink]="['..']" class="hover:text-primary transition-colors font-medium">
+    {{ assignmentTitle() }}
+  </a>
+  <span class="text-gray-300">/</span>
+  <span class="text-gray-900 font-semibold">Submissions</span>
+</div>
+
+<!-- Main Container -->
+<div class="bg-white rounded-2xl border border-gray-200 p-6 space-y-6">
+
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
+    <div>
+      <h1 class="text-xl font-bold text-gray-900 tracking-tight">{{ assignmentTitle() }} &middot; Submissions</h1>
+      <p class="text-xs text-gray-500 mt-1">Review student work, score rubrics, and publish feedback.</p>
+    </div>
+
+    <!-- Quick Stats Summary -->
+    <div class="flex items-center gap-4 text-xs">
+      <div>
+        <span class="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">Submissions</span>
+        <span class="font-bold text-gray-900 text-sm">{{ totalSubmissions() }}</span>
+      </div>
+      <div class="h-6 w-px bg-gray-200"></div>
+      <div>
+        <span class="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">Needs Grading</span>
+        <span class="font-bold text-amber-700 text-sm">{{ needsGradingCount() }}</span>
+      </div>
+      <div class="h-6 w-px bg-gray-200"></div>
+      <div>
+        <span class="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">Graded</span>
+        <span class="font-bold text-emerald-700 text-sm">{{ gradedCount() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter & Search Toolbar -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <!-- Filter Tabs (Clean buttons, no pill spam) -->
+    <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+      <button 
+        (click)="setFilter('all')"
+        [class]="activeFilter() === 'all' ? 'bg-gray-100 text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-800 hover:bg-gray-50 font-medium'"
+        class="px-3.5 py-1.5 rounded-xl text-xs transition-colors cursor-pointer flex items-center gap-1.5">
+        <span>All</span>
+        <span class="text-[11px] opacity-70">({{ totalSubmissions() }})</span>
+      </button>
+
+      <button 
+        (click)="setFilter('needs-grading')"
+        [class]="activeFilter() === 'needs-grading' ? 'bg-gray-100 text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-800 hover:bg-gray-50 font-medium'"
+        class="px-3.5 py-1.5 rounded-xl text-xs transition-colors cursor-pointer flex items-center gap-1.5">
+        <span>Needs Grading</span>
+        <span class="text-[11px] opacity-70">({{ needsGradingCount() }})</span>
+      </button>
+
+      <button 
+        (click)="setFilter('graded')"
+        [class]="activeFilter() === 'graded' ? 'bg-gray-100 text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-800 hover:bg-gray-50 font-medium'"
+        class="px-3.5 py-1.5 rounded-xl text-xs transition-colors cursor-pointer flex items-center gap-1.5">
+        <span>Graded</span>
+        <span class="text-[11px] opacity-70">({{ gradedCount() }})</span>
+      </button>
+    </div>
+
+    <!-- Search Input -->
+    <div class="w-full sm:w-64">
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery"
+        placeholder="Search student or ID..." 
+        class="form-control text-xs w-full py-2 px-3" />
+    </div>
+  </div>
+
+  <!-- Submissions Table -->
+  <div class="overflow-x-auto">
+    <table class="w-full text-left text-xs">
+      <thead>
+        <tr class="border-b border-gray-200 text-gray-400 font-semibold text-[11px] uppercase tracking-wider">
+          <th class="pb-3 pl-2">Student</th>
+          <th class="pb-3">Submitted</th>
+          <th class="pb-3">Files</th>
+          <th class="pb-3">Score / Status</th>
+          <th class="pb-3 text-right pr-2">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        @for (sub of filteredSubmissions(); track sub.id) {
+          <tr class="hover:bg-gray-50/70 transition-colors">
+            <!-- Student Info -->
+            <td class="py-3.5 pl-2">
+              <div class="flex items-center gap-3">
+                <img [src]="sub.avatar" [alt]="sub.studentName" class="size-8 rounded-full object-cover shrink-0 border border-gray-200" />
+                <div>
+                  <div class="font-semibold text-gray-900 text-sm">{{ sub.studentName }}</div>
+                  <div class="text-[11px] text-gray-400">{{ sub.studentId }}</div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Submitted Date -->
+            <td class="py-3.5 text-gray-600 font-medium">
+              {{ sub.submittedAt }}
+            </td>
+
+            <!-- Files -->
+            <td class="py-3.5 text-gray-700">
+              <div class="flex items-center gap-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <span class="font-medium truncate max-w-[140px]">{{ sub.files[0]?.name }}</span>
+              </div>
+            </td>
+
+            <!-- Status / Score -->
+            <td class="py-3.5">
+              @if (sub.status === 'graded') {
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-gray-900 text-sm">{{ sub.score }} / {{ sub.maxScore }}</span>
+                  <span class="text-xs font-semibold text-emerald-700">({{ sub.grade }})</span>
+                </div>
+              } @else {
+                <span class="text-amber-700 font-semibold text-xs">Needs Grading</span>
+              }
+            </td>
+
+            <!-- Action -->
+            <td class="py-3.5 text-right pr-2">
+              @if (sub.status === 'graded') {
+                <a [routerLink]="['../grading', sub.id]" class="btn outline text-xs !py-1 !px-3">
+                  Review
+                </a>
+              } @else {
+                <a [routerLink]="['../grading', sub.id]" class="btn primary text-xs !py-1 !px-3">
+                  Grade
+                </a>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="py-8 text-center text-gray-400">
+              No submissions found matching your filter.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+</div>

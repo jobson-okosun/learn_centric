@@ -27,6 +27,22 @@ const LEARNER_ROUTES: Routes = [
     path: 'assessments',
     loadChildren: () => import('./assessments/assessments.route'),
   },
+  {
+    path: 'discussions',
+    loadChildren: () => import('./discussions/discussions.route'),
+  },
+  {
+    path: 'tutor',
+    loadChildren: () => import('./tutor/tutor.route'),
+  }, 
+  {
+    path: 'insights',
+    loadChildren: () => import('./insights/insights.route'),
+  },
+  {
+    path: 'settings', 
+    loadChildren: () => import('./settings/settings.route'),
+  },
 ];
 
-export default LEARNER_ROUTES;
+export default LEARNER_ROUTES; 

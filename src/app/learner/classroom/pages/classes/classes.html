@@ -74,11 +74,22 @@
             <!-- Next Live Session Notice -->
             @if (item.nextSession) {
               <div class="p-2.5 rounded-xl border border-gray-100 bg-gray-50/70 flex items-center justify-between text-xs">
-                <div class="flex items-center gap-2 truncate">
-                  <span class="size-2 rounded-full" [class.bg-emerald-500]="item.nextSession.isLiveNow" [class.bg-blue-500]="!item.nextSession.isLiveNow" [class.animate-pulse]="item.nextSession.isLiveNow"></span>
+                <div class="flex items-center gap-2 truncate min-w-0 pr-2">
+                  <span class="size-2 rounded-full shrink-0" [class.bg-emerald-500]="item.nextSession.isLiveNow" [class.bg-blue-500]="!item.nextSession.isLiveNow" [class.animate-pulse]="item.nextSession.isLiveNow"></span>
                   <span class="font-semibold text-gray-800 truncate">{{ item.nextSession.title }}</span>
                 </div>
-                <span class="text-[11px] text-gray-500 shrink-0 font-medium">{{ item.nextSession.time }}</span>
+                <div class="flex items-center gap-2 shrink-0">
+                  <span class="text-[11px] text-gray-500 font-medium">{{ item.nextSession.time }}</span>
+                  @if (item.nextSession.isLiveNow) {
+                    <button
+                      type="button"
+                      (click)="openLiveStage(item)"
+                      class="px-2 py-0.5 text-[11px] font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-md transition-colors cursor-pointer"
+                    >
+                      Join
+                    </button>
+                  }
+                </div>
               </div>
             }
 
@@ -128,45 +139,48 @@
 <!-- Join Class Slide-Over Drawer -->
 <z-drawer [(zVisible)]="joinClassVisible" [zPlacement]="'right'" [zDismissible]="true" class="w-full sm:w-[440px]">
   <z-drawer-header>
-    <div class="flex items-center justify-between border-b border-gray-100 pb-4 w-full">
-      <div>
-        <div class="font-bold text-lg text-gray-900">Join a Class Cohort</div>
-        <div class="text-xs text-gray-500">Enter the invitation code provided by your instructor</div>
-      </div>
+    <div class="flex flex-col border-b border-gray-100 pb-4">
+      <div class="font-bold text-xl text-gray-900">Join a Class Cohort</div>
+      <div class="text-sm text-gray-500">Enter the invitation code provided by your instructor.</div>
     </div>
   </z-drawer-header>
 
-  <div class="p-6 overflow-y-auto space-y-5">
-    @if (joinSuccessMessage()) {
-      <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-semibold flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        <span>{{ joinSuccessMessage() }}</span>
+  <div class="p-6 flex-1 overflow-y-auto min-h-0 space-y-5">
+    <form (submit)="submitJoinClass(); $event.preventDefault()" class="space-y-5">
+      @if (joinSuccessMessage()) {
+        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-semibold flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>{{ joinSuccessMessage() }}</span>
+        </div>
+      }
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Cohort Access Code</label>
+        <input 
+          type="text" 
+          [ngModel]="joinCodeInput()"
+          (ngModelChange)="joinCodeInput.set($event.toUpperCase())"
+          name="accessCode"
+          placeholder="e.g. MATH-204-A or BIO-FALL"
+          class="form-control w-full uppercase tracking-widest text-center text-lg h-12">
+        <p class="text-xs text-gray-400 mt-1.5">
+          Ask your teacher, professor, or academic coordinator for the 6–10 character class code.
+        </p>
       </div>
-    }
 
-    <div>
-      <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Cohort Access Code</label>
-      <input 
-        type="text" 
-        [ngModel]="joinCodeInput()"
-        (ngModelChange)="joinCodeInput.set($event)"
-        placeholder="e.g. MATH-204-A or BIO-FALL"
-        class="form-control h-11 w-full font-mono uppercase tracking-widest text-base">
-      <p class="text-xs text-gray-500 mt-2 leading-relaxed">
-        Ask your teacher, professor, or academic coordinator for the 6-10 character class code.
-      </p>
-    </div>
-
-    <div class="p-4 rounded-xl bg-gray-50 border border-gray-200/80 space-y-2 text-xs text-gray-600">
-      <div class="font-bold text-gray-900">What happens when you join?</div>
-      <p>You'll gain immediate access to the live virtual lecture stage, attendance check-ins, cohort schedule timetable, and class discussions.</p>
-    </div>
-
-    <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
-      <button (click)="joinClassVisible.set(false)" class="btn outline text-xs">Cancel</button>
-      <button (click)="submitJoinClass()" class="btn primary text-xs">Enroll in Class</button>
-    </div>
+      <div class="p-4 rounded-xl bg-gray-50 border border-gray-100 space-y-2 text-xs text-gray-600">
+        <div class="font-bold text-gray-900">What happens when you join?</div>
+        <p class="leading-relaxed">You'll gain immediate access to the live virtual lecture stage, attendance check-ins, cohort schedule timetable, and class discussions.</p>
+      </div>
+    </form>
   </div>
+
+  <z-drawer-footer>
+    <div class="flex items-center gap-3 w-full border-t border-gray-100 pt-4">
+      <button type="button" (click)="joinClassVisible.set(false)" class="btn outline flex-1">Cancel</button>
+      <button type="button" (click)="submitJoinClass()" class="btn primary flex-1">Enroll In Class</button>
+    </div>
+  </z-drawer-footer>
 </z-drawer>
